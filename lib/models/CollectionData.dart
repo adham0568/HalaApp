@@ -1,14 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CollectionData{
-  final String Name;
-  final String ImageUrl;
-  final String IdCollection;
-  final String UidAdmin;
+  final String UidAdmin,IdCollection,ImageUrl,Name;
   CollectionData({required this.Name,required this.ImageUrl,required this.IdCollection,required this.UidAdmin});
-
-
-
 
 
 

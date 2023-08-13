@@ -1,13 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MainCollectionData{
-  final String Name;
-  final String IdPrudactMainCollection;
-  final String IdCollection;
-  final String Image;
-
-
-
+  final String Name,IdPrudactMainCollection,IdCollection,Image;
   MainCollectionData({required this.Name,required this.IdPrudactMainCollection,required this.IdCollection,required this.Image});
 
 
