@@ -1,16 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PrudactData{
-  int TybePrudact;
-  final String Name;
-  final String ImageUrl;
-  final int IdPrudact;
-  final String PrudactsDetals;
-  final int Prise;
-  final int Discount;
-  final String IdCollection;
-  final String IdMainCollection;
-  final String IdMarket;
+  int TybePrudact,IdPrudact,Discount,Prise;
+  final String Name,ImageUrl,PrudactsDetals,IdCollection,IdMainCollection,IdMarket;
   final List Opitions;
 
   PrudactData({required this.Opitions,required this.TybePrudact,required this.Name,required this.Discount,required this.ImageUrl,required this.IdPrudact,required this.PrudactsDetals,required this.Prise,required this.IdMainCollection,required this.IdCollection,required this.IdMarket});
