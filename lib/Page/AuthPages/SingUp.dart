@@ -19,18 +19,16 @@ class SingUpPage extends StatefulWidget {
   State<SingUpPage> createState() => _SingUpPageState();
 }
 bool waiting=false;
+bool Showpass1=true;
+File? imgPath,imgPath1;
+String? imgName1,imgName;
 final name=TextEditingController();
 final username=TextEditingController();
 final marketname=TextEditingController();
 final emailaddress=TextEditingController();
 final pass=TextEditingController();
 final PhoneMarket=TextEditingController();
-File? imgPath;
-String? imgName;
-File? imgPath1;
-String? imgName1;
 final _formKey = GlobalKey<FormState>();
-bool Showpass1=true;
 List<String> City = [
   "الخليل",
   "نابلس",

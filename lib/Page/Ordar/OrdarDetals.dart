@@ -7,8 +7,7 @@ import '../../models/FireBaseStatemant.dart';
 
 class OrdarDetals extends StatefulWidget {
   int hight1;
-  Map DataOrdar;
-  Map DataOrdarDetals;
+  Map DataOrdarDetals,DataOrdar;
   String Name;
   OrdarDetals({Key? key,required this.DataOrdar,required this.hight1,required this.Name,required this.DataOrdarDetals}) : super(key: key);
 

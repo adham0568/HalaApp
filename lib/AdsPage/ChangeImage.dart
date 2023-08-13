@@ -10,12 +10,9 @@ import 'dart:math';import 'package:path/path.dart' show basename, url;
 import '../Page/AuthPages/SingUp.dart';
 //page 3
 class ChangeImage extends StatefulWidget {
-  String imageurl;
-  String PrudactName;
-  String TybePrudact;
+  String TybePrudact,PrudactName,imageurl,DocumantName;
   List Images;
   int Index;
-  String DocumantName;
   ChangeImage({required this.TybePrudact,required this.imageurl,required this.PrudactName,required this.DocumantName,required this.Images,required this.Index,Key? key}) : super(key: key);
 
   @override
