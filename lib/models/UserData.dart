@@ -3,20 +3,10 @@ import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminData{
-  double Lat;
-  double Long;
-  String Name;
-  String NameMarket;
-  String EmailAddress;
-  String Password;
-  String Logo;
-  String Uid;
+  double Lat,Long;
+  String Name,NameMarket,EmailAddress,Password,Logo,Uid,ImageProfile;
   DateTime DataAdded;
-  int Offar;
-  int Location;
-  int PhoneMarket;
-  int TybeMarket;
-  String ImageProfile;
+  int Offar,TybeMarket,PhoneMarket,Location;
   AdminData(
       {
         required this.EmailAddress,
