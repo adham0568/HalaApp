@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:adminhala/Page/PrudactsPages/Market/PrudactCollectionMarket.dart';
 import 'package:adminhala/Page/PrudactsPages/prudacts%20detals.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,15 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' show basename, url;
-import '../../models/FireBaseStatemant.dart';
-import 'ProductsCollections.dart';
+import '../../../models/FireBaseStatemant.dart';
+import '../ProductsCollections.dart';
 
-class Main_Collection extends StatefulWidget {
-  Map DataFromeCollectionPage;
-  Main_Collection({Key? key,required this.DataFromeCollectionPage}) : super(key: key);
+class Main_Collection_Market extends StatefulWidget {
+ const Main_Collection_Market({Key? key,}) : super(key: key);
 
   @override
-  State<Main_Collection> createState() => _Main_CollectionState();
+  State<Main_Collection_Market> createState() => _Main_Collection_MarketState();
 }
 FireBase EditData=FireBase();
 final NewName=TextEditingController();
@@ -28,7 +28,7 @@ bool Imagedone=false;
 final NameMainCollection= TextEditingController();
 
 
-class _Main_CollectionState extends State<Main_Collection> {
+class _Main_Collection_MarketState extends State<Main_Collection_Market> {
   FireBase addMainCollection=FireBase();
 
   OpenStdyo1() async {
@@ -61,74 +61,6 @@ class _Main_CollectionState extends State<Main_Collection> {
     double h = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){
-            showDialog(context: context, builder: (context) =>
-                AlertDialog(content: Container(height: 350,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('Edit Collection',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
-                        OpenStdyo1();
-                      }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Text('Add New Image'),Icon(Icons.camera)],)),
-
-                      TextFormField(
-                        controller: NewName,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                            hintText: 'Edit Collection Name'
-                        ),
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(onPressed: () async {
-                            await addMainCollection.UploadCollection(
-                                Name: NewName.text,IdCollection: widget.DataFromeCollectionPage['IdCollection'],imgName:imgName! ,imgPath:imgPath!,
-                                UidMarket: FirebaseAuth.instance.currentUser!.uid
-                            );
-                            Navigator.pop(context);
-
-                          }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
-                          ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
-                        ],
-                      ),
-
-                      ElevatedButton(onPressed: (){Navigator.pop(context);
-                      showDialog(context: context, builder: (context) =>
-                          AlertDialog(
-                            content: Container(
-                              height: 150,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text('are you sure?'),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(onPressed: (){
-
-                                        CollectionReference users =  FirebaseFirestore.instance.collection('Collection');
-                                        users.doc(widget.DataFromeCollectionPage['IdCollection']).delete();
-
-                                        Navigator.pop(context);
-                                      }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
-                                      ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
-                                    ],
-                                  ),
-                                ],
-                              ),),
-                          ),);
-                      }, child: Text('Remove Collectin'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),//Remove Collection
-
-                    ],
-                  ),
-                ))
-              ,);
-          }, icon: Icon(Icons.settings,color: Colors.white,))],
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
           decoration: BoxDecoration(gradient: LinearGradient(
@@ -167,13 +99,12 @@ class _Main_CollectionState extends State<Main_Collection> {
                             ),
                             ElevatedButton(onPressed: () async {
                               String RandomIdCollection=Uuid().v1();
-                              await addMainCollection.uploadMain_Collection(
-                                imgPath: imgPath!,
+                              await addMainCollection.uploadMain_Collection_Market(
+                                  imgPath: imgPath!,
                                   imgName: imgName!,
-                                  IdCollection: widget.DataFromeCollectionPage['IdCollection'],
                                   Name: NameMainCollection.text,
                                   IdMainColl: RandomIdCollection,
-                                  Data: widget.DataFromeCollectionPage);
+                                  );
                               Navigator.pop(context);
                               imgPath=null;
                               imgName='';
@@ -184,8 +115,8 @@ class _Main_CollectionState extends State<Main_Collection> {
                     ,);
                 },
                 child: Container(
-                  height: 70,
-                  width: 70,
+                  height: h/8,
+                  width: w/4,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.blueGrey),
                   child: Icon(Icons.add,size: 60,color: Colors.white,),
                 ),
@@ -196,11 +127,7 @@ class _Main_CollectionState extends State<Main_Collection> {
             SizedBox(height: 150,),
 
             StreamBuilder<QuerySnapshot>(
-
-              stream: FirebaseFirestore.instance
-                  .collection('mainCollection')
-                  .where('IdCollection', isEqualTo:widget.DataFromeCollectionPage['IdCollection'])
-                  .snapshots(),
+              stream: FirebaseFirestore.instance.collection('mainCollection').where('UidAdmin',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Text('Something went wrong');
@@ -221,9 +148,10 @@ class _Main_CollectionState extends State<Main_Collection> {
                     children: snapshot.data!.docs.map((DocumentSnapshot document) {
                       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                       return SizedBox(
+                        height: 100,
                         child: InkWell(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>PrudactCollection(data_Collection: widget.DataFromeCollectionPage,Data_From_Main_Collection: data,)));
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PrudactCollection_Market(Data_From_Main_Collection: data,)));
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 10,right: 10),
@@ -231,16 +159,15 @@ class _Main_CollectionState extends State<Main_Collection> {
                                 color: Colors.black12,
                                 borderRadius: BorderRadius.circular(10)
                             ),
-                            child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(height: 15,),
                                 CachedNetworkImage(
-                                  height: h/8,
                                   imageUrl: data['Image'],
                                   placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
                                   errorWidget: (context, url, error) => Icon(Icons.error),
                                   imageBuilder: (context, imageProvider) => Container(
-                                    height: h/7,
+                                    height: h/8,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                       image: DecorationImage(
@@ -251,9 +178,7 @@ class _Main_CollectionState extends State<Main_Collection> {
                                   ),
                                 ),
                                 SizedBox(height: 10,),
-                                Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(data['Name'],style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold),)),
+                                Text(data['Name'],style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold),),
                               ],
                             ),
                           ),

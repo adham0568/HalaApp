@@ -16,8 +16,8 @@ FireBaseChat DataBase=FireBaseChat();
 class _SupportChatState extends State<SupportChat> {
   @override
   Widget build(BuildContext context) {
-    double _w = MediaQuery.of(context).size.width;
-    double _h = MediaQuery.of(context).size.height;
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png',),
@@ -68,20 +68,20 @@ class _SupportChatState extends State<SupportChat> {
                                 ]
                             )
                         ),
-                        height: _h/10,
-                        width: _w*0.9,
+                        height: h/8,
+                        width: w*0.9,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(snapshot.data!.docs[index]['Name'],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 25),),
+                                Text(snapshot.data!.docs[index]['Name'],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: h/45),),
                               ],
                             ),
                             Align(
                                 alignment: Alignment.centerLeft,
-                                child:Text(snapshot.data!.docs[index]['Time'],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),)
+                                child:Text(snapshot.data!.docs[index]['Time'],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: h/50),)
                             ),
                           ],
                         ),

@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:adminhala/models/PrudactDataMarket.dart';
 import 'package:adminhala/models/SnackBar.dart';
+import 'package:adminhala/models/mainCollectionMarket.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -38,14 +40,15 @@ class FireBase {
       required File imgPath,
       required String imgName,
       required Map Data,
-      required int Prise,
-      required int Discount,
+      required double Prise,
+      required double Discount,
       required Map DataMainCollection,
       required String IdCollection,
       required String IdMainCollection,
       required String IdMarket,
       required int TybePrudact,
       required List Opitions,
+      required int Count_Quantity,
   })
 
   async {
@@ -56,7 +59,80 @@ class FireBase {
     url = await storageRef.getDownloadURL();
 
     try{
-      PrudactData DataPrudact=PrudactData(Opitions: Opitions,TybePrudact:TybePrudact ,IdMarket:IdMarket,Discount: Discount,ImageUrl: url,IdPrudact: IdPrudacts,Name:Name ,PrudactsDetals:DetalsPrudact ,Prise: Prise,IdCollection: IdCollection,IdMainCollection: IdMainCollection);
+      PrudactData DataPrudact = PrudactData(
+          Opitions: Opitions,
+          TybePrudact: TybePrudact,
+          IdMarket: IdMarket,
+          Discount: Discount,
+          ImageUrl: url,
+          IdPrudact: IdPrudacts,
+          Name: Name,
+          PrudactsDetals: DetalsPrudact,
+          Prise: Prise,
+          IdCollection: IdCollection,
+          IdMainCollection: IdMainCollection,
+          Count_Quantity:Count_Quantity ,
+          Count_requests: 0,
+      );
+
+      FirebaseFirestore.instance.collection('Prudacts').
+      doc(IdPrudacts.toString()).set(DataPrudact.Convert2Map()).
+      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+
+      int? TotalOffer;
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
+      print(TotalOffer.toString()+'5555555555');
+      TotalOffer=snapshot.data()!['Offar'];
+
+      CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
+      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
+      AdminData
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(UpdateOffer)
+          .then((value) => print("Offer Uodated"))
+          .catchError((error) => print("Failed to add order: $error"));
+      print('Offer');
+
+    } catch(e){print(e);}
+  }
+
+
+  UploadPrudactsMarket({required String Name,
+    required int IdPrudacts,
+    required String DetalsPrudact,
+    required File imgPath,
+    required String imgName,
+    required double Prise,
+    required double Discount,
+    required Map DataMainCollection,
+    required String IdMainCollection,
+    required String IdMarket,
+    required int TybePrudact,
+    required List Opitions,
+    required int Count_Quantity,
+  })
+
+  async {
+    String? url;
+    final storageRef =
+    FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
+    await storageRef.putFile(imgPath);
+    url = await storageRef.getDownloadURL();
+
+    try{
+      PrudactDataMarket DataPrudact = PrudactDataMarket(
+          Count_Quantity:Count_Quantity ,
+          Count_requests: 0,
+          Opitions: Opitions,
+          TybePrudact: TybePrudact,
+          IdMarket: IdMarket,
+          Discount: Discount,
+          ImageUrl: url,
+          IdPrudact: IdPrudacts,
+          Name: Name,
+          PrudactsDetals: DetalsPrudact,
+          Prise: Prise,
+          IdMainCollection: IdMainCollection);
 
       FirebaseFirestore.instance.collection('Prudacts').
       doc(IdPrudacts.toString()).set(DataPrudact.Convert2Map()).
@@ -94,19 +170,41 @@ class FireBase {
       url = await storageRef.getDownloadURL();
 
     try{
-        MainCollectionData DataMainColl=MainCollectionData(Name: Name,IdPrudactMainCollection: IdMainColl,IdCollection: IdCollection,Image: url);
-        FirebaseFirestore.instance.collection('Collection').
-        doc(Data['IdCollection']).collection('mainCollection').doc(IdMainColl).set(DataMainColl.Convert2Map()).
+        MainCollectionData DataMainColl=MainCollectionData(Name: Name,IdPrudactMainCollection: IdMainColl,IdCollection: IdCollection,Image: url,UidAdmin: FirebaseAuth.instance.currentUser!.uid);
+        FirebaseFirestore.instance.collection('mainCollection').
+        doc(IdMainColl).set(DataMainColl.Convert2Map()).
         then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
 
       } catch(e){print(e);}
 
   }
 
+  uploadMain_Collection_Market(
+      {required String Name,
+        required String IdMainColl,
+        required File imgPath,
+        required String imgName,}) async {
+
+    String? url;
+    final storageRef =
+    FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
+    await storageRef.putFile(imgPath);
+    url = await storageRef.getDownloadURL();
+
+    try{
+      MainCollectionMarket DataMainColl=MainCollectionMarket(Name: Name,IdPrudactMainCollection: IdMainColl,Image: url,UidAdmin: FirebaseAuth.instance.currentUser!.uid) ;
+      FirebaseFirestore.instance.collection('mainCollection').
+      doc(IdMainColl).set(DataMainColl.Convert2Map()).
+      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+
+    } catch(e){print(e);}
+
+  }
+
 
   Future<void> OrdarState({required int ordarid,required int State}) async {
 
-    CollectionReference listItem = FirebaseFirestore.instance.collection('Ordar');
+    CollectionReference listItem =await FirebaseFirestore.instance.collection('Ordar');
 
     Map<String, dynamic> orderData = {
       'OrdarStates': State,
@@ -118,7 +216,7 @@ class FireBase {
         .then((value) => print("Editing"))
         .catchError((error) => print("Failed to add order: $error"));
 
-    print('تم تعديل حالة الطلب بنجاح في Firestore');
+    print(ordarid);
   }
 
   Future<void> CodeSet({required String DiscountNum,required String DiscountValue,required String DiscountCode,required String Uid}) async {
@@ -146,7 +244,7 @@ class FireBase {
   }
 
 
-  Future<void> sendListToFirestore({required String prise,required List Prudact,required String Uid,required int IdOrdar}) async {
+  Future<void> sendListToFirestore({required String prise,required List Prudact,required String Uid,required int IdOrdar,required String NameUser}) async {
 
     String calculateTotalPrice=prise;
     CollectionReference listItem = FirebaseFirestore.instance.collection('OrdarDone');
@@ -155,7 +253,11 @@ class FireBase {
       'totalPrice': '${prise} ₪',
       'items': Prudact,
       'OrdarStates': 4,
-      'User':Uid,};
+      'User':Uid,
+      'AdminUid':FirebaseAuth.instance.currentUser!.uid,
+      'NameUser':NameUser,
+      'Date':DateTime.now(),
+    };
 
     listItem
         .doc('${IdOrdar}')
@@ -180,7 +282,7 @@ class FireBase {
     print('تم ارسال الطلب الى الاحصائيات');
   }
 
-  Future<void> Ordarfailed({required String prise,required List Prudact,required String Uid,required int IdOrdar}) async {
+  Future<void> Ordarfailed({required String NameUser,required String prise,required List Prudact,required String Uid,required int IdOrdar}) async {
 
     String calculateTotalPrice=prise;
     CollectionReference listItem = FirebaseFirestore.instance.collection('Ordarfailed');
@@ -189,7 +291,11 @@ class FireBase {
       'totalPrice': '${prise} ₪',
       'items': Prudact,
       'OrdarStates': 6,
-      'User':Uid,};
+      'User':Uid,
+      'AdminUid':FirebaseAuth.instance.currentUser!.uid,
+      'NameUser':NameUser,
+      'Date':DateTime.now(),
+    };
 
     listItem
         .doc('${IdOrdar}')
@@ -203,8 +309,34 @@ class FireBase {
 
   }
 
+  Future<void> UpDateCount_requests({required List Items}) async {
+    try{
+      int counter=1;
+      for(int i=0;i<Items.length;i++){
+        int IdPrudact= Items[i]['IdPrudact'];
+        int Count_requests=Items[i]['Count_requests'];
+        int Count_Quantity=Items[i]['Count_Quantity'];
+        if (i > 0 && Items[i - 1]['IdPrudact'] == Items[i]['IdPrudact']) {
+          counter=counter+1;
+        } else {
+          counter = 1;
+        }
 
-
+        CollectionReference productData =await FirebaseFirestore.instance.collection('Prudacts');
+        Map<String, dynamic> NewValue = {
+          'Count_requests': Count_requests+counter,
+          'Count_Quantity':Count_Quantity-counter
+        };
+        productData
+            .doc(IdPrudact.toString())
+            .update(NewValue)
+            .then((value) => print("Order Added"));
+        print(Count_requests);
+        print(Count_Quantity);
+      }
+    }
+    catch(e){print(e);}
+  }
 
 
   Future<void> OrdarDoneUpdate() async {
@@ -245,7 +377,7 @@ class FireBase {
   }
   Future<void> TotalPrifitUpdate({required String Prise}) async {
     String numericText = Prise.replaceAll(' ₪', '');
-    int Prise1=int.parse(numericText);
+    double Prise1=double.parse(numericText);
     print(Prise1);
     int? totalOrdar;
     try{DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('SalesData').doc(FirebaseAuth.instance.currentUser!.uid).get();
@@ -254,7 +386,7 @@ class FireBase {
     }
     catch(e){print(e);}
     CollectionReference listItem = FirebaseFirestore.instance.collection('SalesData');
-    Map<String, dynamic> OrdarDoneadd = {'TotalPrifit': totalOrdar!+Prise1,};
+    Map<String, dynamic> OrdarDoneadd = {'TotalPrifit': totalOrdar!+Prise1.round(),};
     listItem
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update(OrdarDoneadd)
@@ -266,12 +398,12 @@ class FireBase {
 
   Future<void> TotalCancelUpdate({required String Prise}) async {
     String numericText = Prise.replaceAll(' ₪', '');
-    int Prise1=int.parse(numericText);
+    double Prise1=double.parse(numericText);
     print(Prise1);
-    int? totalOrdar;
+    double? totalOrdar;
     try{DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('SalesData').doc(FirebaseAuth.instance.currentUser!.uid).get();
     print('done');
-    totalOrdar=snapshot.data()!['TotalCnceldPrice'];
+    totalOrdar=snapshot.data()!['TotalCnceldPrice']*1.0;
     }
     catch(e){print(e);}
     CollectionReference listItem = FirebaseFirestore.instance.collection('SalesData');
@@ -311,7 +443,128 @@ class FireBase {
     }
     catch(e){print(e);}
 
+  }
+  UpdatePrudactsHala({
+    required String Name,
+    required int IdPrudacts,
+    required String DetalsPrudact,
+    required File imgPath,
+    required String imgName,
+    required Map Data,
+    required double Prise,
+    required double Discount,
+    required String IdCollection,
+    required Map DataMainCollection,
+    required String IdMainCollection,
+    required String IdMarket,
+    required int TybePrudact,
+    required List Opitions,
+    required int Count_Quantity,
+  })
 
+  async {
+    String? url;
+    final storageRef =
+    FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
+    await storageRef.putFile(imgPath);
+    url = await storageRef.getDownloadURL();
+
+    try{
+      PrudactData DataPrudact = PrudactData(
+          Count_Quantity: Count_Quantity,
+          Count_requests: 0,
+          Opitions: Opitions,
+          TybePrudact: TybePrudact,
+          IdCollection:IdCollection ,
+          IdMarket: IdMarket,
+          Discount: Discount,
+          ImageUrl: url,
+          IdPrudact: IdPrudacts,
+          Name: Name,
+          PrudactsDetals: DetalsPrudact,
+          Prise: Prise,
+          IdMainCollection: IdMainCollection
+      );
+
+      FirebaseFirestore.instance.collection('Prudacts').
+      doc(IdPrudacts.toString()).update(DataPrudact.Convert2Map()).
+      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+
+      int? TotalOffer;
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
+      print(TotalOffer.toString()+'5555555555');
+      TotalOffer=snapshot.data()!['Offar'];
+
+      CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
+      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
+      AdminData
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(UpdateOffer)
+          .then((value) => print("Offer Uodated"))
+          .catchError((error) => print("Failed to add order: $error"));
+      print('Offer');
+
+    } catch(e){print(e);}
+  }
+  UpdatePrudactsMarket({
+    required String Name,
+    required int IdPrudacts,
+    required String DetalsPrudact,
+    required File imgPath,
+    required String imgName,
+    required double Prise,
+    required double Discount,
+    required Map DataMainCollection,
+    required String IdMainCollection,
+    required String IdMarket,
+    required int TybePrudact,
+    required List Opitions,
+    required int Count_Quantity,
+    required int Count_requests,
+  })
+
+  async {
+    String? url;
+    final storageRef =
+    FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
+    await storageRef.putFile(imgPath);
+    url = await storageRef.getDownloadURL();
+
+    try{
+      PrudactDataMarket DataPrudact = PrudactDataMarket(
+          Count_Quantity: Count_Quantity,
+          Count_requests: Count_requests,
+          Opitions: Opitions,
+          TybePrudact: TybePrudact,
+          IdMarket: IdMarket,
+          Discount: Discount,
+          ImageUrl: url,
+          IdPrudact: IdPrudacts,
+          Name: Name,
+          PrudactsDetals: DetalsPrudact,
+          Prise: Prise,
+          IdMainCollection: IdMainCollection
+      );
+
+      FirebaseFirestore.instance.collection('Prudacts').
+      doc(IdPrudacts.toString()).update(DataPrudact.Convert2Map()).
+      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+
+      int? TotalOffer;
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
+      print(TotalOffer.toString()+'5555555555');
+      TotalOffer=snapshot.data()!['Offar'];
+
+      CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
+      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
+      AdminData
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(UpdateOffer)
+          .then((value) => print("Offer Uodated"))
+          .catchError((error) => print("Failed to add order: $error"));
+      print('Offer');
+
+    } catch(e){print(e);}
   }
 }
 

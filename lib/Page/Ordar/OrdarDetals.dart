@@ -18,8 +18,17 @@ FireBase FireServices=FireBase();
 double? HightContener;
 
 List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
+  double CalculatedPrise(){
+    double prise=0;
+    for(int i=0;i<widget.DataOrdar['items'].length;i++){
+      double priseforindexprudact= widget.DataOrdar['items'][i]['Prise'];
+     prise+=priseforindexprudact;
+    }
+    return prise;
+  }
   @override
   void initState() {
+    CalculatedPrise();
     DoneOrNot = List<bool>.filled(widget.DataOrdar['items'].length, false);
     // TODO: implement initState
     super.initState();
@@ -27,6 +36,8 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
   }
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
     List<dynamic> displayedItems = [];
     for (var item in widget.DataOrdar['items']) {
       var isItemDisplayed = displayedItems
@@ -36,11 +47,6 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
         displayedItems.add(item);
       }
     }
-    double containerHeight = displayedItems.length * 300.0;
-    setState(() {
-      if(displayedItems.length<3){containerHeight=displayedItems.length * 800.0;}
-      else if(displayedItems.length>3 &&displayedItems.length<5){HightContener=displayedItems.length * 500.0;}
-      else if(displayedItems.length>5){HightContener=displayedItems.length * 350.0;}    });
     final _Provaider = Provider.of<Ordars>(context);
     return Scaffold(
       appBar: AppBar(
@@ -60,29 +66,25 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Image.asset('assets/Images/logowelcome.png',height: 160,),
             InkWell(
               splashColor: Colors.teal,
               borderRadius:BorderRadius.only(
-                topLeft: Radius.circular(50.0),
-                bottomLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(50.0),
-                topRight: Radius.circular(10.0),
+                topLeft: Radius.circular(w/10),
+                bottomLeft: Radius.circular(w/30),
+                bottomRight: Radius.circular(w/10),
+                topRight: Radius.circular(w/30),
               ) ,
               child: Container(
-                  padding: EdgeInsets.all(7),
+                  padding: EdgeInsets.only(bottom: w/7,right: w/50,left: w/50,top: w/50),
                   width: double.infinity,
-                  margin: EdgeInsets.only(left: 25,right: 25,bottom: 50),
-                  height:containerHeight,//displayedItems.length.isOdd?containerHeight= displayedItems.length * 500.0:containerHeight= displayedItems.length * 300.0,
+                  margin: EdgeInsets.only(left: h/50,right: h/50,bottom: h/50,top: h/50),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(5),
-                        bottomRight: Radius.circular(100.0),
-                        topRight: Radius.circular(5),
+                        topLeft: Radius.circular(w/30),
+                        bottomLeft: Radius.circular(w/30),
+                        bottomRight: Radius.circular(w/5),
+                        topRight: Radius.circular(w/30),
                       ),
-                      //78/246/123
-                      //80/181/248
                       color: Colors.black54
                   ),
                   child: Column(
@@ -95,57 +97,58 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  bottomLeft: Radius.circular(5),
-                                  bottomRight: Radius.circular(100.0),
-                                  topRight: Radius.circular(5),
+                                  topLeft: Radius.circular(w/30),
+                                  bottomLeft: Radius.circular(w/30),
+                                  bottomRight: Radius.circular(w/5),
+                                  topRight: Radius.circular(w/30),
                                 ),
                                 //78/246/123
                                 //80/181/248
                                 color: Colors.deepOrange
                             ),
-                            height: 300,
-                            width: 150,
+                            height: h/2.5,
+                            width: w/2.3,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text('حالة الطلب',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
+                                Text('حالة الطلب',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20,color: Colors.white),),
                                 ElevatedButton(onPressed: () async {
                                   await FireServices.OrdarState(ordarid: widget.DataOrdar['orderID'],State:2);
-                                }, child: Text('قيد التحضير',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
+                                }, child: Text('قيد التحضير',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold),),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
                                 ElevatedButton(onPressed: () async {
                                  await FireServices.OrdarState(ordarid: widget.DataOrdar['orderID'],State:3);
-                                }, child: Text('على الطريق',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigo)),),
+                                }, child: Text('على الطريق',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigo)),),
                                 ElevatedButton(onPressed: () async {
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
                                         content: Container(
                                           color: Colors.white,
-                                          height: 200,
+                                          height: h/4,
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Text('هل تم تسليم الطلب للتوصيل؟',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                                              Text('هل تم تسليم الطلب للتوصيل؟',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold),),
                                              Row(
                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                children: [
                                                  ElevatedButton(onPressed: () async {
+                                                   await FireServices.UpDateCount_requests(Items:widget.DataOrdar['items']);
                                                    await FireServices.TotalPrifitUpdate(Prise:widget.DataOrdar['totalPrice']);
                                                    await FireServices.OrdarDoneUpdate();
-                                                   await FireServices
-                                                       .sendListToFirestore(
+                                                   await FireServices.sendListToFirestore(
+                                                       NameUser:widget.DataOrdar['NameUser'] ,
                                                        Uid: widget.DataOrdar['User'],
                                                        IdOrdar: widget.DataOrdar['orderID'],
                                                        prise:widget.DataOrdar['totalPrice'],
                                                        Prudact:widget.DataOrdar['items']);
                                                    await FireServices.OrdarState(ordarid: widget.DataOrdar['orderID'],State:4);
                                                    Navigator.pop(context);
-                                                 }, child: Text('نعم',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+                                                 }, child: Text('نعم',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),
                                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
                                                  ElevatedButton(onPressed: ()  {
                                                    Navigator.pop(context);
-                                                 }, child: Text('لا',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),),
+                                                 }, child: Text('لا',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),),
 
                                                ],
                                              )
@@ -154,7 +157,7 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                                         ),
                                       )
                                     );
-                                  }, child: Text('الطلب مكتمل',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                  }, child: Text('الطلب مكتمل',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
                                 SizedBox(height: 40,)
                               ],
                             ),
@@ -162,14 +165,14 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.Name,style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
+                              Text(widget.Name,style: TextStyle(fontSize: w/19,fontWeight: FontWeight.bold,color: Colors.white),),
                             ],
                           )
                         ],
                       ),
                       Column(
                         children: [
-                          Text('المنتجات', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+                          Text('المنتجات', style: TextStyle(fontSize: w/18, fontWeight: FontWeight.bold, color: Colors.white)),
                           ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: widget.DataOrdar['items'].length,
@@ -191,11 +194,11 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                               // عرض المنتج وعدد المنتجات المتماثلة إذا كان المنتج لم يتم عرضه بالفعل
                               if (isProductDisplayed) {
                                 return Container(
-                                  height: 120,
+                                  height: h/5.2,
                                   margin: EdgeInsets.all(5),
-                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  padding: EdgeInsets.only(left: w/30, right: w/30),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
+                                    borderRadius: BorderRadius.circular(w/20),
                                     color: Colors.white54,
                                   ),
                                   child: Column(
@@ -204,12 +207,13 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                              width: 120,
+                                              width: w/3,
                                               child: Image.network(currentItem['ImageUrl'],fit: BoxFit.contain,)),
                                           Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text(currentItem['Name'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+                                              Text(currentItem['Name'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/18, color: Colors.white)),
                                             ],
                                           ),
                                           Column(
@@ -222,13 +226,13 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                                               ):
                                              ElevatedButton(onPressed: (){
                                                setState(() {
-                                                 DoneOrNot[index] = !DoneOrNot[index];
+                                                 DoneOrNot[index] = DoneOrNot[index];
                                                });
                                              }, child:Text(DoneOrNot[index]?' جاهز':'تم'),
                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(DoneOrNot[index]?Colors.green:Colors.red)),
                                              ),
-                                              Text('الكمية: $duplicateItemsCount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red)),
-                                              Text('${currentItem['Prise']*duplicateItemsCount} ₪', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red)),
+                                              Text('الكمية: $duplicateItemsCount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/20, color: Colors.red)),
+                                              Text('${CalculatedPrise()} ₪', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/20, color: Colors.red)),
 
                                             ],
                                           ),
@@ -246,7 +250,7 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                         ],
                       ),
 
-                      Text(widget.DataOrdar['totalPrice'],style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),),
+                      Text(widget.DataOrdar['totalPrice'],style: TextStyle(fontSize: w/13,fontWeight: FontWeight.bold,color: Colors.white),),
                     ],
                   )
               ),

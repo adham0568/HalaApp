@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:adminhala/Page/PrudactsPages/AddPrudactWithDeatels.dart';
+import 'package:adminhala/Page/PrudactsPages/Market/PrudactDetalsMarket.dart';
+import 'package:adminhala/Page/PrudactsPages/Market/PrudactWithOpitionsMarket.dart';
+import 'package:adminhala/models/PrudactDataMarket.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart' show basename, url;
@@ -8,17 +11,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-import '../../models/FireBaseStatemant.dart';
-import '../../models/PrudactData.dart';
-import 'main_Collection.dart';
+import '../../../models/FireBaseStatemant.dart';
+import '../../../models/PrudactData.dart';
+import '../main_Collection.dart';
 import 'dart:math';
-class PrudactCollection extends StatefulWidget {
-  Map data_Collection;
+class PrudactCollection_Market extends StatefulWidget {
   Map Data_From_Main_Collection;
-   PrudactCollection({Key? key,required this.data_Collection,required this.Data_From_Main_Collection}) : super(key: key);
+  PrudactCollection_Market({Key? key,required this.Data_From_Main_Collection}) : super(key: key);
 
   @override
-  State<PrudactCollection> createState() => _PrudactCollectionState();
+  State<PrudactCollection_Market> createState() => _PrudactCollection_MarketState();
 }
 FireBase EditData=FireBase();
 final NewName=TextEditingController();
@@ -26,13 +28,14 @@ final detalsPrudact=TextEditingController();
 final PrudactName=TextEditingController();
 final PrudactPrise=TextEditingController();
 final PrudactDiscount=TextEditingController();
-final Count_Quantity=TextEditingController();
+final Count_Quantity =TextEditingController();
+
 
 File? imgPath;
 String? imgName;
 bool Imagedone=false;
 
-class _PrudactCollectionState extends State<PrudactCollection> {
+class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
   OpenStdyo1() async {
     final pickedImg = await ImagePicker().pickImage(
         source: ImageSource.gallery);
@@ -59,7 +62,6 @@ class _PrudactCollectionState extends State<PrudactCollection> {
 
   @override
   Widget build(BuildContext context) {
-
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -91,16 +93,14 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                         children: [
 
                           ElevatedButton(onPressed: () async {
-                            await EditData.uploadMain_Collection(
+                            await EditData.uploadMain_Collection_Market(
                                 imgName: imgName!,
                                 imgPath: imgPath!,
-                                IdCollection:
-                                widget.data_Collection['IdCollection'],
                                 Name: NewName.text,
                                 IdMainColl:
                                 widget.Data_From_Main_Collection[
                                 'IdPrudactMainCollection'],
-                                Data: widget.data_Collection);
+                            );
                             Navigator.pop(context);
 
                           }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
@@ -172,100 +172,95 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                               InkWell(
                                 onTap: (){
                                   Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactWithOpitions(
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactWithOpitionsMarket(
                                       Opitions: [],
-                                      data_Collection: widget.data_Collection,Data_From_Main_Collection: widget.Data_From_Main_Collection),));
+                                      Data_From_Main_Collection: widget.Data_From_Main_Collection),));
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.all( w/50),
+                                    padding: EdgeInsets.all( w/50),
                                     decoration: BoxDecoration(color: Colors.teal,borderRadius: BorderRadius.circular(15)),
-                                    child: Center(child: Text("منتج مع اضافات",style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold,color: Colors.white),))),),
-
+                                    child: Center(child: Text("منتج مع اضافات",style: TextStyle(fontSize: w/30,fontWeight: FontWeight.bold,color: Colors.white),))),),
                               InkWell(
-                                onTap: ()
-                                {
-                                  Navigator.pop(context);
-                                  showDialog(context: context, builder: (context) =>
-                                      AlertDialog(content: SingleChildScrollView(
-                                        child: Container(
-                                          height: h*1.1,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
-                                                OpenStdyo1();
-                                              }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [Text('اضافة صورة للمنتح'),Icon(Icons.camera)],)),
-                                              TextFormField(
-                                                controller: PrudactName,
-                                                decoration: InputDecoration(
-                                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                                    hintText: 'اسم المنتج'
+                                onTap: (){
+                                    Navigator.pop(context);
+                                    showDialog(context: context, builder: (context) =>
+                                        AlertDialog(content: SingleChildScrollView(
+                                          child: Container(
+                                            height: h*1.1,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
+                                                  OpenStdyo1();
+                                                }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [Text('اضافة صورة للمنتح'),Icon(Icons.camera)],)),
+                                                TextFormField(
+                                                  controller: PrudactName,
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                                      hintText: 'اسم المنتج'
+                                                  ),
                                                 ),
-                                              ),
-                                              TextFormField(
-                                                keyboardType: TextInputType.number,
-                                                controller: PrudactPrise,
-                                                decoration: InputDecoration(
-                                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                                    hintText: 'سعر المنتج'
+                                                TextFormField(
+                                                  keyboardType: TextInputType.number,
+                                                  controller: PrudactPrise,
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                                      hintText: 'سعر المنتج'
+                                                  ),
                                                 ),
-                                              ),
-                                              TextFormField(
-                                                keyboardType: TextInputType.number,
-                                                controller: PrudactDiscount,
-                                                decoration: InputDecoration(
-                                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                                    hintText: 'خصم على المنتج'
+                                                TextFormField(
+                                                  keyboardType: TextInputType.number,
+                                                  controller: PrudactDiscount,
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                                      hintText: 'خصم على المنتج'
+                                                  ),
                                                 ),
-                                              ),
-                                              TextFormField(
-                                                keyboardType: TextInputType.number,
-                                                controller: Count_Quantity,
-                                                decoration: InputDecoration(
-                                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                                    hintText: 'الكمية'
+                                                TextFormField(
+                                                  keyboardType: TextInputType.number,
+                                                  controller: Count_Quantity,
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                                      hintText: 'الكمية'
+                                                  ),
                                                 ),
-                                              ),
-                                              TextField(
-                                                controller: detalsPrudact,
-                                                maxLines: 8,
-                                                decoration: InputDecoration(
-                                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                                    hintText: 'وصف المنتج'
-                                                ),
-                                              ),//discreption
-                                              ElevatedButton(onPressed: () async {
-                                                await EditData.UploadPrudacts(
-                                                  Count_Quantity:int.parse(Count_Quantity.text) ,
-                                                  Opitions: [],
-                                                  TybePrudact: 0,
-                                                  Discount: double.parse(PrudactDiscount.text),
-                                                  IdCollection:widget.Data_From_Main_Collection['IdCollection'],
-                                                  IdMainCollection:widget.Data_From_Main_Collection['IdPrudactMainCollection'],
-                                                  Prise: double.parse(PrudactPrise.text),
-                                                  Name: PrudactName.text,
-                                                  IdPrudacts: Random().nextInt(250000),
-                                                  DetalsPrudact: detalsPrudact.text,
-                                                  imgPath: imgPath!,
-                                                  imgName: imgName!,
-                                                  Data: widget.data_Collection,
-                                                  DataMainCollection:widget.Data_From_Main_Collection,
-                                                  IdMarket:FirebaseAuth.instance.currentUser!.uid,
-                                                );
-                                                Navigator.pop(context);
-                                              }, child: Text('إضافة'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),)
-                                            ],
+                                                TextField(
+                                                  controller: detalsPrudact,
+                                                  maxLines: 8,
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                                      hintText: 'وصف المنتج'
+                                                  ),
+                                                ),//discreption
+                                                ElevatedButton(onPressed: () async {
+                                                  await EditData.UploadPrudactsMarket(
+                                                    Count_Quantity:int.parse(Count_Quantity.text),
+                                                    Opitions: [],
+                                                    TybePrudact: 0,
+                                                    Discount: double.parse(PrudactDiscount.text),
+                                                    IdMainCollection:widget.Data_From_Main_Collection['IdPrudactMainCollection'],
+                                                    Prise: double.parse(PrudactPrise.text),
+                                                    Name: PrudactName.text,
+                                                    IdPrudacts: Random().nextInt(250000),
+                                                    DetalsPrudact: detalsPrudact.text,
+                                                    imgPath: imgPath!,
+                                                    imgName: imgName!,
+                                                    DataMainCollection:widget.Data_From_Main_Collection,
+                                                    IdMarket:FirebaseAuth.instance.currentUser!.uid,
+                                                  );
+                                                  Navigator.pop(context);
+                                                }, child: Text('إضافة'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),)
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ))
-                                    ,);
-                                },
+                                        ))
+                                      ,);
+                                  },
                                 child: Container(
-                                    padding: EdgeInsets.only(left: w/50,right: w/50,top: w/50,bottom: w/50),
-
+                                    padding: EdgeInsets.all( w/50),
                                     decoration: BoxDecoration(color: Colors.teal,borderRadius: BorderRadius.circular(15)),
-                                    child: Center(child: Text("بدون اضافات",style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold,color: Colors.white),))),),
+                                    child: Center(child: Text("بدون اضافات",style: TextStyle(fontSize: w/30,fontWeight: FontWeight.bold,color: Colors.white),))),),
 
                             ],
                           )
@@ -285,7 +280,6 @@ class _PrudactCollectionState extends State<PrudactCollection> {
             ),//add Prudacts
             Container(height: 150,),//Add Prudct Or Remove Collection
             SizedBox(
-              height: 700,
               child: FutureBuilder(
                 future: FirebaseFirestore.instance.collection('Prudacts')
                     .where('IdMainCollection',isEqualTo:widget.Data_From_Main_Collection['IdPrudactMainCollection']).get(),
@@ -309,18 +303,16 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                               height: 100,
                               child: InkWell(
                                 onTap: (){
-                                  PrudactData _convertData=PrudactData.convertSnap2Model(snapshot.data!.docs[index]);
+                                  PrudactDataMarket _convertData=PrudactDataMarket.convertSnap2Model(snapshot.data!.docs[index]);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => PrudactsDetals(
-                                                PrudactData:
-                                                _convertData.Convert2Map(),
-                                                DataMainCollection: widget
-                                                    .Data_From_Main_Collection,
-                                                DataFromeCollection:
-                                                    widget.data_Collection,
-                                              )));
+                                          builder: (context) => PrudactsDetals_Market(
+                                            PrudactData:
+                                            _convertData.Convert2Map(),
+                                            DataMainCollection: widget
+                                                .Data_From_Main_Collection,
+                                          )));
                                 },
                                 child: Container(
                                   margin: EdgeInsets.all(10),
@@ -333,7 +325,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                         placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
                                         errorWidget: (context, url, error) => Icon(Icons.error),
                                         imageBuilder: (context, imageProvider) => Container(
-                                          height: h/8,
+                                          height: w/8,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(12),
                                             image: DecorationImage(

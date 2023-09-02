@@ -14,9 +14,14 @@ class WelcomePage extends StatefulWidget {
   @override
   State<WelcomePage> createState() => _WelcomePageState();
 }
-File? imgPath1;
-String? imgName1;
+
 class _WelcomePageState extends State<WelcomePage> {
+  File? imgPath1;
+  String? imgName1;
+  int? TybeMarket;
+  final NameProduct=TextEditingController();
+  final TextAdd=TextEditingController();
+
   OpenStdyo() async {
 
     final pickedImg = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -30,6 +35,8 @@ class _WelcomePageState extends State<WelcomePage> {
   SizeFix Sizefix=SizeFix();
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
     FireBaseUpLoad Upload=FireBaseUpLoad();
     return Scaffold(
       body: Container(
@@ -44,6 +51,51 @@ class _WelcomePageState extends State<WelcomePage> {
               child: imgPath1==null?Container(height: 1,width: 1,)
                   :
               Image(image: FileImage(imgPath1!),)),
+            TextFormField(
+              controller: NameProduct,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                labelText: 'اسم المنتج',
+              ),
+            ),
+            TextField(
+              maxLines: 2,
+              maxLength: 70,
+              controller: TextAdd,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                labelText: 'نص الاعلان',
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      TybeMarket=0;
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: w/20,vertical: h/120),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.teal),
+                    child: Text('Hala Product',style: TextStyle(fontSize: w/20,color: Colors.white,fontWeight: FontWeight.bold),),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      TybeMarket=1;
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: w/20,vertical: h/120),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.pink),
+                    child: Text('Market Product',style: TextStyle(fontSize: w/20,color: Colors.white,fontWeight: FontWeight.bold),),
+                  ),
+                )
+              ],
+            ),
             ElevatedButton(onPressed: () {
               OpenStdyo();
             }, child: Text('ChangeImage'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
@@ -51,9 +103,10 @@ class _WelcomePageState extends State<WelcomePage> {
             imgPath1==null?Text('')
                 :
                 ElevatedButton(onPressed: () async {
-                 await Upload.UploadWelvomeImage(ImageName: imgName1!, ImagePath: imgPath1);
-                 showSnackBar(context: context, text: 'تم رفع الصورة بنجاح', colors: Colors.green);
-                }, child: Text('Upload'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),)
+                  TybeMarket==null? showSnackBar(context: context, text: 'الرجاء تحديد نوع المنتج',colors: Colors.red):null;
+                 await Upload.UploadWelvomeImage(ImageName: imgName1!, ImagePath: imgPath1,TybeMarket:TybeMarket!,NameProduct: NameProduct.text,TextAdd: TextAdd.text);
+                     showSnackBar(context: context, text: 'تم رفع المنتج بنجاح', colors: Colors.green);
+                }, child: Text('Upload'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(TybeMarket==null? Colors.black:Colors.green)),)
           ],
         ),
       ),

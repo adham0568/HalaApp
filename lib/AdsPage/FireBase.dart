@@ -63,20 +63,29 @@ class FireBaseUpLoad{
     showSnackBar(context: context, text: 'Image Deleted', colors:Colors.red);
   }
 
-  UploadWelvomeImage({required String ImageName,required ImagePath}) async {
+  UploadWelvomeImage({required String ImageName,required ImagePath,required String NameProduct,required int TybeMarket,required String TextAdd}) async {
 
     String? url;
     final storageRef = FirebaseStorage.instance.ref('Adds/$ImageName');
     await storageRef.putFile(ImagePath);
     url = await storageRef.getDownloadURL();
     final DocumentReference myDocumentRef = FirebaseFirestore.instance.collection('Pohto add').doc('WelcomePage');
-    myDocumentRef.update({
-      'Image1':url,
+    myDocumentRef.set({
+      'ImageUrl':url,
+      'PrudactName':NameProduct,
+      'TybePrudact':TybeMarket,
+      'TextAdd':TextAdd,
     });
     print('Done');
   }
 
-  AddImageToFireBase({required ImageName,required ImagePath,required String DocName,required int TybePrudact,required String PrudactName,required BuildContext context}) async {
+  AddImageToFireBase(
+      {required ImageName,
+      required ImagePath,
+      required String DocName,
+      required int TybePrudact,
+      required String PrudactName,
+      required BuildContext context}) async {
     String? url;
     final storageRef = FirebaseStorage.instance.ref('Adds/$ImageName');
     await storageRef.putFile(ImagePath);
@@ -94,4 +103,9 @@ class FireBaseUpLoad{
     });
     showSnackBar(context: context, text: 'تم ارسال الصورة بنجاح', colors: Colors.green);
   }
+
+
+
+
+
 }

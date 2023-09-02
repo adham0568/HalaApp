@@ -1,17 +1,17 @@
 import 'package:adminhala/Page/PrudactsPages/AddPrudactWithDeatels.dart';
+import 'package:adminhala/Page/PrudactsPages/Market/PrudactWithOpitionsMarket.dart';
 import 'package:flutter/material.dart';
 
-class Options extends StatefulWidget {
-  Map data_Collection;
+class OptionsMarket extends StatefulWidget {
   Map Data_From_Main_Collection;
 
-  Options({required this.data_Collection,required this.Data_From_Main_Collection});
+  OptionsMarket({required this.Data_From_Main_Collection});
 
   @override
-  State<Options> createState() => _OptionsState();
+  State<OptionsMarket> createState() => _OptionsMarketState();
 }
 
-class _OptionsState extends State<Options> {
+class _OptionsMarketState extends State<OptionsMarket> {
   List<Map<String, dynamic>> mainList = [];
   final TextEditingController nameController = TextEditingController();
   final TextEditingController optionNameController = TextEditingController();
@@ -273,8 +273,8 @@ class _OptionsState extends State<Options> {
           ),
           InkWell(
             onTap: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PrudactWithOpitions(
-                  data_Collection: widget.data_Collection, Data_From_Main_Collection: widget.Data_From_Main_Collection, Opitions: mainList),));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PrudactWithOpitionsMarket(
+                  Data_From_Main_Collection: widget.Data_From_Main_Collection, Opitions: mainList),));
             },
             child: Container(
               margin: EdgeInsets.only(left: 50,right: 50,bottom: 30),

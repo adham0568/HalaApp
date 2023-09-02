@@ -115,7 +115,6 @@ class _CollectionPageState extends State<CollectionPage> {
             ),//add collection
             Container(margin: EdgeInsets.only(top: 120,right: 10,left: 10),
               child: SizedBox(
-                height: 700,
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance.collection('Collection').where('UidAdmin',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -128,8 +127,12 @@ class _CollectionPageState extends State<CollectionPage> {
                     }
                     return SizedBox(
                       child: GridView(
+                        shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 1.7/3
+                        ),
                         children: snapshot.data!.docs.map((DocumentSnapshot document) {
                           Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                           return SizedBox(
@@ -140,22 +143,30 @@ class _CollectionPageState extends State<CollectionPage> {
                               },
                               child: Container(
                                 margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
-                                child: CachedNetworkImage(
-                                  imageUrl: data['ImageUrl'],
-                                  placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
-                                  imageBuilder: (context, imageProvider) => Container(
-                                    height: 105,
-                                    width: 140,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
+                                decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3),borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: data['ImageUrl'],
+                                      placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        height: 105,
+                                        width: 140,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(12),
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    Text(data['Name'],style: TextStyle(color: Colors.black,
+                                    fontWeight: FontWeight.bold,fontSize: 18
+                                    ),)
+                                  ],
                                 ),
                               ),
                             ),

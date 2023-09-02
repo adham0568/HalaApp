@@ -7,16 +7,16 @@ import 'package:path/path.dart' show basename, url;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-import '../../models/FireBaseStatemant.dart';
 
-class PrudactsDetals extends StatefulWidget {
-  Map DataFromeCollection;
+import '../../../models/FireBaseStatemant.dart';
+
+class PrudactsDetals_Market extends StatefulWidget {
   Map PrudactData;
   Map DataMainCollection;
-  PrudactsDetals({Key? key,required this.PrudactData,required this.DataMainCollection,required this.DataFromeCollection}) : super(key: key);
+  PrudactsDetals_Market({Key? key,required this.PrudactData,required this.DataMainCollection,}) : super(key: key);
 
   @override
-  State<PrudactsDetals> createState() => _PrudactsDetalsState();
+  State<PrudactsDetals_Market> createState() => _PrudactsDetals_MarketState();
 }
 
 FireBase EditData=FireBase();
@@ -31,7 +31,7 @@ File? imgPath;
 String? imgName;
 bool Imagedone=false;
 
-class _PrudactsDetalsState extends State<PrudactsDetals> {
+class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
   OpenStdyo1() async {
     final pickedImg = await ImagePicker().pickImage(
         source: ImageSource.gallery);
@@ -82,92 +82,89 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                   Text('لا يمكن تعديل هذا المنتج بامكانك ازالته واضافة منتج اخر'),
                   InkWell(onTap: () {
                     showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(
-                        height: 150,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('هل انت متأكد من ازالة هذا المنتج؟'),
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(onPressed: () {
-                              print(widget.PrudactData['IdPrudact']);
-                            }, child: Text('sssssssssss')),
-                            InkWell(
-                              borderRadius: BorderRadius.circular(15),
-                              splashColor: Colors.red,
-                                hoverColor: Colors.red,
-                                focusColor: Colors.red,
-                                onTap: () async {
-                                  CollectionReference users =  FirebaseFirestore.instance.collection('Prudacts');
-                                  users.doc('${widget.PrudactData['IdPrudact']}').delete();
-                                  showSnackBar(context: context, text: 'تم ازالة المنتج', colors: Colors.red);
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  child: Center(child: Text('نعم',style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-
-                                  ),)),
-                                width:70,height: 30,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    gradient: LinearGradient(begin: Alignment.topRight,end: Alignment.bottomLeft,
-                                    colors: [
-                                      Colors.teal.withOpacity(0.3),
-                                      Colors.tealAccent.withOpacity(0.2),
-                                    ]
-                                    )
-                                  ),
-                                )),
-                            InkWell(
-                                borderRadius: BorderRadius.circular(15),
-                                splashColor: Colors.red,
-                                hoverColor: Colors.red,
-                                focusColor: Colors.red,
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  child: Center(child: Text('لا',style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),)),
-                                  width:70,height: 30,
-                                  decoration: BoxDecoration(
+                        AlertDialog(content: Container(
+                          height: 150,
+                          child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text('هل انت متأكد من ازالة هذا المنتج؟'),
+                              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InkWell(
                                       borderRadius: BorderRadius.circular(15),
-                                      gradient: LinearGradient(begin: Alignment.topRight,end: Alignment.bottomLeft,
-                                          colors: [
-                                            Colors.green.withOpacity(0.3),
-                                            Colors.tealAccent.withOpacity(0.2),
-                                          ]
-                                      )
-                                  ),
-                                )),
-                          ],
-                          )
-                        ],
-                        ),
-                      )),);
+                                      splashColor: Colors.red,
+                                      hoverColor: Colors.red,
+                                      focusColor: Colors.red,
+                                      onTap: () async {
+                                        CollectionReference users =  FirebaseFirestore.instance.collection('Prudacts');
+                                        users.doc('${widget.PrudactData['IdPrudact']}').delete();
+                                        showSnackBar(context: context, text: 'تم ازالة المنتج', colors: Colors.red);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        child: Center(child: Text('نعم',style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+
+                                        ),)),
+                                        width:70,height: 30,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            gradient: LinearGradient(begin: Alignment.topRight,end: Alignment.bottomLeft,
+                                                colors: [
+                                                  Colors.teal.withOpacity(0.3),
+                                                  Colors.tealAccent.withOpacity(0.2),
+                                                ]
+                                            )
+                                        ),
+                                      )),
+                                  InkWell(
+                                      borderRadius: BorderRadius.circular(15),
+                                      splashColor: Colors.red,
+                                      hoverColor: Colors.red,
+                                      focusColor: Colors.red,
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        child: Center(child: Text('لا',style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),)),
+                                        width:70,height: 30,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            gradient: LinearGradient(begin: Alignment.topRight,end: Alignment.bottomLeft,
+                                                colors: [
+                                                  Colors.green.withOpacity(0.3),
+                                                  Colors.tealAccent.withOpacity(0.2),
+                                                ]
+                                            )
+                                        ),
+                                      )),
+                                ],
+                              )
+                            ],
+                          ),
+                        )),);
                   },child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors:[
-                          Colors.red.withOpacity(0.2),
-                          Colors.pinkAccent.withOpacity(0.2),
-                        ]
-                      )
-                    ),
-                    child: Icon(Icons.delete,color: Colors.red,),
-                    height: 50,width: 50))
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),
+                          gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors:[
+                                Colors.red.withOpacity(0.2),
+                                Colors.pinkAccent.withOpacity(0.2),
+                              ]
+                          )
+                      ),
+                      child: Icon(Icons.delete,color: Colors.red,),
+                      height: 50,width: 50))
                 ],
               ):
               InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(height: 650,
+                      AlertDialog(content: Container(height: 550,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -198,6 +195,7 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                               ),
                             ),
                             TextFormField(
+                              keyboardType: TextInputType.number,
                               controller: Count_Quantity,
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -212,26 +210,26 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                   hintText: 'Prudact New Discrebtion'
                               ),
                             ),//discreption
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 ElevatedButton(onPressed: (){
-                                  EditData.UpdatePrudactsHala(
-                                    Count_Quantity:int.parse(Count_Quantity.text) ,
+                                  EditData.UpdatePrudactsMarket(
+                                    Count_requests:widget.PrudactData['IdPrudact'] ,
+                                    Count_Quantity: int.parse(Count_Quantity.text),
                                     Opitions: [],
                                     TybePrudact: 0,
-                                      Discount:double.parse(PrudactDiscount.text),
-                                      IdMainCollection:widget.DataMainCollection['IdPrudactMainCollection'],
-                                      Name: NewNamePrudact.text,
-                                      IdPrudacts: widget.PrudactData['IdPrudact'],
-                                      DetalsPrudact: detalsPrudact.text,
-                                      imgPath: imgPath!,
-                                      imgName: imgName!,
-                                      IdCollection: widget.PrudactData['IdCollection'],
-                                      Data: widget.DataFromeCollection,
-                                      Prise:double.parse(Prise.text),
-                                      DataMainCollection: widget.DataMainCollection,
-                                      IdMarket:FirebaseAuth.instance.currentUser!.uid,
+                                    Discount:double.parse(PrudactDiscount.text),
+                                    IdMainCollection:widget.DataMainCollection['IdPrudactMainCollection'],
+                                    Name: NewNamePrudact.text,
+                                    IdPrudacts: widget.PrudactData['IdPrudact'],
+                                    DetalsPrudact: detalsPrudact.text,
+                                    imgPath: imgPath!,
+                                    imgName: imgName!,
+                                    Prise:double.parse(Prise.text),
+                                    DataMainCollection: widget.DataMainCollection,
+                                    IdMarket:FirebaseAuth.instance.currentUser!.uid,
                                   );
                                   Navigator.pop(context);
                                 }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
@@ -251,9 +249,8 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             ElevatedButton(onPressed: () async {
-                                              CollectionReference users =  FirebaseFirestore.instance.collection('Collection');
-                                              await users.doc(widget.DataFromeCollection['IdCollection']).collection('mainCollection').doc(widget.DataMainCollection['IdPrudactMainCollection'])
-                                                  .collection('Prudact').doc(widget.PrudactData['IdPrudact'])
+                                              CollectionReference users =  FirebaseFirestore.instance.collection('Prudacts');
+                                              await users.doc('${widget.PrudactData['IdPrudact']}')
                                                   .delete();
                                               Navigator.pop(context);
                                             }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),

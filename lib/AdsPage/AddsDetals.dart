@@ -185,11 +185,22 @@ class _DetalState extends State<Detal> {
                 ),
               ) ,)
           ),
-          ElevatedButton(onPressed: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewImage(DocumantName: widget.NameDocumant),));
-          }, child: Text('إضافة صورة جديدة',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.orange)
-          ),),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                        AddNewImage(DocumantName: widget.NameDocumant),
+                  ));
+            },
+            child: Text(
+              'إضافة صورة جديدة',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.white),
+            ),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.orange)),
+          ),
           imgPath1==null?Container(height: 1,width: 1,):InkWell(
             onTap: () async {
              await UploadImage.addNewImage(ImageName: imgName1!, ImagePath: imgPath1,DocName: widget.NameDocumant);
