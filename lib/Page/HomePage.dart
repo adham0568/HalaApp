@@ -6,10 +6,12 @@ import 'package:adminhala/Page/DiscountPage.dart';
 import 'package:adminhala/Page/PrudactsPages/Market/mainCollectionMarket.dart';
 import 'package:adminhala/Page/Sales/sales.dart';
 import 'package:adminhala/SupportPage/SupportOrdar.dart';
+import 'package:adminhala/models/FireBaseStatemant.dart';
 import 'package:adminhala/models/_H_W.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../AdsPage/Market/AddForAllMarket.dart';
 import 'AuthPages/AuthFireBase.dart';
 import 'Ordar/Ordars.dart';
 
@@ -145,6 +147,64 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Ordar(),));
+                    },
+                    splashColor: Colors.teal,
+                    borderRadius:BorderRadius.only(
+                      topLeft: Radius.circular(w/6),
+                      bottomLeft: Radius.circular(w/10),
+                      bottomRight: Radius.circular(w/6),
+                      topRight: Radius.circular(w/10),
+                    ) ,
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      width: 369,
+                      margin: EdgeInsets.only(left: 33,right: 33),
+                      height: h/7,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(w/6),
+                            bottomLeft: Radius.circular(w/10),
+                            bottomRight: Radius.circular(w/6),
+                            topRight: Radius.circular(w/10),
+                          ),
+                          //78/246/123
+                          //80/181/248
+                          color: Colors.red
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: w/10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('الطلبات',style: TextStyle(color: Colors.white,fontSize: w/13,fontWeight: FontWeight.bold),),
+                            Container(height: 50,width: 50,decoration: BoxDecoration(shape: BoxShape.circle,
+                              color: Colors.white70,),
+                                child: Center(
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance.collection('Ordar').where('UidMarket',isEqualTo: FirebaseAuth.instance.currentUser!.uid).where('OrdarStates',isLessThanOrEqualTo: 2).snapshots(),
+                                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot>snapshot) {if (snapshot.hasError) {
+                                      return Text('0');
+                                    }
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return Center(child: CircularProgressIndicator(),);
+                                    }
+                                    numOfDocs= snapshot.data!.docs.length;
+                                    return numOfDocs==null?
+                                    CircularProgressIndicator()
+                                        :
+                                    Text(numOfDocs.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),);
+                                    },
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => SupportChat(),));
                     },
                     splashColor: Colors.teal,
@@ -197,6 +257,39 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       )
+
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddMarket(),));
+                    },
+                    splashColor: Colors.teal,
+                    borderRadius:BorderRadius.only(
+                      topLeft: Radius.circular(w/6),
+                      bottomLeft: Radius.circular(w/10),
+                      bottomRight: Radius.circular(w/6),
+                      topRight: Radius.circular(w/10),
+                    ) ,
+                    child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.only(left: 33,right: 33),
+                      height: h/7,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(w/6),
+                            bottomLeft: Radius.circular(w/10),
+                            bottomRight: Radius.circular(w/6),
+                            topRight: Radius.circular(w/10),
+                          ),
+                          //78/246/123
+                          //80/181/248
+                          gradient: LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
+                            Color.fromRGBO(78, 246, 123, 10),
+                            Color.fromRGBO(80, 181, 248, 10)
+                          ])
+                      ),
+                      child: Center(child: Text('الاعلانات',style: TextStyle(color: Colors.white,fontSize: w/13,fontWeight: FontWeight.bold),)),
 
                     ),
                   ),
@@ -302,63 +395,6 @@ class _HomePageState extends State<HomePage> {
                   )
                       :
                   Container(width:1,height: 1,),
-                  InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Ordar(),));
-                    },
-                    splashColor: Colors.teal,
-                    borderRadius:BorderRadius.only(
-                      topLeft: Radius.circular(w/6),
-                      bottomLeft: Radius.circular(w/10),
-                      bottomRight: Radius.circular(w/6),
-                      topRight: Radius.circular(w/10),
-                    ) ,
-                    child: Container(
-                      padding: EdgeInsets.all(7),
-                      width: 369,
-                      margin: EdgeInsets.only(left: 33,right: 33),
-                      height: h/7,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(w/6),
-                            bottomLeft: Radius.circular(w/10),
-                            bottomRight: Radius.circular(w/6),
-                            topRight: Radius.circular(w/10),
-                          ),
-                          //78/246/123
-                          //80/181/248
-                          color: Colors.red
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: w/10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('الطلبات',style: TextStyle(color: Colors.white,fontSize: w/13,fontWeight: FontWeight.bold),),
-                            Container(height: 50,width: 50,decoration: BoxDecoration(shape: BoxShape.circle,
-                              color: Colors.white70,),
-                            child: Center(
-                                  child: StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance.collection('Ordar').where('UidMarket',isEqualTo: FirebaseAuth.instance.currentUser!.uid).where('OrdarStates',isLessThanOrEqualTo: 2).snapshots(),
-                                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot>snapshot) {if (snapshot.hasError) {
-                                        return Text('0');
-                                      }
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                        return Center(child: CircularProgressIndicator(),);
-                                      }
-                                      numOfDocs= snapshot.data!.docs.length;
-                                      return numOfDocs==null?
-                                      CircularProgressIndicator()
-                                          :
-                                      Text(numOfDocs.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),);
-                                    },
-                                  ),
-                                ))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
                   SizedBox(height: 50,)
                 ],
               ),

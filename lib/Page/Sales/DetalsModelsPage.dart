@@ -135,32 +135,34 @@ class _salesDetalesState extends State<salesDetales> {
                          onTap: () {
                            showBottomSheet(context: context, builder: (context) =>
                                Container(
-                                 height: h*0.8,
+                                 height: h*0.9,
                                  color: Colors.black54,
-                                 child: Column(
-                                   children: [
-                                     //NameUser
-                                     Text('الاسم'+' : ${snapshot.data.docs[index]['NameUser']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
-                                     Text('رقم الطلب'+' : ${snapshot.data.docs[index]['orderID']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
-                                     ListView.builder(
-                                       physics: NeverScrollableScrollPhysics(),
-                                       shrinkWrap: true,
-                                       itemCount:snapshot.data.docs[index]['items'].length,
-                                       itemBuilder: (context, index1) =>
-                                           Container(
-                                             child: Container(
-                                               padding: EdgeInsets.symmetric(vertical: h/100),
-                                                 decoration: BoxDecoration(
-                                                     borderRadius: BorderRadius.circular(15),
-                                                     border: Border.all(color: Colors.white,width: 2)
-                                                 ),
-                                                 margin: EdgeInsets.only(top: h/50,left: w/30,right: w/30),
-                                                 child:Center(child: Text(snapshot.data.docs[index]['items'][index1]['Name'],style: TextStyle(fontSize: w/30,color: Colors.white,fontWeight: FontWeight.bold),))
-                                             ),
-                                           )
-                                       ,),
-                                     Text('السعر الاجمالي'+' : ${snapshot.data.docs[index]['totalPrice'].toString().replaceAll(' ₪', '')}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
-                                   ],
+                                 child: SingleChildScrollView(
+                                   child: Column(
+                                     children: [
+                                       //NameUser
+                                       Text('الاسم'+' : ${snapshot.data.docs[index]['NameUser']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                       Text('رقم الطلب'+' : ${snapshot.data.docs[index]['orderID']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                       ListView.builder(
+                                         physics: NeverScrollableScrollPhysics(),
+                                         shrinkWrap: true,
+                                         itemCount:snapshot.data.docs[index]['items'].length,
+                                         itemBuilder: (context, index1) =>
+                                             Container(
+                                               child: Container(
+                                                 padding: EdgeInsets.symmetric(vertical: h/100),
+                                                   decoration: BoxDecoration(
+                                                       borderRadius: BorderRadius.circular(15),
+                                                       border: Border.all(color: Colors.white,width: 2)
+                                                   ),
+                                                   margin: EdgeInsets.only(top: h/50,left: w/30,right: w/30),
+                                                   child:Center(child: Text(snapshot.data.docs[index]['items'][index1]['Name'],style: TextStyle(fontSize: w/30,color: Colors.white,fontWeight: FontWeight.bold),))
+                                               ),
+                                             )
+                                         ,),
+                                       Text('السعر الاجمالي'+' : ${snapshot.data.docs[index]['totalPrice'].toString().replaceAll(' ₪', '')}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                     ],
+                                   ),
                                  ),
                                ),);
                          },

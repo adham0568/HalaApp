@@ -110,10 +110,7 @@ class _Main_CollectionState extends State<Main_Collection> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       ElevatedButton(onPressed: (){
-
-                                        CollectionReference users =  FirebaseFirestore.instance.collection('Collection');
-                                        users.doc(widget.DataFromeCollectionPage['IdCollection']).delete();
-
+                                        FireBase().removeCollectionHala(IdCollection:widget.DataFromeCollectionPage['IdCollection']);
                                         Navigator.pop(context);
                                       }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
                                       ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
@@ -168,7 +165,7 @@ class _Main_CollectionState extends State<Main_Collection> {
                             ElevatedButton(onPressed: () async {
                               String RandomIdCollection=Uuid().v1();
                               await addMainCollection.uploadMain_Collection(
-                                imgPath: imgPath!,
+                                  imgPath: imgPath!,
                                   imgName: imgName!,
                                   IdCollection: widget.DataFromeCollectionPage['IdCollection'],
                                   Name: NameMainCollection.text,
@@ -198,8 +195,7 @@ class _Main_CollectionState extends State<Main_Collection> {
             StreamBuilder<QuerySnapshot>(
 
               stream: FirebaseFirestore.instance
-                  .collection('mainCollection')
-                  .where('IdCollection', isEqualTo:widget.DataFromeCollectionPage['IdCollection'])
+                  .collection('Collection').doc('${widget.DataFromeCollectionPage['IdCollection']}').collection('mainCollection')
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -252,8 +248,8 @@ class _Main_CollectionState extends State<Main_Collection> {
                                 ),
                                 SizedBox(height: 10,),
                                 Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(data['Name'],style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold),)),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(data['Name'],style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold),)),
                               ],
                             ),
                           ),

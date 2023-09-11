@@ -122,10 +122,13 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                     children: [
                                       ElevatedButton(onPressed: (){
 
-                                        CollectionReference users =  FirebaseFirestore.instance.collection('mainCollection');
-                                        users.doc(widget.Data_From_Main_Collection['IdPrudactMainCollection']).delete();
+                                        CollectionReference users =  FirebaseFirestore.instance.collection('Collection');
+                                        users.doc(widget.Data_From_Main_Collection['IdCollection']).collection('mainCollection').doc(widget.Data_From_Main_Collection['IdPrudactMainCollection']).delete();
 
-                                        Navigator.pop(context);
+                                              FireBase().removeMainCollectionHala(
+                                                  IdPrudactMainCollection: widget.Data_From_Main_Collection['IdPrudactMainCollection'],
+                                                  IdCollection: widget.Data_From_Main_Collection['IdCollection']);
+                                              Navigator.pop(context);
                                       }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
                                       ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
                                     ],
@@ -220,6 +223,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                                 ),
                                               ),
                                               TextFormField(
+                                                maxLength: 4,
                                                 keyboardType: TextInputType.number,
                                                 controller: Count_Quantity,
                                                 decoration: InputDecoration(
@@ -252,6 +256,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                                   Data: widget.data_Collection,
                                                   DataMainCollection:widget.Data_From_Main_Collection,
                                                   IdMarket:FirebaseAuth.instance.currentUser!.uid,
+                                                  Count_requests: 0
                                                 );
                                                 Navigator.pop(context);
                                               }, child: Text('إضافة'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),)
@@ -286,22 +291,31 @@ class _PrudactCollectionState extends State<PrudactCollection> {
             Container(height: 150,),//Add Prudct Or Remove Collection
             SizedBox(
               height: 700,
-              child: FutureBuilder(
-                future: FirebaseFirestore.instance.collection('Prudacts')
-                    .where('IdMainCollection',isEqualTo:widget.Data_From_Main_Collection['IdPrudactMainCollection']).get(),
+                /*FirebaseFirestore.instance.collection('Collection').doc(widget.Data_From_Main_Collection['IdCollection']).collection('mainCollection')
+                    .where('IdPrudactMainCollection',isEqualTo: '${widget.Data_From_Main_Collection['IdPrudactMainCollection']}').get(),*/
+              child: FutureBuilder<DocumentSnapshot>(
+                future:  FirebaseFirestore.instance.collection('Collection').doc('${widget.Data_From_Main_Collection['IdCollection']}').collection('mainCollection')
+                    .doc('${widget.Data_From_Main_Collection['IdPrudactMainCollection']}')
+                    .get(),
                 builder:
-                    (BuildContext context, AsyncSnapshot snapshot) {
+                    (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                   if (snapshot.hasError) {
                     return Text("Something went wrong");
                   }
+
+                  if (snapshot.hasData && !snapshot.data!.exists) {
+                    return Text("Document does not exist");
+                  }
+
                   if (snapshot.connectionState == ConnectionState.done) {
+                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                     return Column(
                       children: [
                         SizedBox(
                           child: GridView.builder(
                             shrinkWrap: true,
-                            itemCount:snapshot.data!.docs.length,
+                            itemCount:data['Produacts']==null?0:data['Produacts'].length,
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 childAspectRatio: 15/20,
                                 crossAxisCount: 3),
@@ -309,18 +323,15 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                               height: 100,
                               child: InkWell(
                                 onTap: (){
-                                  PrudactData _convertData=PrudactData.convertSnap2Model(snapshot.data!.docs[index]);
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PrudactsDetals(
-                                                PrudactData:
-                                                _convertData.Convert2Map(),
-                                                DataMainCollection: widget
-                                                    .Data_From_Main_Collection,
-                                                DataFromeCollection:
-                                                    widget.data_Collection,
-                                              )));
+                                      MaterialPageRoute(builder: (context) => PrudactsDetals(
+                                        PrudactList:data['Produacts'],
+                                        PrudactData: data['Produacts'][index],
+                                        Index: index,
+                                        DataMainCollection: widget.Data_From_Main_Collection,
+                                        DataFromeCollection: widget.data_Collection,
+                                          )));
                                 },
                                 child: Container(
                                   margin: EdgeInsets.all(10),
@@ -329,7 +340,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       CachedNetworkImage(
-                                        imageUrl: snapshot.data!.docs[index]['ImageUrl'],
+                                        imageUrl: data['Produacts'][index]['ImageUrl'],
                                         placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
                                         errorWidget: (context, url, error) => Icon(Icons.error),
                                         imageBuilder: (context, imageProvider) => Container(
@@ -343,13 +354,14 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                           ),
                                         ),
                                       ),
-                                      Text(snapshot.data!.docs[index]['Name'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/25),)
+                                      Text(data['Produacts'][index]['Name'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/25),)
                                     ],
                                   ),
                                 ),
                               ),
                             ),
                           ),
+
                         )
                       ],
                     );
@@ -357,7 +369,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
 
                   return Text("loading");
                 },
-              ),
+              )
             ),//Prudacts
           ],
         ),
@@ -365,3 +377,6 @@ class _PrudactCollectionState extends State<PrudactCollection> {
     );
   }
 }
+
+
+/**/

@@ -29,8 +29,18 @@ final NameMainCollection= TextEditingController();
 
 
 class _Main_Collection_MarketState extends State<Main_Collection_Market> {
+  List productMarket=[];
+ Future<void> getProductData() async{
+   FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get().then((DocumentSnapshot snapshot){
+     if(snapshot.exists){
+       Map<String,dynamic> adminData=snapshot.data() as Map<String,dynamic>;
+       productMarket=adminData['Produacts'];
+       print(productMarket);
+     }
+     else{print('snapshot dose not exists');}
+   }).catchError((Error){print(Error);});
+ }
   FireBase addMainCollection=FireBase();
-
   OpenStdyo1() async {
     final pickedImg = await ImagePicker().pickImage(
         source: ImageSource.gallery);
@@ -54,7 +64,11 @@ class _Main_Collection_MarketState extends State<Main_Collection_Market> {
       print(e);
     }
   }
-
+  @override
+  void initState() {
+    getProductData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -151,7 +165,7 @@ class _Main_Collection_MarketState extends State<Main_Collection_Market> {
                         height: 100,
                         child: InkWell(
                           onTap: (){
-                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PrudactCollection_Market(Data_From_Main_Collection: data,)));
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PrudactCollection_Market(Data_From_Main_Collection: data,productMarket: productMarket,)));
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 10,right: 10),

@@ -9,29 +9,32 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../models/FireBaseStatemant.dart';
+import 'PrudactCollectionMarket.dart';
 
 class PrudactsDetals_Market extends StatefulWidget {
-  Map PrudactData;
-  Map DataMainCollection;
-  PrudactsDetals_Market({Key? key,required this.PrudactData,required this.DataMainCollection,}) : super(key: key);
+  Map Prudact;
+  int Index;
+  List PrudactList;
+  PrudactsDetals_Market({Key? key,required this.Prudact,required this.Index,required this.PrudactList}) : super(key: key);
 
   @override
   State<PrudactsDetals_Market> createState() => _PrudactsDetals_MarketState();
 }
 
-FireBase EditData=FireBase();
-final NewNamePrudact=TextEditingController();
-final Prise=TextEditingController();
-final PrudactDiscount=TextEditingController();
-final detalsPrudact=TextEditingController();
-final PrudactName=TextEditingController();
-final PrudactPrise=TextEditingController();
-final Count_Quantity=TextEditingController();
-File? imgPath;
-String? imgName;
-bool Imagedone=false;
 
 class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
+  FireBase EditData=FireBase();
+
+  final NewNamePrudact=TextEditingController();
+  final Prise=TextEditingController();
+  final PrudactDiscount=TextEditingController();
+  final detalsPrudact=TextEditingController();
+  final Count_Quantity=TextEditingController();
+
+  File? imgPath;
+  String? imgName;
+  bool Imagedone=false;
+
   OpenStdyo1() async {
     final pickedImg = await ImagePicker().pickImage(
         source: ImageSource.gallery);
@@ -56,7 +59,19 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
     }
   }
   @override
+  void initState() {
+    NewNamePrudact.text=widget.Prudact['Name'];
+    Prise.text=widget.Prudact['Prise'].toString();
+    PrudactDiscount.text=widget.Prudact['Discount'].toString();
+    detalsPrudact.text=widget.Prudact['PrudactsDetals'];
+    Count_Quantity.text=widget.Prudact['Count_Quantity'].toString();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+    setState(() {});
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
@@ -77,7 +92,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
           children: [
             Transform.translate(
               offset: Offset(0,50),
-              child:widget.PrudactData['Opitions'].length >=1 ? Column(
+              child:widget.Prudact['Opitions'].length >=1 ? Column(
                 children: [
                   Text('لا يمكن تعديل هذا المنتج بامكانك ازالته واضافة منتج اخر'),
                   InkWell(onTap: () {
@@ -95,8 +110,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                                       hoverColor: Colors.red,
                                       focusColor: Colors.red,
                                       onTap: () async {
-                                        CollectionReference users =  FirebaseFirestore.instance.collection('Prudacts');
-                                        users.doc('${widget.PrudactData['IdPrudact']}').delete();
+                                        FireBase().DeleteProduct(IdMainCollection:widget.Prudact['IdMainCollection'] ,Index: widget.Index,IdProduct: widget.Prudact['IdPrudact']);
                                         showSnackBar(context: context, text: 'تم ازالة المنتج', colors: Colors.red);
                                         Navigator.pop(context);
                                       },
@@ -164,7 +178,8 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
               InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(height: 550,
+                      AlertDialog(content: Container(
+                        height: h*0.9,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -211,30 +226,34 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                               ),
                             ),//discreption
 
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(onPressed: (){
-                                  EditData.UpdatePrudactsMarket(
-                                    Count_requests:widget.PrudactData['IdPrudact'] ,
-                                    Count_Quantity: int.parse(Count_Quantity.text),
-                                    Opitions: [],
-                                    TybePrudact: 0,
-                                    Discount:double.parse(PrudactDiscount.text),
-                                    IdMainCollection:widget.DataMainCollection['IdPrudactMainCollection'],
-                                    Name: NewNamePrudact.text,
-                                    IdPrudacts: widget.PrudactData['IdPrudact'],
-                                    DetalsPrudact: detalsPrudact.text,
-                                    imgPath: imgPath!,
-                                    imgName: imgName!,
-                                    Prise:double.parse(Prise.text),
-                                    DataMainCollection: widget.DataMainCollection,
-                                    IdMarket:FirebaseAuth.instance.currentUser!.uid,
-                                  );
-                                  Navigator.pop(context);
-                                }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
-                                ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
-                              ],
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: w/10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(onPressed: (){
+                                    FireBase().UpdatePrudactsMarket(
+                                      Index: widget.Index,
+                                      IdMainCollection: widget.Prudact['IdMainCollection'],
+                                      IdMarket: widget.Prudact['IdMarket'],
+                                      Discount: double.parse(PrudactDiscount.text),
+                                      Prise: double.parse(Prise.text),
+                                      Name:NewNamePrudact.text,
+                                      DetalsPrudact:detalsPrudact.text,
+                                      Count_Quantity: int.parse(Count_Quantity.text),
+                                      Count_requests: widget.Prudact['Count_requests'],
+                                      Opitions: widget.Prudact['Opitions'],
+                                      TybePrudact:widget.Prudact['TybePrudact'],
+                                      IdPrudacts: widget.Prudact['IdPrudact'],
+                                      imgName: imgName!,
+                                      imgPath: imgPath!,
+                                    );
+                                    Navigator.pop(context);
+                                    },
+                                    child: Text('تعديل'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
+                                  ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('الغاء'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
+                                ],
+                              ),
                             ),
                             ElevatedButton(onPressed: (){Navigator.pop(context);
                             showDialog(context: context, builder: (context) =>
@@ -249,9 +268,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             ElevatedButton(onPressed: () async {
-                                              CollectionReference users =  FirebaseFirestore.instance.collection('Prudacts');
-                                              await users.doc('${widget.PrudactData['IdPrudact']}')
-                                                  .delete();
+                                              FireBase().DeleteProduct(IdMainCollection:widget.Prudact['IdMainCollection'] ,Index: widget.Index,IdProduct: widget.Prudact['IdPrudact']);
                                               Navigator.pop(context);
                                             }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
                                             ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
@@ -288,7 +305,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                     margin: EdgeInsets.all(10),
                     decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
                     child: CachedNetworkImage(
-                      imageUrl:widget.PrudactData['ImageUrl'],
+                      imageUrl:widget.Prudact['ImageUrl'],
                       placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                       imageBuilder: (context, imageProvider) => Container(
@@ -304,9 +321,9 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                     ),
                   ),
                 ),
-                Text(widget.PrudactData['Name'],style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
-                Text(widget.PrudactData['Prise'].toString()),
-                Text(widget.PrudactData['PrudactsDetals'])
+                Text(widget.Prudact['Name'],style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                Text(widget.Prudact['Prise'].toString()),
+                Text(widget.Prudact['PrudactsDetals'])
               ],
             )
           ],

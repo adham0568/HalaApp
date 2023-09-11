@@ -15,6 +15,84 @@ import 'package:path/path.dart' show basename, url;
 
 class FireBase {
 
+  removeCollectionHala({required String IdCollection}) async {
+    List Product=[];
+    CollectionReference users =  FirebaseFirestore.instance.collection('Collection');
+    users.doc(IdCollection).delete();
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData')
+        .doc(FirebaseAuth.instance.currentUser!.uid).get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data()!;
+      Product=data['Produacts'];
+    } else {
+      print("المستند غير موجود.");
+    }
+
+    for(int i=Product.length-1;i>=0;i--){
+      if(Product[i]['IdCollection']==IdCollection){Product.removeAt(i);}
+    }
+
+    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    update({'Produacts':Product});
+
+  }
+
+
+
+
+  removeMainCollectionHala({required String IdPrudactMainCollection,required String IdCollection}) async {
+    List Product=[];
+
+
+    CollectionReference users =  FirebaseFirestore.instance.collection('Collection');
+    users.doc(IdCollection).collection('mainCollection')
+        .doc(IdPrudactMainCollection).delete();
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData')
+        .doc(FirebaseAuth.instance.currentUser!.uid).get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data()!;
+      Product=data['Produacts'];
+    } else {
+      print("المستند غير موجود.");
+    }
+
+    for(int i=Product.length-1;i>=0;i--){
+      if(Product[i]['IdMainCollection']==IdPrudactMainCollection){Product.removeAt(i);}
+    }
+
+    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    update({'Produacts':Product});
+
+  }
+
+
+
+  removeMainCollection({required String idMainCollection}) async {
+    List Product=[];
+    CollectionReference users =  FirebaseFirestore.instance.collection('mainCollection');
+    users.doc(idMainCollection).delete();
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData')
+        .doc(FirebaseAuth.instance.currentUser!.uid).get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data()!;
+      Product=data['Produacts'];
+    } else {
+      print("المستند غير موجود.");
+    }
+
+    for(int i=Product.length-1;i>=0;i--){
+      if(Product[i]['IdMainCollection']==idMainCollection){Product.removeAt(i);}
+    }
+
+    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    update({'Produacts':Product});
+
+  }
+
+
+
 
   UploadCollection({required String Name,required String IdCollection,required File imgPath,required String imgName,required String UidMarket})
   async {
@@ -49,14 +127,29 @@ class FireBase {
       required int TybePrudact,
       required List Opitions,
       required int Count_Quantity,
+      required int Count_requests,
   })
 
   async {
+    List Product=[];
+    List Prodact1=[];
+
     String? url;
     final storageRef =
     FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
     await storageRef.putFile(imgPath);
     url = await storageRef.getDownloadURL();
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').
+    collection('mainCollection').doc('${IdMainCollection}').get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data()!;
+      Product=data['Produacts'];
+
+    } else {
+      print("المستند غير موجود.");
+    }
+
 
     try{
       PrudactData DataPrudact = PrudactData(
@@ -72,12 +165,119 @@ class FireBase {
           IdCollection: IdCollection,
           IdMainCollection: IdMainCollection,
           Count_Quantity:Count_Quantity ,
-          Count_requests: 0,
+          Count_requests: Count_requests,
       );
 
-      FirebaseFirestore.instance.collection('Prudacts').
-      doc(IdPrudacts.toString()).set(DataPrudact.Convert2Map()).
+
+
+
+
+      Product.add(DataPrudact.Convert2Map());
+      FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').collection('mainCollection').doc('${IdMainCollection}').
+      update({'Produacts':Product}).
       then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+
+
+        DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+        if (snapshot1.exists) {
+          Map<String, dynamic> data = snapshot1.data()!;
+          data['Produacts']==null?Prodact1=[]:Prodact1=data['Produacts'];
+
+        } else {
+          print("المستند غير موجود.");
+        }
+          Prodact1.add(DataPrudact.Convert2Map());
+        FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+      update({'Produacts':Prodact1});
+
+
+
+
+      int? TotalOffer;
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
+      print(TotalOffer.toString()+'5555555555');
+      TotalOffer=snapshot.data()!['Offar'];
+
+      CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
+      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
+      AdminData
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(UpdateOffer)
+          .then((value) => print("Offer Uodated"))
+          .catchError((error) => print("Failed to add order: $error"));
+      print('Offer');
+
+    } catch(e){print(e);}
+  }
+  UpdatePrudactsHala({
+    required String Name,
+    required int IdPrudacts,
+    required String DetalsPrudact,
+    required File imgPath,
+    required String imgName,
+    required Map Data,
+    required double Prise,
+    required double Discount,
+    required String IdCollection,
+    required Map DataMainCollection,
+    required String IdMainCollection,
+    required String IdMarket,
+    required int TybePrudact,
+    required List Opitions,
+    required int Count_Quantity,
+    required int Count_requests,
+    required List PrudactList,
+    required int Index,
+  })
+
+  async {
+    List Prodact1=[];
+    List Product=PrudactList;
+    String? url;
+    final storageRef =
+    FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
+    await storageRef.putFile(imgPath);
+    url = await storageRef.getDownloadURL();
+
+    try{
+      PrudactData DataPrudact = PrudactData(
+          Count_Quantity: Count_Quantity,
+          Count_requests: Count_requests,
+          Opitions: Opitions,
+          TybePrudact: TybePrudact,
+          IdCollection:IdCollection ,
+          IdMarket: IdMarket,
+          Discount: Discount,
+          ImageUrl: url,
+          IdPrudact: IdPrudacts,
+          Name: Name,
+          PrudactsDetals: DetalsPrudact,
+          Prise: Prise,
+          IdMainCollection: IdMainCollection
+      );
+      Product[Index]=DataPrudact.Convert2Map();
+      FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').collection('mainCollection').doc('${IdMainCollection}').
+      update({'Produacts':Product}).
+      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+
+      DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+      if (snapshot1.exists) {
+        Map<String, dynamic> data = snapshot1.data()!;
+        data['Produacts']==null?Prodact1=[]:Prodact1=data['Produacts'];
+
+      } else {
+        print("المستند غير موجود.");
+      }
+
+      for(int i=0;i<Prodact1.length;i++){
+        if(Prodact1[i]['IdPrudact']==IdPrudacts){Prodact1[i]=DataPrudact.Convert2Map();break;}
+      }
+
+      FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+      update({'Produacts':Prodact1});
+
+
+
 
       int? TotalOffer;
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
@@ -96,6 +296,39 @@ class FireBase {
     } catch(e){print(e);}
   }
 
+  DeleteProductHala({required String IdMainCollection,required int Index,required String CollectionId,required List Prudact,required int IdProduct}) async {
+    List Prodact1=[];
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.
+    collection('mainCollection').doc(IdMainCollection).get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data()!;
+      Prudact=data['Produacts'];
+    } else {
+      print("المستند غير موجود.");
+    }
+    Prudact.removeAt(Index);
+
+    FirebaseFirestore.instance.collection('Collection').doc('${CollectionId}').collection('mainCollection').doc('${IdMainCollection}').
+    update({'Produacts':Prudact}).then((value) => print("Product Deleted")).catchError((error) => print("Failed to add user: $error"));
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot2 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+    if (snapshot2.exists) {
+      Map<String, dynamic> data = snapshot2.data()!;
+      data['Produacts']==null?Prodact1=[]:Prodact1=data['Produacts'];
+      print('المستنذ موجود');
+    } else {
+      print("المستند غير موجود.");
+    }
+    for(int i=0;i<Prodact1.length;i++){
+      if(Prodact1[i]['IdPrudact']==IdProduct){Prodact1.removeAt(i);
+      break;}
+    }
+
+    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    update({'Produacts':Prodact1});
+
+
+  }
 
   UploadPrudactsMarket({required String Name,
     required int IdPrudacts,
@@ -110,9 +343,79 @@ class FireBase {
     required int TybePrudact,
     required List Opitions,
     required int Count_Quantity,
+    required List productData,
+  })
+async{
+  List Product=[];
+  String? url;
+  final storageRef =
+  FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
+  await storageRef.putFile(imgPath);
+  url = await storageRef.getDownloadURL();
+
+
+  PrudactDataMarket DataPrudact = PrudactDataMarket(
+      Count_Quantity:Count_Quantity ,
+      Count_requests: 0,
+      Opitions: Opitions,
+      TybePrudact: TybePrudact,
+      IdMarket: IdMarket,
+      Discount: Discount,
+      ImageUrl: url,
+      IdPrudact: IdPrudacts,
+      Name: Name,
+      PrudactsDetals: DetalsPrudact,
+      Prise: Prise,
+      IdMainCollection: IdMainCollection);
+
+  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+  if (snapshot.exists) {
+    Map<String, dynamic> data = snapshot.data()!;
+    data['Produacts']==null?Product=[]:Product=data['Produacts'];
+
+  } else {
+    print("المستند غير موجود.");
+  }
+  Product.add(DataPrudact.Convert2Map());
+  FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+  update({'Produacts':Product});
+
+
+
+  double? TotalOffer;
+  DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
+  TotalOffer=snapshot1.data()!['Offar']*1.0;
+  print(TotalOffer.toString()+'5555555555');
+
+  CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
+  Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
+  AdminData
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .update(UpdateOffer)
+      .then((value) => print("Offer Uodated"))
+      .catchError((error) => print("Failed to add order: $error"));
+  print('Offer');
+}
+
+  UpdatePrudactsMarket({
+    required String Name,
+    required int IdPrudacts,
+    required String DetalsPrudact,
+    required File imgPath,
+    required String imgName,
+    required double Prise,
+    required double Discount,
+    required String IdMainCollection,
+    required String IdMarket,
+    required int TybePrudact,
+    required List Opitions,
+    required int Count_Quantity,
+    required int Count_requests,
+    required int Index,
   })
 
   async {
+    List Product=[];
     String? url;
     final storageRef =
     FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
@@ -121,30 +424,36 @@ class FireBase {
 
     try{
       PrudactDataMarket DataPrudact = PrudactDataMarket(
-          Count_Quantity:Count_Quantity ,
-          Count_requests: 0,
+          Count_Quantity: Count_Quantity,
+          Count_requests: Count_requests,
           Opitions: Opitions,
           TybePrudact: TybePrudact,
           IdMarket: IdMarket,
-          Discount: Discount,
+          Discount: Discount*1.0,
           ImageUrl: url,
           IdPrudact: IdPrudacts,
           Name: Name,
           PrudactsDetals: DetalsPrudact,
           Prise: Prise,
-          IdMainCollection: IdMainCollection);
+          IdMainCollection: IdMainCollection
+      );
 
-      FirebaseFirestore.instance.collection('Prudacts').
-      doc(IdPrudacts.toString()).set(DataPrudact.Convert2Map()).
-      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+      double? TotalOffer;
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+      if (snapshot.exists) {
+        TotalOffer=snapshot.data()!['Offar'];
+        Map<String, dynamic> data = snapshot.data()!;
+        data['Produacts']==null?Product=[]:Product=data['Produacts'];
 
-      int? TotalOffer;
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
-      print(TotalOffer.toString()+'5555555555');
-      TotalOffer=snapshot.data()!['Offar'];
+      } else {
+        print("المستند غير موجود.");
+      }
 
+      for(int i=0;i<Product.length;i++){
+        if(Product[i]['IdPrudact']==IdPrudacts){Product[i]=DataPrudact.Convert2Map();break;}
+      }
       CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
-      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
+      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!*1.0+Discount,'Produacts':Product};
       AdminData
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update(UpdateOffer)
@@ -154,6 +463,32 @@ class FireBase {
 
     } catch(e){print(e);}
   }
+
+
+
+
+DeleteProduct({required String IdMainCollection,required int Index,required int IdProduct}) async {
+  List Product=[];
+
+  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+  if (snapshot.exists) {
+    Map<String, dynamic> data = snapshot.data()!;
+    data['Produacts']==null?Product=[]:Product=data['Produacts'];
+    print('المستنذ موجود');
+  } else {
+    print("المستند غير موجود.");
+  }
+  for(int i=0;i<Product.length;i++){
+    if(Product[i]['IdPrudact']==IdProduct){Product.removeAt(i);
+    break;}
+  }
+
+  FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+  update({'Produacts':Product});
+
+}
+
+
 
   uploadMain_Collection(
       {required String Name,
@@ -170,8 +505,15 @@ class FireBase {
       url = await storageRef.getDownloadURL();
 
     try{
-        MainCollectionData DataMainColl=MainCollectionData(Name: Name,IdPrudactMainCollection: IdMainColl,IdCollection: IdCollection,Image: url,UidAdmin: FirebaseAuth.instance.currentUser!.uid);
-        FirebaseFirestore.instance.collection('mainCollection').
+      MainCollectionData DataMainColl = MainCollectionData(
+          Name: Name,
+          IdPrudactMainCollection: IdMainColl,
+          IdCollection: IdCollection,
+          Image: url,
+          UidAdmin: FirebaseAuth.instance.currentUser!.uid,
+          Produacts: [],
+      );
+      FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').collection('mainCollection').
         doc(IdMainColl).set(DataMainColl.Convert2Map()).
         then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
 
@@ -192,7 +534,13 @@ class FireBase {
     url = await storageRef.getDownloadURL();
 
     try{
-      MainCollectionMarket DataMainColl=MainCollectionMarket(Name: Name,IdPrudactMainCollection: IdMainColl,Image: url,UidAdmin: FirebaseAuth.instance.currentUser!.uid) ;
+      MainCollectionMarket DataMainColl=MainCollectionMarket(
+          Name: Name,
+          IdPrudactMainCollection: IdMainColl,
+          Image: url,
+          UidAdmin: FirebaseAuth.instance.currentUser!.uid,
+          Produacts: [],
+      );
       FirebaseFirestore.instance.collection('mainCollection').
       doc(IdMainColl).set(DataMainColl.Convert2Map()).
       then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
@@ -310,32 +658,28 @@ class FireBase {
   }
 
   Future<void> UpDateCount_requests({required List Items}) async {
-    try{
-      int counter=1;
-      for(int i=0;i<Items.length;i++){
-        int IdPrudact= Items[i]['IdPrudact'];
-        int Count_requests=Items[i]['Count_requests'];
-        int Count_Quantity=Items[i]['Count_Quantity'];
-        if (i > 0 && Items[i - 1]['IdPrudact'] == Items[i]['IdPrudact']) {
-          counter=counter+1;
-        } else {
-          counter = 1;
-        }
+    List Prodact=[];
+    DocumentSnapshot<Map<String, dynamic>> snapshot2 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+    if (snapshot2.exists) {
+      Map<String, dynamic> data = snapshot2.data()!;
+      data['Produacts']==null?Prodact=[]:Prodact=data['Produacts'];
+      print('المستنذ موجود');
+    } else {
+      print("المستند غير موجود.");
+    }
 
-        CollectionReference productData =await FirebaseFirestore.instance.collection('Prudacts');
-        Map<String, dynamic> NewValue = {
-          'Count_requests': Count_requests+counter,
-          'Count_Quantity':Count_Quantity-counter
-        };
-        productData
-            .doc(IdPrudact.toString())
-            .update(NewValue)
-            .then((value) => print("Order Added"));
-        print(Count_requests);
-        print(Count_Quantity);
+    for(int i=0;i<Items.length;i++){
+      int Count=Items[i]['Count'];
+      for(int q=0;q<Prodact.length;q++){
+        if(Items[i]['ID']==Prodact[q]['IdPrudact']){
+          Prodact[q]['Count_requests']+=Count;
+          Prodact[q]['Count_Quantity']-=Count;
+        }
       }
     }
-    catch(e){print(e);}
+
+    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    update({'Produacts':Prodact});
   }
 
 
@@ -444,127 +788,53 @@ class FireBase {
     catch(e){print(e);}
 
   }
-  UpdatePrudactsHala({
-    required String Name,
-    required int IdPrudacts,
-    required String DetalsPrudact,
-    required File imgPath,
-    required String imgName,
-    required Map Data,
-    required double Prise,
-    required double Discount,
-    required String IdCollection,
-    required Map DataMainCollection,
-    required String IdMainCollection,
-    required String IdMarket,
-    required int TybePrudact,
-    required List Opitions,
-    required int Count_Quantity,
-  })
 
-  async {
+  sendImageMarket({required String ImageName,required File ImagePath,required String ProductName,required int AdsId,required BuildContext context}) async {
     String? url;
     final storageRef =
-    FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
-    await storageRef.putFile(imgPath);
+    FirebaseStorage.instance.ref('CollectionImages/AddMarket/$ImageName');
+    await storageRef.putFile(ImagePath);
     url = await storageRef.getDownloadURL();
 
-    try{
-      PrudactData DataPrudact = PrudactData(
-          Count_Quantity: Count_Quantity,
-          Count_requests: 0,
-          Opitions: Opitions,
-          TybePrudact: TybePrudact,
-          IdCollection:IdCollection ,
-          IdMarket: IdMarket,
-          Discount: Discount,
-          ImageUrl: url,
-          IdPrudact: IdPrudacts,
-          Name: Name,
-          PrudactsDetals: DetalsPrudact,
-          Prise: Prise,
-          IdMainCollection: IdMainCollection
-      );
+    List AdsImage=[];
+   await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get().then((DocumentSnapshot snapshot){
+      if(snapshot.exists){
+        Map<String,dynamic> AdminData=snapshot.data() as Map<String,dynamic>;
+        AdminData['AddImage']==null?AdsImage=[]:AdsImage=AdminData['AddImage'];
+      }
+      else{print('Error 404');}
+    });
+    Map Image={'ImageUrl':url,'AdsId':AdsId,'ProductName':ProductName,'UidAdmin':FirebaseAuth.instance.currentUser!.uid,'ImageName':ImageName};
 
-      FirebaseFirestore.instance.collection('Prudacts').
-      doc(IdPrudacts.toString()).update(DataPrudact.Convert2Map()).
-      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+    AdsImage.add(Image);
 
-      int? TotalOffer;
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
-      print(TotalOffer.toString()+'5555555555');
-      TotalOffer=snapshot.data()!['Offar'];
-
-      CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
-      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
-      AdminData
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update(UpdateOffer)
-          .then((value) => print("Offer Uodated"))
-          .catchError((error) => print("Failed to add order: $error"));
-      print('Offer');
-
-    } catch(e){print(e);}
+    AdsImage.length>4?showSnackBar(context: context, text: 'لقد بلغت الحد الاقصى الرجاء حذف صور لاضافة صور جديدة', colors: Colors.red)
+        :
+    FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).update({'AddImage':AdsImage});
   }
-  UpdatePrudactsMarket({
-    required String Name,
-    required int IdPrudacts,
-    required String DetalsPrudact,
-    required File imgPath,
-    required String imgName,
-    required double Prise,
-    required double Discount,
-    required Map DataMainCollection,
-    required String IdMainCollection,
-    required String IdMarket,
-    required int TybePrudact,
-    required List Opitions,
-    required int Count_Quantity,
-    required int Count_requests,
-  })
 
-  async {
+  editImageMarket({required String ImageName,required File ImagePath,required String ProductName,required int AdsId,required BuildContext context,
+    required int IndexImage,required List ImageData,required String LastImageName}) async {
+    await FirebaseStorage.instance.ref().child('CollectionImages/AddMarket/$LastImageName').delete();
+
     String? url;
     final storageRef =
-    FirebaseStorage.instance.ref('CollectionImages/$Name/$imgName');
-    await storageRef.putFile(imgPath);
+    FirebaseStorage.instance.ref('CollectionImages/AddMarket/$ImageName');
+    await storageRef.putFile(ImagePath);
     url = await storageRef.getDownloadURL();
 
-    try{
-      PrudactDataMarket DataPrudact = PrudactDataMarket(
-          Count_Quantity: Count_Quantity,
-          Count_requests: Count_requests,
-          Opitions: Opitions,
-          TybePrudact: TybePrudact,
-          IdMarket: IdMarket,
-          Discount: Discount,
-          ImageUrl: url,
-          IdPrudact: IdPrudacts,
-          Name: Name,
-          PrudactsDetals: DetalsPrudact,
-          Prise: Prise,
-          IdMainCollection: IdMainCollection
-      );
+    ImageData[IndexImage]={'ImageUrl':url,'AdsId':AdsId,'ProductName':ProductName,'UidAdmin':FirebaseAuth.instance.currentUser!.uid,'ImageName':ImageName};
 
-      FirebaseFirestore.instance.collection('Prudacts').
-      doc(IdPrudacts.toString()).update(DataPrudact.Convert2Map()).
-      then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
-
-      int? TotalOffer;
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
-      print(TotalOffer.toString()+'5555555555');
-      TotalOffer=snapshot.data()!['Offar'];
-
-      CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
-      Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
-      AdminData
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update(UpdateOffer)
-          .then((value) => print("Offer Uodated"))
-          .catchError((error) => print("Failed to add order: $error"));
-      print('Offer');
-
-    } catch(e){print(e);}
+   await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).update({'AddImage':ImageData});
   }
+
+  DeleteImageAdd({required int Index,required List MyImage,required String LastName}) async {
+    await FirebaseStorage.instance.ref().child('CollectionImages/AddMarket/$LastName').delete();
+    MyImage.removeAt(Index);
+    await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).update({'AddImage':MyImage});
+
+  }
+
+
 }
 

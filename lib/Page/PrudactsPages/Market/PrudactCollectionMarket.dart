@@ -16,9 +16,9 @@ import '../../../models/PrudactData.dart';
 import '../main_Collection.dart';
 import 'dart:math';
 class PrudactCollection_Market extends StatefulWidget {
+  List productMarket;
   Map Data_From_Main_Collection;
-  PrudactCollection_Market({Key? key,required this.Data_From_Main_Collection}) : super(key: key);
-
+  PrudactCollection_Market({Key? key,required this.Data_From_Main_Collection,required this.productMarket}) : super(key: key);
   @override
   State<PrudactCollection_Market> createState() => _PrudactCollection_MarketState();
 }
@@ -36,6 +36,17 @@ String? imgName;
 bool Imagedone=false;
 
 class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
+  List productMarket=[];
+  sortProduct(){
+    for(int i=0;i<widget.productMarket.length;i++){
+      if(widget.productMarket[i]['IdMainCollection']==widget.Data_From_Main_Collection['IdPrudactMainCollection']){
+        productMarket.add(widget.productMarket[i]);
+      }
+    }
+    print(productMarket);
+  }
+
+
   OpenStdyo1() async {
     final pickedImg = await ImagePicker().pickImage(
         source: ImageSource.gallery);
@@ -59,7 +70,11 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
       print(e);
     }
   }
-
+@override
+  void initState() {
+  sortProduct();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -98,9 +113,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                 imgPath: imgPath!,
                                 Name: NewName.text,
                                 IdMainColl:
-                                widget.Data_From_Main_Collection[
-                                'IdPrudactMainCollection'],
-                            );
+                                widget.Data_From_Main_Collection['IdPrudactMainCollection'],);
                             Navigator.pop(context);
 
                           }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
@@ -121,11 +134,9 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       ElevatedButton(onPressed: (){
-
-                                        CollectionReference users =  FirebaseFirestore.instance.collection('mainCollection');
-                                        users.doc(widget.Data_From_Main_Collection['IdPrudactMainCollection']).delete();
-
+                                        FireBase().removeMainCollection(idMainCollection: widget.Data_From_Main_Collection['IdPrudactMainCollection']);
                                         Navigator.pop(context);
+
                                       }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
                                       ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
                                     ],
@@ -155,6 +166,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            ElevatedButton(onPressed: () {sortProduct();}, child: Text('Test')),
             Transform.translate(
               offset: Offset(0,50),
               child: InkWell(
@@ -173,6 +185,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                 onTap: (){
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactWithOpitionsMarket(
+                                    productMarket: widget.productMarket,
                                       Opitions: [],
                                       Data_From_Main_Collection: widget.Data_From_Main_Collection),));
                                 },
@@ -235,6 +248,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                                 ),//discreption
                                                 ElevatedButton(onPressed: () async {
                                                   await EditData.UploadPrudactsMarket(
+                                                    productData: widget.productMarket,
                                                     Count_Quantity:int.parse(Count_Quantity.text),
                                                     Opitions: [],
                                                     TybePrudact: 0,
@@ -280,77 +294,49 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
             ),//add Prudacts
             Container(height: 150,),//Add Prudct Or Remove Collection
             SizedBox(
-              child: FutureBuilder(
-                future: FirebaseFirestore.instance.collection('Prudacts')
-                    .where('IdMainCollection',isEqualTo:widget.Data_From_Main_Collection['IdPrudactMainCollection']).get(),
-                builder:
-                    (BuildContext context, AsyncSnapshot snapshot) {
-
-                  if (snapshot.hasError) {
-                    return Text("Something went wrong");
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            itemCount:snapshot.data!.docs.length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 15/20,
-                                crossAxisCount: 3),
-                            itemBuilder: (context, index) => SizedBox(
-                              height: 100,
-                              child: InkWell(
-                                onTap: (){
-                                  PrudactDataMarket _convertData=PrudactDataMarket.convertSnap2Model(snapshot.data!.docs[index]);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PrudactsDetals_Market(
-                                            PrudactData:
-                                            _convertData.Convert2Map(),
-                                            DataMainCollection: widget
-                                                .Data_From_Main_Collection,
-                                          )));
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(color: Colors.black12,borderRadius: BorderRadius.circular(10)),
-                                  child:Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      CachedNetworkImage(
-                                        imageUrl: snapshot.data!.docs[index]['ImageUrl'],
-                                        placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                                        errorWidget: (context, url, error) => Icon(Icons.error),
-                                        imageBuilder: (context, imageProvider) => Container(
-                                          height: w/8,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(12),
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Text(snapshot.data!.docs[index]['Name'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/25),)
-                                    ],
+              child: GridView.builder(
+                shrinkWrap: true,
+                itemCount:productMarket.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 15/20,
+                    crossAxisCount: 3),
+                itemBuilder: (context, index) =>
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactsDetals_Market(
+                          PrudactList: productMarket,
+                          Prudact: productMarket[index],
+                          Index: index,
+                        )));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(color: Colors.black12,borderRadius: BorderRadius.circular(10)),
+                        child:Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl:productMarket[index]['ImageUrl'],
+                              placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              imageBuilder: (context, imageProvider) => Container(
+                                height: w/8,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    );
-                  }
-
-                  return Text("loading");
-                },
-              ),
-            ),//Prudacts
+                            Text(productMarket[index]['Name'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/25),)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+            )
           ],
         ),
       ),

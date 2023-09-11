@@ -17,9 +17,10 @@ import '../../../models/FireBaseStatemant.dart';
 
 
 class PrudactWithOpitionsMarket extends StatefulWidget {
+  List productMarket;
   List Opitions;
   Map Data_From_Main_Collection;
-  PrudactWithOpitionsMarket({Key? key,required this.Data_From_Main_Collection,required this.Opitions}) : super(key: key);
+  PrudactWithOpitionsMarket({Key? key,required this.Data_From_Main_Collection,required this.Opitions,required this.productMarket}) : super(key: key);
 
   @override
   State<PrudactWithOpitionsMarket> createState() => _PrudactWithOpitionsMarketState();
@@ -138,7 +139,7 @@ class _PrudactWithOpitionsMarketState extends State<PrudactWithOpitionsMarket> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => OptionsMarket(Data_From_Main_Collection: widget.Data_From_Main_Collection)
+                                    builder: (context) => OptionsMarket(Data_From_Main_Collection: widget.Data_From_Main_Collection,productMarket: widget.productMarket,)
                                 ));
                           },
                           child: Container(
@@ -166,6 +167,7 @@ class _PrudactWithOpitionsMarketState extends State<PrudactWithOpitionsMarket> {
                     margin: EdgeInsets.only(top: 25,bottom: 25),
                     child: ElevatedButton(onPressed: () async {
                       await EditData.UploadPrudactsMarket(
+                        productData: widget.productMarket,
                         Count_Quantity: int.parse(Count_Quantity.text),
                         Opitions: widget.Opitions,
                         TybePrudact: 1,
@@ -180,7 +182,7 @@ class _PrudactWithOpitionsMarketState extends State<PrudactWithOpitionsMarket> {
                         DataMainCollection:widget.Data_From_Main_Collection,
                         IdMarket:FirebaseAuth.instance.currentUser!.uid,
                       );
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>PrudactCollection_Market(Data_From_Main_Collection: widget.Data_From_Main_Collection) ,));
+                      Navigator.pop(context);
                     }, child: Text('اضافة المنتج',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
                       style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.green),backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
                   ),

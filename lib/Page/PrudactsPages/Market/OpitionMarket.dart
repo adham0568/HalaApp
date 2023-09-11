@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class OptionsMarket extends StatefulWidget {
   Map Data_From_Main_Collection;
-
-  OptionsMarket({required this.Data_From_Main_Collection});
+  List productMarket;
+  OptionsMarket({required this.Data_From_Main_Collection,required this.productMarket});
 
   @override
   State<OptionsMarket> createState() => _OptionsMarketState();
@@ -274,6 +274,7 @@ class _OptionsMarketState extends State<OptionsMarket> {
           InkWell(
             onTap: (){
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PrudactWithOpitionsMarket(
+                productMarket: widget.productMarket,
                   Data_From_Main_Collection: widget.Data_From_Main_Collection, Opitions: mainList),));
             },
             child: Container(

@@ -181,6 +181,7 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
                         Data: widget.data_Collection,
                         DataMainCollection:widget.Data_From_Main_Collection,
                         IdMarket:FirebaseAuth.instance.currentUser!.uid,
+                        Count_requests: widget.Data_From_Main_Collection['Count_requests']
                       );
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>PrudactCollection(data_Collection: widget.data_Collection, Data_From_Main_Collection: widget.Data_From_Main_Collection) ,));
                     }, child: Text('اضافة المنتج',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),

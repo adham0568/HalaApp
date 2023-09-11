@@ -14,10 +14,27 @@ class OrdarDetals extends StatefulWidget {
   @override
   State<OrdarDetals> createState() => _OrdarDetalsState();
 }
-FireBase FireServices=FireBase();
-double? HightContener;
+class _OrdarDetalsState extends State<OrdarDetals> {
+  int decimalPlaces =1;
+List finalItems=[];
+  NumberOfrepetitions(){
+   List Items= widget.DataOrdar['items'];
+    Map ItemsValue={};
+    for(int i=0;i<Items.length;i++){
+      if(ItemsValue.containsKey(Items[i]['IdPrudact'])){ItemsValue[Items[i]['IdPrudact']] += 1;}
+      else{ItemsValue[Items[i]['IdPrudact']]=1;}
+    }
+    ItemsValue.forEach((key, value) {
+      finalItems.add({'ID':key,'Count':value});
+    });
+    print(finalItems);
+  }
 
-List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
+
+
+  FireBase FireServices=FireBase();
+  double? HightContener;
+  List<bool> DoneOrNot = [];
   double CalculatedPrise(){
     double prise=0;
     for(int i=0;i<widget.DataOrdar['items'].length;i++){
@@ -36,6 +53,7 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
   }
   @override
   Widget build(BuildContext context) {
+    NumberOfrepetitions();
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     List<dynamic> displayedItems = [];
@@ -133,7 +151,7 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                children: [
                                                  ElevatedButton(onPressed: () async {
-                                                   await FireServices.UpDateCount_requests(Items:widget.DataOrdar['items']);
+                                                   await FireServices.UpDateCount_requests(Items:finalItems);
                                                    await FireServices.TotalPrifitUpdate(Prise:widget.DataOrdar['totalPrice']);
                                                    await FireServices.OrdarDoneUpdate();
                                                    await FireServices.sendListToFirestore(
@@ -213,7 +231,7 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text(currentItem['Name'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/18, color: Colors.white)),
+                                              Text(currentItem['Name'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.white)),
                                             ],
                                           ),
                                           Column(
@@ -221,7 +239,7 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                                               widget.DataOrdar['items'].length>0 ?ElevatedButton(onPressed: (){
                                                 Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactOrdarDetals(Prudact: widget.DataOrdarDetals),));
                                               },
-                                                child:Text('تفاصيل'),
+                                                child:Text('تفاصيل',style: TextStyle(fontSize: w/25),),
                                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
                                               ):
                                              ElevatedButton(onPressed: (){
@@ -231,8 +249,8 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                                              }, child:Text(DoneOrNot[index]?' جاهز':'تم'),
                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(DoneOrNot[index]?Colors.green:Colors.red)),
                                              ),
-                                              Text('الكمية: $duplicateItemsCount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/20, color: Colors.red)),
-                                              Text('${CalculatedPrise()} ₪', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/20, color: Colors.red)),
+                                              Text('الكمية: $duplicateItemsCount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.red)),
+                                              Text('${CalculatedPrise().toStringAsFixed(decimalPlaces)} ₪', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.red)),
 
                                             ],
                                           ),
@@ -250,7 +268,7 @@ List<bool> DoneOrNot = [];class _OrdarDetalsState extends State<OrdarDetals> {
                         ],
                       ),
 
-                      Text(widget.DataOrdar['totalPrice'],style: TextStyle(fontSize: w/13,fontWeight: FontWeight.bold,color: Colors.white),),
+                      Text(widget.DataOrdar['totalPrice'],style: TextStyle(fontSize: w/18,fontWeight: FontWeight.bold,color: Colors.white),),
                     ],
                   )
               ),

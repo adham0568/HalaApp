@@ -13,25 +13,26 @@ class PrudactsDetals extends StatefulWidget {
   Map DataFromeCollection;
   Map PrudactData;
   Map DataMainCollection;
-  PrudactsDetals({Key? key,required this.PrudactData,required this.DataMainCollection,required this.DataFromeCollection}) : super(key: key);
+  int Index;
+  List PrudactList;
+  PrudactsDetals({Key? key,required this.PrudactData,required this.DataMainCollection,required this.DataFromeCollection,required this.Index,required this.PrudactList}) : super(key: key);
 
   @override
   State<PrudactsDetals> createState() => _PrudactsDetalsState();
 }
 
-FireBase EditData=FireBase();
-final NewNamePrudact=TextEditingController();
-final Prise=TextEditingController();
-final PrudactDiscount=TextEditingController();
-final detalsPrudact=TextEditingController();
-final PrudactName=TextEditingController();
-final PrudactPrise=TextEditingController();
-final Count_Quantity=TextEditingController();
-File? imgPath;
-String? imgName;
-bool Imagedone=false;
+
 
 class _PrudactsDetalsState extends State<PrudactsDetals> {
+  FireBase EditData=FireBase();
+  final NewNamePrudact=TextEditingController();
+  final Prise=TextEditingController();
+  final PrudactDiscount=TextEditingController();
+  final detalsPrudact=TextEditingController();
+  final Count_Quantity=TextEditingController();
+  File? imgPath;
+  String? imgName;
+  bool Imagedone=false;
   OpenStdyo1() async {
     final pickedImg = await ImagePicker().pickImage(
         source: ImageSource.gallery);
@@ -55,6 +56,17 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
       print(e);
     }
   }
+
+  @override
+  void initState() {
+    NewNamePrudact.text=widget.PrudactData['Name'];
+    Prise.text=widget.PrudactData['Prise'].toString();
+    PrudactDiscount.text=widget.PrudactData['Discount'].toString();
+    detalsPrudact.text=widget.PrudactData['PrudactsDetals'];
+    Count_Quantity.text=widget.PrudactData['Count_Quantity'].toString();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,9 +229,12 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                               children: [
                                 ElevatedButton(onPressed: (){
                                   EditData.UpdatePrudactsHala(
-                                    Count_Quantity:int.parse(Count_Quantity.text) ,
-                                    Opitions: [],
-                                    TybePrudact: 0,
+                                      PrudactList:widget.PrudactList ,
+                                      Index: widget.Index,
+                                      Count_requests:widget.PrudactData['Count_requests'] ,
+                                      Count_Quantity:int.parse(Count_Quantity.text) ,
+                                      Opitions: [],
+                                      TybePrudact: 0,
                                       Discount:double.parse(PrudactDiscount.text),
                                       IdMainCollection:widget.DataMainCollection['IdPrudactMainCollection'],
                                       Name: NewNamePrudact.text,
@@ -251,10 +266,12 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             ElevatedButton(onPressed: () async {
-                                              CollectionReference users =  FirebaseFirestore.instance.collection('Collection');
-                                              await users.doc(widget.DataFromeCollection['IdCollection']).collection('mainCollection').doc(widget.DataMainCollection['IdPrudactMainCollection'])
-                                                  .collection('Prudact').doc(widget.PrudactData['IdPrudact'])
-                                                  .delete();
+                                              FireBase().DeleteProductHala(
+                                                  IdMainCollection:widget.PrudactData['IdMainCollection'] ,
+                                                  Prudact:widget.PrudactList ,
+                                                  Index:widget.Index ,
+                                                  IdProduct:widget.PrudactData['IdPrudact'],
+                                                  CollectionId:widget.PrudactData['IdCollection']);
                                               Navigator.pop(context);
                                             }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
                                             ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
