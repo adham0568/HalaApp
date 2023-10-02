@@ -51,6 +51,8 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   carousel_slider: ^4.2.1
   intl: ^0.18.1
+  http: ^0.13.6
+  firebase_messaging: ^14.6.8
 
 
 dev_dependencies:

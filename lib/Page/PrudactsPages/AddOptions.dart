@@ -5,7 +5,7 @@ class Options extends StatefulWidget {
   Map data_Collection;
   Map Data_From_Main_Collection;
 
-  Options({required this.data_Collection,required this.Data_From_Main_Collection});
+  Options({super.key, required this.data_Collection,required this.Data_From_Main_Collection});
 
   @override
   State<Options> createState() => _OptionsState();
@@ -75,7 +75,7 @@ class _OptionsState extends State<Options> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -88,32 +88,32 @@ class _OptionsState extends State<Options> {
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(left: 50,right: 50,bottom: 20,top: 20),
+            margin: const EdgeInsets.only(left: 50,right: 50,bottom: 20,top: 20),
             child:Column(
               children: [
                 TextFormField(
                   controller: nameController,
-                  decoration: InputDecoration(labelText: 'اسم الخيار الرئيسي',
+                  decoration: const InputDecoration(labelText: 'اسم الخيار الرئيسي',
                     border: OutlineInputBorder(),
                     labelStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                     hintText: 'مثلا الحجم',
                     hintStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                   ),
                 ),
-                SizedBox(height: 15,),
+                const SizedBox(height: 15,),
                 TextFormField(
                   controller: optionNameController,
-                  decoration: InputDecoration(labelText: 'الاختيار',
+                  decoration: const InputDecoration(labelText: 'الاختيار',
                     border: OutlineInputBorder(),
                     labelStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                     hintText: 'مثلا كبير',
                     hintStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                   ),
                 ),
-                SizedBox(height: 15,),
+                const SizedBox(height: 15,),
                 TextFormField(
                   controller: optionPriceController,
-                  decoration: InputDecoration(labelText: 'سعر هذا الاختيار',
+                  decoration: const InputDecoration(labelText: 'سعر هذا الاختيار',
                     border: OutlineInputBorder(),
                     labelStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                     hintText: 'مثلا 35',
@@ -124,22 +124,22 @@ class _OptionsState extends State<Options> {
             ) ,
           ),
           Container(
-            margin: EdgeInsets.only(left:30,right: 30),
+            margin: const EdgeInsets.only(left:30,right: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 20,),
+                const SizedBox(width: 20,),
                 ElevatedButton(
                   onPressed: addOption,
-                  child: Text('إضافة خيار جديد',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)),
+                  child: const Text('إضافة خيار جديد',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                 ),
                 ElevatedButton(
                   onPressed: addOptionData,
-                  child: Text('خيار فرعي',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+                  child: const Text('خيار فرعي',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                 ),
-                SizedBox(width: 20,),
+                const SizedBox(width: 20,),
 
               ],
             ),
@@ -154,13 +154,13 @@ class _OptionsState extends State<Options> {
                     children: [
                       Text(
                         '${index + 1}',
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.teal),
+                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.teal),
                       ),
                       Text(
                         mainList[index]['mainOption'],
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.teal),
+                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.teal),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       IconButton(
                         onPressed: () {
                           setState(() {
@@ -175,7 +175,7 @@ class _OptionsState extends State<Options> {
                                     children: [
                                       Text('هل انت متأكد من حذف اختيار (${mainList[index]['mainOption']})'),
                                       Container(
-                                        margin: EdgeInsets.only(left: 15, right: 15),
+                                        margin: const EdgeInsets.only(left: 15, right: 15),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
@@ -183,12 +183,12 @@ class _OptionsState extends State<Options> {
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: Text(
-                                                'لا',
-                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                              ),
                                               style: ButtonStyle(
                                                 backgroundColor: MaterialStateProperty.all(Colors.green),
+                                              ),
+                                              child: const Text(
+                                                'لا',
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                               ),
                                             ),
                                             ElevatedButton(
@@ -198,12 +198,12 @@ class _OptionsState extends State<Options> {
                                                 });
                                                 Navigator.pop(context);
                                               },
-                                              child: Text(
-                                                'نعم',
-                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                              ),
                                               style: ButtonStyle(
                                                 backgroundColor: MaterialStateProperty.all(Colors.red),
+                                              ),
+                                              child: const Text(
+                                                'نعم',
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                               ),
                                             ),
                                           ],
@@ -216,7 +216,7 @@ class _OptionsState extends State<Options> {
                             );
                           });
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.delete,
                           color: Colors.red,
                         ),
@@ -226,7 +226,7 @@ class _OptionsState extends State<Options> {
                   children: [
                     ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: mainList[index]['subOptions'].length,
                       itemBuilder: (context, subIndex) {
                         return ListTile(
@@ -235,20 +235,20 @@ class _OptionsState extends State<Options> {
                             children: [
                               Text(
                                 '${subIndex + 1}',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
                               ),
                               Text(
                                 mainList[index]['subOptions'][subIndex]['optionName'],
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
                               ),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               IconButton(
                                 onPressed: () {
                                   setState(() {
                                     mainList[index]['subOptions'].removeAt(subIndex);
                                   });
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.delete,
                                   color: Colors.orange,
                                 ),
@@ -257,7 +257,7 @@ class _OptionsState extends State<Options> {
                           ),
                           subtitle: Text(
                             'سعر الاختيار: ${mainList[index]['subOptions'][subIndex]['optionPrice']}',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                         );
                       },
@@ -269,7 +269,7 @@ class _OptionsState extends State<Options> {
           ),
           ElevatedButton(
             onPressed: (){print(mainList);},
-            child: Text('Test'),
+            child: const Text('Test'),
           ),
           InkWell(
             onTap: (){
@@ -277,10 +277,10 @@ class _OptionsState extends State<Options> {
                   data_Collection: widget.data_Collection, Data_From_Main_Collection: widget.Data_From_Main_Collection, Opitions: mainList),));
             },
             child: Container(
-              margin: EdgeInsets.only(left: 50,right: 50,bottom: 30),
+              margin: const EdgeInsets.only(left: 50,right: 50,bottom: 30),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: [
@@ -288,10 +288,10 @@ class _OptionsState extends State<Options> {
                         Color.fromRGBO(1, 183, 168, 1)
                       ]
                   )),
-              child: Center(child: Text("التالي",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),)),
+              child: const Center(child: Text("التالي",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),)),
             ),
           ),
-          ElevatedButton(onPressed: (){print(mainList);}, child: Text('Test'))
+          ElevatedButton(onPressed: (){print(mainList);}, child: const Text('Test'))
         ],
       ),
     );

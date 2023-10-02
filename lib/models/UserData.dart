@@ -1,10 +1,9 @@
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminData{
   double Lat,Long;
-  String Name,NameMarket,EmailAddress,Password,Logo,Uid,ImageProfile;
+  String Name,NameMarket,EmailAddress,Password,Logo,Uid,ImageProfile,Token;
   DateTime DataAdded;
   int Offar,TybeMarket,PhoneMarket,Location;
   AdminData(
@@ -23,6 +22,7 @@ class AdminData{
         required this.ImageProfile,
         required this.Lat,
         required this.Long,
+        required this.Token,
       });
 
   //convert data frome AdminData to  Map<String,Object>
@@ -43,13 +43,15 @@ class AdminData{
       'TybeMarket':TybeMarket,
       'ImageProfile':ImageProfile,
       'Lat':Lat,
-      'Long':Long
+      'Long':Long,
+      'Token':Token,
     };
   }
 
   static convertSnap2Model(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return AdminData(
+      Token: snapshot['Token'],
       ImageProfile:snapshot['ImageProfile'],
       EmailAddress: snapshot["EmailAddress"],
       Name: snapshot["Name"],

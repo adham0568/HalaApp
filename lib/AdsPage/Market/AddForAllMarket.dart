@@ -18,7 +18,7 @@ class _AddMarketState extends State<AddMarket> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -30,18 +30,18 @@ class _AddMarketState extends State<AddMarket> {
       ),
       body: Container(
         width: double.infinity,
-        margin: EdgeInsets.only(top: 50,bottom: 50),
+        margin: const EdgeInsets.only(top: 50,bottom: 50),
         child: Center(
           child: Column(
             children: [
              InkWell(
                onTap: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddsMarket(),));
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => const AddAddsMarket(),));
                },
                child: Container(
                  width: w*0.9,
                  height: h/10,
-                 decoration: BoxDecoration(
+                 decoration: const BoxDecoration(
                    borderRadius: BorderRadius.only(topLeft: Radius.circular(3),bottomRight:  Radius.circular(3),
                        bottomLeft:  Radius.circular(15),topRight: Radius.circular(15),),
                    gradient: LinearGradient(
@@ -59,12 +59,12 @@ class _AddMarketState extends State<AddMarket> {
               SizedBox(height: h/30,),
               InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyAdd(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyAdd(),));
                 },
                 child: Container(
                   width: w*0.9,
                   height: h/10,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(3),bottomRight:  Radius.circular(3),
                         bottomLeft:  Radius.circular(15),topRight: Radius.circular(15),),
                       gradient: LinearGradient(

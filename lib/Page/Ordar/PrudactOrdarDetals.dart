@@ -17,7 +17,7 @@ class _PrudactOrdarDetalsState extends State<PrudactOrdarDetals> {
         appBar: AppBar(
           title: Image.asset('assets/Images/logowelcome.png'),
           flexibleSpace: Container(
-            decoration: BoxDecoration(gradient: LinearGradient(
+            decoration: const BoxDecoration(gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
@@ -31,11 +31,11 @@ class _PrudactOrdarDetalsState extends State<PrudactOrdarDetals> {
         child: SafeArea(
           child: Column(
             children: [
-              Text('تفاصيل الطلب',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 35),),
+              const Text('تفاصيل الطلب',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 35),),
               Container(
                   color: Colors.white,
                 child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) =>
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,14 +65,14 @@ class _PrudactOrdarDetalsState extends State<PrudactOrdarDetals> {
                                     children: [
                                       Text(
                                         widget.Prudact['items'][index]['Opitions'][index1]['subOptions'][widget.Prudact['items'][index]['OpitionSelected'][index1]]['optionName']
-                                        ,style: TextStyle(color: Colors.red,fontSize: 15,fontWeight: FontWeight.w100),
+                                        ,style: const TextStyle(color: Colors.red,fontSize: 15,fontWeight: FontWeight.w100),
                                       ),
-                                      Text(widget.Prudact['items'][index]['Opitions'][index1]['mainOption'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
+                                      Text(widget.Prudact['items'][index]['Opitions'][index1]['mainOption'],style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
 
                                     ],
                                   ),
                                 ),
-                              ),physics: NeverScrollableScrollPhysics(),shrinkWrap: true,itemCount:widget.Prudact['items'][index]['Opitions'].length ,)
+                              ),physics: const NeverScrollableScrollPhysics(),shrinkWrap: true,itemCount:widget.Prudact['items'][index]['Opitions'].length ,)
                             ],
                           ),
                         ),

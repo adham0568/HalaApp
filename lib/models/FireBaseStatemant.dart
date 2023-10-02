@@ -1,17 +1,20 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:adminhala/models/PrudactDataMarket.dart';
 import 'package:adminhala/models/SnackBar.dart';
+import 'package:adminhala/models/UserData.dart';
 import 'package:adminhala/models/mainCollectionMarket.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'CollectionData.dart';
 import 'PrudactData.dart';
 import 'main_CollectionData.dart';
-import 'package:path/path.dart' show basename, url;
-
+import 'package:http/http.dart' as http;
 
 class FireBase {
 
@@ -33,7 +36,7 @@ class FireBase {
       if(Product[i]['IdCollection']==IdCollection){Product.removeAt(i);}
     }
 
-    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
     update({'Produacts':Product});
 
   }
@@ -62,7 +65,7 @@ class FireBase {
       if(Product[i]['IdMainCollection']==IdPrudactMainCollection){Product.removeAt(i);}
     }
 
-    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
     update({'Produacts':Product});
 
   }
@@ -86,7 +89,7 @@ class FireBase {
       if(Product[i]['IdMainCollection']==idMainCollection){Product.removeAt(i);}
     }
 
-    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
     update({'Produacts':Product});
 
   }
@@ -140,8 +143,8 @@ class FireBase {
     await storageRef.putFile(imgPath);
     url = await storageRef.getDownloadURL();
 
-    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').
-    collection('mainCollection').doc('${IdMainCollection}').get();
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('Collection').doc(IdCollection).
+    collection('mainCollection').doc(IdMainCollection).get();
     if (snapshot.exists) {
       Map<String, dynamic> data = snapshot.data()!;
       Product=data['Produacts'];
@@ -173,12 +176,12 @@ class FireBase {
 
 
       Product.add(DataPrudact.Convert2Map());
-      FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').collection('mainCollection').doc('${IdMainCollection}').
+      FirebaseFirestore.instance.collection('Collection').doc(IdCollection).collection('mainCollection').doc(IdMainCollection).
       update({'Produacts':Product}).
       then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
 
 
-        DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+        DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
         if (snapshot1.exists) {
           Map<String, dynamic> data = snapshot1.data()!;
           data['Produacts']==null?Prodact1=[]:Prodact1=data['Produacts'];
@@ -187,7 +190,7 @@ class FireBase {
           print("المستند غير موجود.");
         }
           Prodact1.add(DataPrudact.Convert2Map());
-        FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+        FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
       update({'Produacts':Prodact1});
 
 
@@ -195,7 +198,7 @@ class FireBase {
 
       int? TotalOffer;
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
-      print(TotalOffer.toString()+'5555555555');
+      print('${TotalOffer}5555555555');
       TotalOffer=snapshot.data()!['Offar'];
 
       CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
@@ -256,11 +259,11 @@ class FireBase {
           IdMainCollection: IdMainCollection
       );
       Product[Index]=DataPrudact.Convert2Map();
-      FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').collection('mainCollection').doc('${IdMainCollection}').
+      FirebaseFirestore.instance.collection('Collection').doc(IdCollection).collection('mainCollection').doc(IdMainCollection).
       update({'Produacts':Product}).
       then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
 
-      DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
       if (snapshot1.exists) {
         Map<String, dynamic> data = snapshot1.data()!;
         data['Produacts']==null?Prodact1=[]:Prodact1=data['Produacts'];
@@ -273,7 +276,7 @@ class FireBase {
         if(Prodact1[i]['IdPrudact']==IdPrudacts){Prodact1[i]=DataPrudact.Convert2Map();break;}
       }
 
-      FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+      FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
       update({'Produacts':Prodact1});
 
 
@@ -281,7 +284,7 @@ class FireBase {
 
       int? TotalOffer;
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
-      print(TotalOffer.toString()+'5555555555');
+      print('${TotalOffer}5555555555');
       TotalOffer=snapshot.data()!['Offar'];
 
       CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
@@ -308,10 +311,10 @@ class FireBase {
     }
     Prudact.removeAt(Index);
 
-    FirebaseFirestore.instance.collection('Collection').doc('${CollectionId}').collection('mainCollection').doc('${IdMainCollection}').
+    FirebaseFirestore.instance.collection('Collection').doc(CollectionId).collection('mainCollection').doc(IdMainCollection).
     update({'Produacts':Prudact}).then((value) => print("Product Deleted")).catchError((error) => print("Failed to add user: $error"));
 
-    DocumentSnapshot<Map<String, dynamic>> snapshot2 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+    DocumentSnapshot<Map<String, dynamic>> snapshot2 = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
     if (snapshot2.exists) {
       Map<String, dynamic> data = snapshot2.data()!;
       data['Produacts']==null?Prodact1=[]:Prodact1=data['Produacts'];
@@ -324,7 +327,7 @@ class FireBase {
       break;}
     }
 
-    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
     update({'Produacts':Prodact1});
 
 
@@ -368,7 +371,7 @@ async{
       Prise: Prise,
       IdMainCollection: IdMainCollection);
 
-  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
   if (snapshot.exists) {
     Map<String, dynamic> data = snapshot.data()!;
     data['Produacts']==null?Product=[]:Product=data['Produacts'];
@@ -377,7 +380,7 @@ async{
     print("المستند غير موجود.");
   }
   Product.add(DataPrudact.Convert2Map());
-  FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+  FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
   update({'Produacts':Product});
 
 
@@ -385,7 +388,7 @@ async{
   double? TotalOffer;
   DocumentSnapshot<Map<String, dynamic>> snapshot1 = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
   TotalOffer=snapshot1.data()!['Offar']*1.0;
-  print(TotalOffer.toString()+'5555555555');
+  print('${TotalOffer}5555555555');
 
   CollectionReference AdminData = FirebaseFirestore.instance.collection('AdminData');
   Map<String, dynamic> UpdateOffer = {'Offar': TotalOffer!+Discount,};
@@ -439,7 +442,7 @@ async{
       );
 
       double? TotalOffer;
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
       if (snapshot.exists) {
         TotalOffer=snapshot.data()!['Offar'];
         Map<String, dynamic> data = snapshot.data()!;
@@ -470,7 +473,7 @@ async{
 DeleteProduct({required String IdMainCollection,required int Index,required int IdProduct}) async {
   List Product=[];
 
-  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+  DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
   if (snapshot.exists) {
     Map<String, dynamic> data = snapshot.data()!;
     data['Produacts']==null?Product=[]:Product=data['Produacts'];
@@ -483,7 +486,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     break;}
   }
 
-  FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+  FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
   update({'Produacts':Product});
 
 }
@@ -513,7 +516,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
           UidAdmin: FirebaseAuth.instance.currentUser!.uid,
           Produacts: [],
       );
-      FirebaseFirestore.instance.collection('Collection').doc('${IdCollection}').collection('mainCollection').
+      FirebaseFirestore.instance.collection('Collection').doc(IdCollection).collection('mainCollection').
         doc(IdMainColl).set(DataMainColl.Convert2Map()).
         then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
 
@@ -552,14 +555,14 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
 
   Future<void> OrdarState({required int ordarid,required int State}) async {
 
-    CollectionReference listItem =await FirebaseFirestore.instance.collection('Ordar');
+    CollectionReference listItem =FirebaseFirestore.instance.collection('Ordar');
 
     Map<String, dynamic> orderData = {
       'OrdarStates': State,
     };
 
     listItem
-        .doc('${ordarid}')
+        .doc('$ordarid')
         .update(orderData)
         .then((value) => print("Editing"))
         .catchError((error) => print("Failed to add order: $error"));
@@ -581,7 +584,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     };
 
     listItem
-        .doc('${DiscountCode}')
+        .doc(DiscountCode)
         .set(orderData)
         .then((value) => print("Editing"))
         .catchError((error) => print("Failed to add order: $error"));
@@ -598,7 +601,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     CollectionReference listItem = FirebaseFirestore.instance.collection('OrdarDone');
     Map<String, dynamic> orderData = {
       'orderID': IdOrdar,
-      'totalPrice': '${prise} ₪',
+      'totalPrice': '$prise ₪',
       'items': Prudact,
       'OrdarStates': 4,
       'User':Uid,
@@ -608,7 +611,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     };
 
     listItem
-        .doc('${IdOrdar}')
+        .doc('$IdOrdar')
         .set(orderData)
         .then((value) => print("Order Added"))
         .catchError((error) => print("Failed to add order: $error"));
@@ -617,13 +620,13 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     CollectionReference listItem1 = FirebaseFirestore.instance.collection('Ordar');
     Map<String, dynamic> orderData1 = {
       'orderID': IdOrdar,
-      'totalPrice': '${prise} ₪',
+      'totalPrice': '$prise ₪',
       'items': Prudact,
       'OrdarStates': 4,
       'User':Uid,};
 
     listItem1
-        .doc('${IdOrdar}')
+        .doc('$IdOrdar')
         .update(orderData1)
         .then((value) => print("Order Added"))
         .catchError((error) => print("Failed to add order: $error"));
@@ -636,7 +639,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     CollectionReference listItem = FirebaseFirestore.instance.collection('Ordarfailed');
     Map<String, dynamic> orderData = {
       'orderID': IdOrdar,
-      'totalPrice': '${prise} ₪',
+      'totalPrice': '$prise ₪',
       'items': Prudact,
       'OrdarStates': 6,
       'User':Uid,
@@ -646,7 +649,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     };
 
     listItem
-        .doc('${IdOrdar}')
+        .doc('$IdOrdar')
         .set(orderData)
         .then((value) => print("Order Added"))
         .catchError((error) => print("Failed to add order: $error"));
@@ -659,7 +662,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
 
   Future<void> UpDateCount_requests({required List Items}) async {
     List Prodact=[];
-    DocumentSnapshot<Map<String, dynamic>> snapshot2 = await FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').get();
+    DocumentSnapshot<Map<String, dynamic>> snapshot2 = await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).get();
     if (snapshot2.exists) {
       Map<String, dynamic> data = snapshot2.data()!;
       data['Produacts']==null?Prodact=[]:Prodact=data['Produacts'];
@@ -678,7 +681,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
       }
     }
 
-    FirebaseFirestore.instance.collection('AdminData').doc('${FirebaseAuth.instance.currentUser!.uid}').
+    FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).
     update({'Produacts':Prodact});
   }
 
@@ -781,7 +784,7 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
 
   Future<void> RemoveCode({required String Code,required BuildContext context}) async {
     try{
-      DocumentReference docRef = FirebaseFirestore.instance.collection('Discount').doc('$Code');
+      DocumentReference docRef = FirebaseFirestore.instance.collection('Discount').doc(Code);
       await docRef.delete();
       showSnackBar(context: context, text: 'تم حذف الكود', colors: Colors.red);
     }
@@ -834,6 +837,181 @@ DeleteProduct({required String IdMainCollection,required int Index,required int 
     await FirebaseFirestore.instance.collection('AdminData').doc(FirebaseAuth.instance.currentUser!.uid).update({'AddImage':MyImage});
 
   }
+
+}
+
+
+class SendToDelivary{
+  List Data=[];
+
+  sendOrdarToDelivary(
+      {required int OrdarId,
+        required int City,
+        required LatLng location,
+        required List items,
+        required String NameUser,
+        required GeoPoint UserLocation,
+        required GeoPoint MarketLocation,
+        required String MarketName,
+        required String PriseOrdar}) async {
+    List DataDelivary=[];
+    LatLng Location;
+    Map win={};
+    List<String> tokens=[];
+    await FirebaseFirestore.instance.collection('DilevaryHala').where('City',isEqualTo: City).where('active',isEqualTo: 0).get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if (doc.exists) {
+          Map<String, dynamic> dataUser = doc.data() as Map<String, dynamic>;
+          Data.add(dataUser);
+        } else {
+          print("Document does not exist");
+        }
+      });
+    });
+    print(Data);
+/*إضافة ال tokens الى الليست الخاصة بها */
+    for(int i =0;i<Data.length;i++){
+      tokens.add(Data[i]['token']);
+    }
+    Timer(Duration(seconds: 10), () {
+      sendNotificationUploadLocation(tokens: tokens);
+    });
+
+
+
+
+
+    for(int i=0;i<Data.length;i++){
+      Distance distance = Distance();
+      GeoPoint Position=Data[i]['Location'] as GeoPoint;
+      LatLng PositionLat=LatLng(Position.latitude, Position.longitude);
+      double meters = distance(location, PositionLat)*1.0;
+      Map dataTime={'Uid':Data[i]['Uid'],'Location':PositionLat,'Distance':meters,'Ordar':Data[i]['Ordar'],'token':Data[i]['token'],'State':0};
+      DataDelivary.add(dataTime);
+    }
+    double minValue=DataDelivary[0]['Distance']*1.0;
+    win=DataDelivary[0];
+    for(int q=0;q<DataDelivary.length;q++){
+      double thisValue=DataDelivary[q]['Distance']*1.0;
+      if(thisValue<minValue){
+        minValue=thisValue;
+        win=DataDelivary[q];
+      }
+    }
+    //double PriseDelivary=CalculatePriseDelivary(Distance:win['Distance'])*1.0;
+    Map OrdarAdd={'PriseOrdar':PriseOrdar,'OrdarId':OrdarId,'items':items,'MarketLocation':MarketLocation,'UserLocation':UserLocation,'Name':NameUser,'PriseDelivary':5.0,'Time':DateTime.now(),'MarketName':MarketName,'State':0,};
+
+    List Ordar=win['Ordar'];
+    Ordar.add(OrdarAdd);
+    AddOrdarToDelivary(Uid:win['Uid'],Ordar: Ordar);
+    DataDelivary.clear();
+
+    sendNotificationUsingServerToken(body:'لديك طلب جديد' ,title:"Hala Delivary" ,Token:win['token'],);
+
+  }
+
+  AddOrdarToDelivary({required List Ordar,required String Uid}) async {
+    await FirebaseFirestore.instance.collection('DilevaryHala').doc(Uid).update(
+        {'Ordar':Ordar});
+    print('OrdarAdded');
+  }
+
+
+  double CalculatePriseDelivary({required double Distance}){
+    double prise=5*1.0;
+    if(Distance<600){prise=5*1.0;}
+    else if(Distance<800){prise = 5.5*1.0;}
+    else if(Distance<1000){prise =6.0*1.0;}
+    else if(Distance<1200){prise =6.5*1.0;}
+    else if(Distance>1000*1.0){
+      double metar = Distance/100*1.0;
+      prise=metar*0.6*1.0;
+    }
+    return prise;
+  }
+
+
+ final String serverToken ='AAAA_AIFDMU:APA91bGndgfYtWMz6-BKNGdzjudhRoau3L1JwQZdpO9EQ2QqjPiP-uIC6E9dewVhmPqZJB54ExvumpHnySFSvqNqfMDK9bFWxbtPNsbVOQFxk1Bf_z-iK1O7QRNGEU25vOuPfWT0oVek';
+
+  Future<void> sendNotificationUploadLocation({
+    required List<String> tokens, // قائمة من الـ FCM Tokens
+  }) async {
+    final url = Uri.parse('https://fcm.googleapis.com/fcm/send');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=$serverToken', // استبدل بـ serverToken الخاص بك
+    };
+
+    final message = {
+      'notification': {
+        'title': 'تحديث الموقع',
+        'body': "تحديث الموقع الحالي",
+      },
+      'priority': 'high',
+      'data': {},
+      'registration_ids': tokens, // تحديد قائمة الـ FCM Tokens هنا
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(message),
+      );
+
+      if (response.statusCode == 200) {
+        print('تم إرسال الإشعار بنجاح');
+      } else {
+        print('حدث خطأ أثناء إرسال الإشعار: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('حدث خطأ أثناء إرسال الإشعار: $e');
+    }
+  }
+
+
+
+  Future<void> sendNotificationUsingServerToken(
+      {required String title,required String body,required String Token,}) async {
+    final url = Uri.parse('https://fcm.googleapis.com/fcm/send');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=$serverToken', // استبدل بـ serverToken الخاص بك
+    };
+
+    final message = {
+      'notification': {
+        'title': title,
+        'body': body,
+      },
+      'priority': 'high',
+      'data': {
+      },
+      'to': '${Token}', // يمكنك استبدالها بالـ FCM token المستهدف أو "/topics/{topic}" لاستهداف موضوع معين
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(message),
+      );
+
+      if (response.statusCode == 200) {
+        print('تم إرسال الإشعار بنجاح');
+      } else {
+        print('حدث خطأ أثناء إرسال الإشعار: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('حدث خطأ أثناء إرسال الإشعار: $e');
+    }
+  }
+
+
+
 
 
 }

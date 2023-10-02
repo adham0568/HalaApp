@@ -35,7 +35,7 @@ class _DiscountState extends State<Discount> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -49,14 +49,14 @@ class _DiscountState extends State<Discount> {
         children: [
           Center(child: Image.asset('assets/Images/logowelcome.png',height: 120,)),
           Container(
-            margin: EdgeInsets.only(left: 40,right: 40,bottom: 10),
+            margin: const EdgeInsets.only(left: 40,right: 40,bottom: 10),
             child: Column(
               children: [
                 TextField(
                   controller:DiscountValue,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black45),
+                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black45),
                   maxLength: 5,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50.0),
                       bottomLeft: Radius.circular(10.0),
@@ -68,9 +68,9 @@ class _DiscountState extends State<Discount> {
                 ),
                 TextField(
                   controller: DiscountNum,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black45),
+                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black45),
                   maxLength: 4,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50.0),
                       bottomLeft: Radius.circular(10.0),
@@ -91,11 +91,11 @@ class _DiscountState extends State<Discount> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             colors: [Colors.tealAccent,Colors.blue]
                           )
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Text('كود عشوائي',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                             Icon(Icons.confirmation_number_outlined),
@@ -103,13 +103,13 @@ class _DiscountState extends State<Discount> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 250,
                       child: TextField(
                         controller: DiscountCode,
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black45),
+                        style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black45),
                         maxLength: 7,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(50.0),
                             bottomLeft: Radius.circular(10.0),
@@ -131,30 +131,30 @@ class _DiscountState extends State<Discount> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('هل انت متأكد من إضافة الكود؟'),
+                          const Text('هل انت متأكد من إضافة الكود؟'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("${DiscountValue.text}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
-                              Text(":قيمة الخصم ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                              Text(DiscountValue.text,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
+                              const Text(":قيمة الخصم ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("${DiscountNum.text}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
-                              Text(":مرات الاستخدام ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                              Text(DiscountNum.text,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
+                              const Text(":مرات الاستخدام ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("${DiscountCode.text}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
-                              Text(":كود الخصم ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                              Text(DiscountCode.text,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.red),),
+                              const Text(":كود الخصم ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                             ],
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 45,right: 45),
+                            margin: const EdgeInsets.only(left: 45,right: 45),
                             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ElevatedButton(onPressed: () async {
@@ -163,13 +163,13 @@ class _DiscountState extends State<Discount> {
 
                                 Navigator.pop(context);
                                 showSnackBar(context: context, text: 'تم إضافة الكود بنجاح', colors: Colors.green);
-                              }, child: Text('نعم'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
+                              },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('نعم'),),
                               ElevatedButton(onPressed: (){
                                 Navigator.pop(context);
                                 DiscountCode.text='';
                                 DiscountNum.text='';
                                 DiscountValue.text='';
-                              }, child: Text('لا'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),)
+                              },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)), child: const Text('لا'),)
                             ],
                             ),
                           )
@@ -178,16 +178,16 @@ class _DiscountState extends State<Discount> {
                     ),
                   ),);
 
-                }, child: Text('إضافة',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                },
                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
-                fixedSize:MaterialStateProperty.all(Size(200, 35)),
+                fixedSize:MaterialStateProperty.all(const Size(200, 35)),
+                ), child: const Text('إضافة',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                 ),
-                ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 TextButton(onPressed: (){
                   showDialog(context: context, builder: (context) =>
                    Container(
-                     decoration: BoxDecoration(gradient: LinearGradient(
+                     decoration: const BoxDecoration(gradient: LinearGradient(
                        begin: Alignment.bottomRight,end: Alignment.topLeft,
                          colors: [
                            Color.fromRGBO(0, 218, 174, 150),
@@ -196,7 +196,7 @@ class _DiscountState extends State<Discount> {
                      )),
                     height: 500,
                     width: 500,
-                    margin: EdgeInsets.all(50),
+                    margin: const EdgeInsets.all(50),
                     child: Center(
                       child: Column(
                         children: [
@@ -204,15 +204,15 @@ class _DiscountState extends State<Discount> {
                             stream: FirebaseFirestore.instance.collection('Discount').where('Uid',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
                             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                               if (snapshot.hasError) {
-                                return Text('Something went wrong');
+                                return const Text('Something went wrong');
                               }
 
                               if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator(color: Colors.red,);
+                                return const CircularProgressIndicator(color: Colors.red,);
                               }
 
                               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                                return Text('لا يوجد أكواد',style: TextStyle(color: Colors.white),);
+                                return const Text('لا يوجد أكواد',style: TextStyle(color: Colors.white),);
                               }
 
                               return SizedBox(
@@ -222,15 +222,15 @@ class _DiscountState extends State<Discount> {
                                     return Column(
                                       children: [
                                         Container(
-                                          padding: EdgeInsets.only(left: 15,right: 15),
-                                          margin: EdgeInsets.only(left: 5,right: 5,top: 15),
+                                          padding: const EdgeInsets.only(left: 15,right: 15),
+                                          margin: const EdgeInsets.only(left: 5,right: 5,top: 15),
                                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: Colors.white,),
                                           height: 50,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(index.toString(),style: TextStyle(fontSize: 18,color: Colors.black),),
-                                              Text(snapshot.data!.docs[index]['DiscountCode'],style: TextStyle(fontSize: 18,color: Colors.black),),
+                                              Text(index.toString(),style: const TextStyle(fontSize: 18,color: Colors.black),),
+                                              Text(snapshot.data!.docs[index]['DiscountCode'],style: const TextStyle(fontSize: 18,color: Colors.black),),
                                               ElevatedButton(onPressed: (){
                                                 showDialog(context: context, builder: (context) => AlertDialog(
                                                   content: Container(
@@ -241,56 +241,56 @@ class _DiscountState extends State<Discount> {
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                           children: [
-                                                            Text(snapshot.data!.docs[index]['DiscountCode'],style: TextStyle(fontSize: 18,color: Colors.red,fontWeight: FontWeight.bold),),
-                                                            Text('الكود',style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
+                                                            Text(snapshot.data!.docs[index]['DiscountCode'],style: const TextStyle(fontSize: 18,color: Colors.red,fontWeight: FontWeight.bold),),
+                                                            const Text('الكود',style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
                                                           ],
                                                         ),
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                           children: [
-                                                            Text(snapshot.data!.docs[index]['DiscountNum'].toString(),style: TextStyle(fontSize: 18,color: Colors.red,fontWeight: FontWeight.bold),),
-                                                            Text('مرات الخصم المتبقية',style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
+                                                            Text(snapshot.data!.docs[index]['DiscountNum'].toString(),style: const TextStyle(fontSize: 18,color: Colors.red,fontWeight: FontWeight.bold),),
+                                                            const Text('مرات الخصم المتبقية',style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
                                                           ],
                                                         ),
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                           children: [
-                                                            Text(snapshot.data!.docs[index]['DiscountValue'].toString(),style: TextStyle(fontSize: 18,color: Colors.red,fontWeight: FontWeight.bold),),
-                                                            Text('قيمة الخصم',style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
+                                                            Text(snapshot.data!.docs[index]['DiscountValue'].toString(),style: const TextStyle(fontSize: 18,color: Colors.red,fontWeight: FontWeight.bold),),
+                                                            const Text('قيمة الخصم',style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
                                                           ],
                                                         ),
                                                         ElevatedButton(onPressed: (){
                                                           Navigator.pop(context);
                                                           showDialog(context: context, builder: (context) => AlertDialog(
                                                             content: Container(
-                                                              padding: EdgeInsets.all(15),
+                                                              padding: const EdgeInsets.all(15),
                                                               height: 150,
                                                               child: Column(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
-                                                                  Text("هل انت متأكد؟"),
+                                                                  const Text("هل انت متأكد؟"),
                                                                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
                                                                       ElevatedButton(onPressed: () async {
                                                                         DataBase.DiscountUpdate(Prise:snapshot.data!.docs[index]['DiscountValue']*snapshot.data!.docs[index]['DiscountNum']*-1);
                                                                         await DataBase.RemoveCode(Code: snapshot.data!.docs[index]['DiscountCode'], context: context,);
                                                                        Navigator.pop(context);
-                                                                      }, child: Text("نعم"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
+                                                                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text("نعم"),),
                                                                       ElevatedButton(onPressed: (){
                                                                         Navigator.pop(context);
-                                                                      }, child: Text("لا"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),)
+                                                                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text("لا"),)
                                                                     ],
                                                                   )
                                                                 ],
                                                               ),
                                                             ),
                                                           ),);
-                                                        }, child: Text("حذف الكود"),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),)
+                                                        },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text("حذف الكود"),)
                                                       ],
                                                     ),
                                                   ),
                                                 ),);
-                                              }, child: Text("تفاصيل"))
+                                              }, child: const Text("تفاصيل"))
                                             ],
                                           ),
                                         ),
@@ -307,7 +307,7 @@ class _DiscountState extends State<Discount> {
                       ),
                     ),
                   ));
-                }, child: Text('الكوبونات السابقة',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),)),
+                }, child: const Text('الكوبونات السابقة',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),)),
 
 
 

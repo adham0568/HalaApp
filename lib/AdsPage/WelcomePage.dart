@@ -6,7 +6,6 @@ import 'package:adminhala/models/_H_W.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:math';import 'package:path/path.dart' show basename, url;
-import '../models/_H_W.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -42,13 +41,13 @@ class _WelcomePageState extends State<WelcomePage> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        margin: EdgeInsets.only(top: 50,bottom: 50,left: 25,right: 25),
+        margin: const EdgeInsets.only(top: 50,bottom: 50,left: 25,right: 25),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
+            SizedBox(
               height: Sizefix.H(context: context)/3,width: Sizefix.W(context: context),
-              child: imgPath1==null?Container(height: 1,width: 1,)
+              child: imgPath1==null?const SizedBox(height: 1,width: 1,)
                   :
               Image(image: FileImage(imgPath1!),)),
             TextFormField(
@@ -98,15 +97,15 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
             ElevatedButton(onPressed: () {
               OpenStdyo();
-            }, child: Text('ChangeImage'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
-            ),),
-            imgPath1==null?Text('')
+            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
+            ), child: const Text('ChangeImage'),),
+            imgPath1==null?const Text('')
                 :
                 ElevatedButton(onPressed: () async {
                   TybeMarket==null? showSnackBar(context: context, text: 'الرجاء تحديد نوع المنتج',colors: Colors.red):null;
                  await Upload.UploadWelvomeImage(ImageName: imgName1!, ImagePath: imgPath1,TybeMarket:TybeMarket!,NameProduct: NameProduct.text,TextAdd: TextAdd.text);
                      showSnackBar(context: context, text: 'تم رفع المنتج بنجاح', colors: Colors.green);
-                }, child: Text('Upload'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(TybeMarket==null? Colors.black:Colors.green)),)
+                },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(TybeMarket==null? Colors.black:Colors.green)), child: const Text('Upload'),)
           ],
         ),
       ),

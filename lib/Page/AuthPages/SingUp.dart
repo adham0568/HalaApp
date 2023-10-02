@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:adminhala/Page/AuthPages/AddLocation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' show basename, url;
@@ -64,6 +64,7 @@ List<String> Tybe = [
 int? TybeMarket;
 int? selectedTextIndex;
 class _SingUpPageState extends State<SingUpPage> {
+  String _token='';
 
   OpenStdyo() async {
 
@@ -86,6 +87,18 @@ class _SingUpPageState extends State<SingUpPage> {
     catch(e){print(e);}
   }
   @override
+  void initState() {
+
+    var fbm=FirebaseMessaging.instance;
+    fbm.getToken().then((token){
+      print('===================================================');
+      _token=_token;
+      print('===================================================');
+
+    });
+    // TODO: implement initState
+    super.initState();
+  }
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -94,7 +107,7 @@ class _SingUpPageState extends State<SingUpPage> {
         child: SingleChildScrollView(
           child: Center(
               child: Container(
-                margin: EdgeInsets.only(left: 30,right: 30,top: 70),
+                margin: const EdgeInsets.only(left: 30,right: 30,top: 70),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -107,11 +120,11 @@ class _SingUpPageState extends State<SingUpPage> {
                             print(imgName);
                           },
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             height: 150,
                             width: 150,
-                            decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey),
-                            child: imgPath==null? Center(child: Text('صورة شعار المطعم')) :CircleAvatar(
+                            decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.grey),
+                            child: imgPath==null? const Center(child: Text('صورة شعار المطعم')) :CircleAvatar(
                               radius: 100,
                               backgroundImage: FileImage(imgPath!),
                             ),
@@ -123,11 +136,11 @@ class _SingUpPageState extends State<SingUpPage> {
                             print(imgName1);
                           },
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             height: 150,
                             width: 150,
-                            decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey),
-                            child: imgPath1==null? Center(child: Text('صورة غلاف للمطعم')) :CircleAvatar(
+                            decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.grey),
+                            child: imgPath1==null? const Center(child: Text('صورة غلاف للمطعم')) :CircleAvatar(
                               radius: 100,
                               backgroundImage: FileImage(imgPath1!),
                             ),
@@ -135,12 +148,12 @@ class _SingUpPageState extends State<SingUpPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     TextFormField(
                       controller: marketname,
                       autovalidateMode:
                       AutovalidateMode.onUserInteraction,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black54,
                           fontWeight: FontWeight.bold),
                       keyboardType: TextInputType.emailAddress,
@@ -152,18 +165,18 @@ class _SingUpPageState extends State<SingUpPage> {
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(20)),
-                        prefixIcon: Icon(Icons.fastfood),
+                        prefixIcon: const Icon(Icons.fastfood),
                         prefixIconColor: Colors.grey.shade900,
                         fillColor: Colors.grey,
                         filled: true,
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     TextFormField(
                       controller: name,
                       autovalidateMode:
                       AutovalidateMode.onUserInteraction,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black54,
                           fontWeight: FontWeight.bold),
                       keyboardType: TextInputType.emailAddress,
@@ -175,18 +188,18 @@ class _SingUpPageState extends State<SingUpPage> {
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(20)),
-                        prefixIcon: Icon(Icons.account_circle),
+                        prefixIcon: const Icon(Icons.account_circle),
                         prefixIconColor: Colors.grey.shade900,
                         fillColor: Colors.grey,
                         filled: true,
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     TextFormField(
                       validator: (email) {return email!.contains(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))?  null: "أدخل بريد الكتروني صالح";},
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: emailaddress,
-                      style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
                       //النص الذي سيتم ادخاله
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -195,18 +208,18 @@ class _SingUpPageState extends State<SingUpPage> {
                             borderRadius: BorderRadius.circular(20)),
                         hintText:'البريد الالكتروني' ,
                         hintStyle: TextStyle(color: Colors.grey.shade900),
-                        prefixIcon:  Icon(Icons.email),
+                        prefixIcon:  const Icon(Icons.email),
                         prefixIconColor: Colors.grey.shade900,
                         fillColor: Colors.grey,
                         filled: true,
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     TextFormField(
                       controller: PhoneMarket,
                       autovalidateMode:
                       AutovalidateMode.onUserInteraction,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black54,
                           fontWeight: FontWeight.bold),
                       keyboardType: TextInputType.emailAddress,
@@ -218,18 +231,18 @@ class _SingUpPageState extends State<SingUpPage> {
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(20)),
-                        prefixIcon: Icon(Icons.fastfood),
+                        prefixIcon: const Icon(Icons.fastfood),
                         prefixIconColor: Colors.grey.shade900,
                         fillColor: Colors.grey,
                         filled: true,
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     TextFormField(
                       controller: pass,
                       validator: (value) {return  value!.length<8 ? "ادخل كلمة مرور اكثر من 8 احرف" : null;},
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black54, fontWeight: FontWeight.bold),
                       obscureText: Showpass1,
                       keyboardType: TextInputType.name,
@@ -258,13 +271,13 @@ class _SingUpPageState extends State<SingUpPage> {
                             color: Colors.grey.shade900,
                           ),
                         ),
-                        prefixIconColor: Color.fromRGBO(0, 175, 162, 10),
+                        prefixIconColor: const Color.fromRGBO(0, 175, 162, 10),
                         fillColor: Colors.grey,
                         filled: true,
                       ),
                     ),
-                    SizedBox(height: 25,),
-                    Text('* اختار المدينة الموجود فيها متجرك',style: TextStyle(color: Colors.red),),
+                    const SizedBox(height: 25,),
+                    const Text('* اختار المدينة الموجود فيها متجرك',style: TextStyle(color: Colors.red),),
                     DropdownButtonFormField<int>(
                       value: selectedTextIndex,
                       onChanged: (int? newValue) {
@@ -288,8 +301,8 @@ class _SingUpPageState extends State<SingUpPage> {
                         },
                       ).toList(),
                     ),
-                    SizedBox(height: 25,),
-                    Text('* اختار المدينة الموجود فيها متجرك',style: TextStyle(color: Colors.red),),
+                    const SizedBox(height: 25,),
+                    const Text('* اختار المدينة الموجود فيها متجرك',style: TextStyle(color: Colors.red),),
                     DropdownButtonFormField<int>(
                       value: selectedTextIndex,
                       onChanged: (int? newValue) {
@@ -313,11 +326,11 @@ class _SingUpPageState extends State<SingUpPage> {
                         },
                       ).toList(),
                     ),
-                    SizedBox(height: 25,),
+                    const SizedBox(height: 25,),
                     ElevatedButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>LocationPage(),));
-                    }, child: Text('تحديد احداثيات المطعم',style: TextStyle(color: Colors.white),),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
-                    SizedBox(height: 25,),
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const LocationPage(),));
+                    },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('تحديد احداثيات المطعم',style: TextStyle(color: Colors.white),),),
+                    const SizedBox(height: 25,),
                     widget.LocationAdd? ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
@@ -330,6 +343,7 @@ class _SingUpPageState extends State<SingUpPage> {
                             print(imgName);
                             print(imgName1);
                             await AuthMethods().SingUp(
+                                Token: _token,
                                 imgpath1:imgPath1 ,
                                 ImageProfile: imgName1!,
                                 imgName: imgName,
@@ -351,11 +365,11 @@ class _SingUpPageState extends State<SingUpPage> {
                             setState(() {
                               waiting=false;
                             });
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LogIn()),(Route<dynamic> route) => false,);
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const LogIn()),(Route<dynamic> route) => false,);
                           } else{showSnackBar(context: context,text: 'الرجاء التحقق من البيانات المدخلة',colors: Colors.red);}
                         },
-                        child:waiting? CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation(Color.fromRGBO(0, 175, 162, 10)),)
-                            :Text(
+                        child:waiting? const CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation(Color.fromRGBO(0, 175, 162, 10)),)
+                            :const Text(
                           'SingUp',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -365,7 +379,7 @@ class _SingUpPageState extends State<SingUpPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Do Have Account?',
                           style: TextStyle(
                             fontSize: 15,
@@ -375,10 +389,10 @@ class _SingUpPageState extends State<SingUpPage> {
                         ),
                         TextButton(
                             onPressed: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LogIn()));
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const LogIn()));
                             },
-                            child: Text(
-                              'Singin Now',
+                            child: const Text(
+                              'تسجيل الدخول الان',
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.blue,
@@ -386,14 +400,14 @@ class _SingUpPageState extends State<SingUpPage> {
                             ))
                       ],
                     ),
-                    ElevatedButton(onPressed: (){print(TybeMarket);}, child: Text('Test'))
+                    ElevatedButton(onPressed: (){print(TybeMarket);}, child: const Text('Test'))
                   ],
                 ),
               )
           ),
         ),
       ),
-    );;
+    );
   }
 }
 

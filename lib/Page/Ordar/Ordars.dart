@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import '../../models/FireBaseStatemant.dart';
 
 class Ordar extends StatefulWidget {
-  const Ordar({Key? key}) : super(key: key);
+  Map DataAdmin;
+  Ordar({required this.DataAdmin,Key? key}) : super(key: key);
   @override
   State<Ordar> createState() => _OrdarState();
 }
@@ -21,7 +22,7 @@ class _OrdarState extends State<Ordar> {
   String? Name;
   @override
   void initState() {
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       setState(() {
         ShowOrdar=true;
       });
@@ -30,13 +31,14 @@ class _OrdarState extends State<Ordar> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     Showaccipt=true;
     return  Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -62,16 +64,16 @@ class _OrdarState extends State<Ordar> {
                         .snapshots(),
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return Text('Something went wrong');
+                        return const Text('Something went wrong');
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator(),);
+                        return const Center(child: CircularProgressIndicator(),);
                       }
                       return ShowOrdar? SizedBox(
                         height: snapshot.data!.size*230,
                         child:ListView(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           children: snapshot.data!.docs.map((DocumentSnapshot document) {
                             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
@@ -81,14 +83,15 @@ class _OrdarState extends State<Ordar> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => OrdarDetals(
+                                          DataAdmin: widget.DataAdmin,
                                           Name: Name!,
-                                          DataOrdar: data as Map<String, dynamic>,
+                                          DataOrdar: data,
                                           hight1: snapshot.data!.docs.length,
-                                          DataOrdarDetals: data as Map<String, dynamic>),
+                                          DataOrdarDetals: data),
                                     ));
                               },
                               splashColor: Colors.teal,
-                              borderRadius:BorderRadius.only(
+                              borderRadius:const BorderRadius.only(
                                 topLeft: Radius.circular(50.0),
                                 bottomLeft: Radius.circular(10.0),
                                 bottomRight: Radius.circular(50.0),
@@ -96,11 +99,11 @@ class _OrdarState extends State<Ordar> {
                               ) ,
                               child:
                               Container(
-                                  padding: EdgeInsets.all(7),
+                                  padding: const EdgeInsets.all(7),
                                   width: double.infinity,
-                                  margin: EdgeInsets.only(left: 33,right: 33,top: 15),
+                                  margin: const EdgeInsets.only(left: 33,right: 33,top: 15),
                                   height: 200,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         bottomLeft: Radius.circular(5),
@@ -116,7 +119,7 @@ class _OrdarState extends State<Ordar> {
                                     children: [
                                       Container(
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
+                                              borderRadius: const BorderRadius.only(
                                                 topLeft: Radius.circular(10),
                                                 bottomLeft: Radius.circular(5),
                                                 bottomRight: Radius.circular(100.0),
@@ -131,7 +134,7 @@ class _OrdarState extends State<Ordar> {
                                           child: Showaccipt?Column(
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Text('قبول الطلب؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
+                                              const Text('قبول الطلب؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
 
                                               ElevatedButton(onPressed: () async {
                                                 setState(() {
@@ -139,9 +142,9 @@ class _OrdarState extends State<Ordar> {
                                                 });
                                                 await FireServices.OrdarState(ordarid: data['orderID'],State:1);
                                                 Navigator.push(context,  MaterialPageRoute(builder: (context) =>
-                                                    OrdarDetals(Name: Name!,DataOrdar: data as  Map<String, dynamic>,hight1: snapshot.data!.docs.length,DataOrdarDetals: data as  Map<String, dynamic>),));
-                                              }, child: Text('قبول',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                                    OrdarDetals(Name: Name!,DataOrdar: data,hight1: snapshot.data!.docs.length,DataOrdarDetals: data,DataAdmin: widget.DataAdmin),));
+                                              },
+                                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('قبول',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),),
                                               ElevatedButton(onPressed: () async {
                                                 showDialog(context: context, builder: (context) => AlertDialog(
                                                   content: Container(
@@ -150,7 +153,7 @@ class _OrdarState extends State<Ordar> {
                                                     child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
-                                                        Text('هل انت متاكد من الغاء الطلب؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                                                        const Text('هل انت متاكد من الغاء الطلب؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                           children: [
@@ -161,24 +164,24 @@ class _OrdarState extends State<Ordar> {
                                                                                 await FireServices.Ordarfailed(Prudact: data['items'], prise: data['totalPrice'], IdOrdar: data['orderID'], Uid: data['User'],NameUser: data['NameUser']);
                                                                                 showSnackBar(context: context, text: 'تم الغاء الطلب', colors: Colors.red);
                                                               Navigator.pop(context);
-                                                            }, child: Text('تأكيد',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
+                                                            },
+                                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('تأكيد',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),),
                                                             ElevatedButton(onPressed: () {
                                                               Navigator.pop(context);
-                                                            }, child: Text('تراجع',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                                            },
+                                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('تراجع',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),),
                                                           ],
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                 ),);
-                                              }, child: Text('الغاء',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
-                                              SizedBox(height: 40,)
+                                              },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('الغاء',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),),
+                                              const SizedBox(height: 40,)
                                             ],
                                           ):
                                           Column(children: [
-                                            Center(child: Text('تم قبول الطلب',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),)),
+                                            const Center(child: Text('تم قبول الطلب',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),)),
                                             ElevatedButton(onPressed: () async {
                                               showDialog(context: context, builder: (context) => AlertDialog(
                                                 content: Container(
@@ -187,7 +190,7 @@ class _OrdarState extends State<Ordar> {
                                                   child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                     children: [
-                                                      Text('هل انت متاكد من الغاء الطلب؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                                                      const Text('هل انت متاكد من الغاء الطلب؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                         children: [
@@ -200,19 +203,19 @@ class _OrdarState extends State<Ordar> {
                                                                 Prudact:data['items'], prise:data['totalPrice'], IdOrdar:data['orderID'], Uid:data['User']);
                                                             showSnackBar(context: context, text: 'تم الغاء الطلب', colors: Colors.red);
                                                             Navigator.pop(context);
-                                                          }, child: Text('تأكيد',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
+                                                          },
+                                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('تأكيد',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),),
                                                           ElevatedButton(onPressed: () {
                                                             Navigator.pop(context);
-                                                          }, child: Text('تراجع',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                                          },
+                                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('تراجع',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),),
                                                         ],
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                               ),);
-                                            }, child: Text('رفض',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
+                                            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('رفض',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),),
                                           ],)
                                       ),
 
@@ -224,21 +227,21 @@ class _OrdarState extends State<Ordar> {
                                             future: UserData.doc(data['User']).get(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<DocumentSnapshot>snapshot) {
-                                              if (snapshot.hasError) {return Text("Something went wrong");}
+                                              if (snapshot.hasError) {return const Text("Something went wrong");}
                                               if (snapshot.hasData && !snapshot.data!.exists) {
-                                                return Text("Document does not exist");}
+                                                return const Text("Document does not exist");}
 
                                               if (snapshot.connectionState == ConnectionState.done) {
                                                 Map<String, dynamic> dataUser = snapshot.data!.data() as Map<String, dynamic>;
                                                 Name=dataUser['Name'];
-                                                return Text(dataUser['Name'],style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),);
+                                                return Text(dataUser['Name'],style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),);
                                               }
 
-                                              return Text("loading");
+                                              return const Text("loading");
                                             },
                                           ),
-                                          Text('عدد المنتجات (${data['items'].length})',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),),
-                                          Text('السعر (${data['totalPrice']})',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),),
+                                          Text('عدد المنتجات (${data['items'].length})',style: const TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),),
+                                          Text('السعر (${data['totalPrice']})',style: const TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),),
 
                                         ],
                                       )
@@ -248,7 +251,7 @@ class _OrdarState extends State<Ordar> {
                             );
                           }).toList(),
                         ),
-                      ):Container(color: Colors.white,child: Center(child: Container(height: 150,width: 150,child: CircularProgressIndicator(color: Colors.teal,backgroundColor: Colors.blue,)),),);
+                      ):Container(color: Colors.white,child: const Center(child: SizedBox(height: 150,width: 150,child: CircularProgressIndicator(color: Colors.teal,backgroundColor: Colors.blue,)),),);
                     },
                   ),
                 ],

@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class FireBaseChat{
 
@@ -21,7 +19,7 @@ class FireBaseChat{
   }
 
   SendMassege({required String massege,required int Which,required List Massage,required String DocumantName}) async {
-    CollectionReference AddDocumant =await FirebaseFirestore.instance.collection('SupportData');
+    CollectionReference AddDocumant =FirebaseFirestore.instance.collection('SupportData');
     Map<String, dynamic> DataMassege = {'Massege':massege,'Which':Which};
     Massage.add(DataMassege);
     AddDocumant

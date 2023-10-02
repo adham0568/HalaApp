@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:adminhala/models/SnackBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FireBaseUpLoad{
@@ -30,11 +27,11 @@ class FireBaseUpLoad{
     };
     await Image.removeAt(Index);
     Image.insert(Index, NewImage);
-    final DocumentReference myDocumentRef =await FirebaseFirestore.instance.collection('Pohto add').doc(documant_Name);
+    final DocumentReference myDocumentRef =FirebaseFirestore.instance.collection('Pohto add').doc(documant_Name);
     myDocumentRef.update({
       'Images': Image,
     });
-    Timer(Duration(seconds: 3), () {showSnackBar(context: context, text: 'تم تعديل الصورة بنجاح', colors: Colors.green);});
+    Timer(const Duration(seconds: 3), () {showSnackBar(context: context, text: 'تم تعديل الصورة بنجاح', colors: Colors.green);});
   }
 
   addNewImage({required ImageName,required ImagePath,required String DocName}) async {

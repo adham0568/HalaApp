@@ -26,7 +26,7 @@ class _DetalState extends State<Detal> {
       if (documentSnapshot.exists) {
         Map<String, dynamic> data = documentSnapshot.data()!;
         setState(() {
-          images = data!['Images']; // قم بتعيين القائمة images بقيمة images المسترجعة من Firestore
+          images = data['Images']; // قم بتعيين القائمة images بقيمة images المسترجعة من Firestore
           waiting = true;
         });
         print(images);
@@ -66,7 +66,7 @@ class _DetalState extends State<Detal> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -79,7 +79,7 @@ class _DetalState extends State<Detal> {
       body:Column(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 30,top: 20),
+            margin: const EdgeInsets.only(bottom: 30,top: 20),
             height: 500,
             child: ListView.builder(
               shrinkWrap: true,
@@ -90,7 +90,7 @@ class _DetalState extends State<Detal> {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15)),
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   child: Stack(
                     children: [
                       Image.network(images[index]['ImageUrl']),
@@ -114,7 +114,7 @@ class _DetalState extends State<Detal> {
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white70,
                           ),
-                            child: Center(child: Text('Change',
+                            child: const Center(child: Text('Change',
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.black,fontWeight: FontWeight.bold
@@ -134,7 +134,7 @@ class _DetalState extends State<Detal> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text('Are You Sure Remove This Image?',style:
+                                      const Text('Are You Sure Remove This Image?',style:
                                         TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -151,14 +151,14 @@ class _DetalState extends State<Detal> {
                                                 context: context);
                                             Navigator.pop(context);
                                           setState(() {});
-                                            }, child: Text('Yes'),style: ButtonStyle(
+                                            },style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty.all(Colors.red)
-                                          ),),
+                                          ), child: const Text('Yes'),),
                                           ElevatedButton(onPressed: () {
                                               Navigator.pop(context);
-                                          }, child: Text('No'),style: ButtonStyle(
+                                          },style: ButtonStyle(
                                               backgroundColor: MaterialStateProperty.all(Colors.green)
-                                          ),),
+                                          ), child: const Text('No'),),
                                         ],
                                       )
                                     ],
@@ -172,7 +172,7 @@ class _DetalState extends State<Detal> {
                               borderRadius: BorderRadius.circular(15),
                               color: Colors.red,
                             ),
-                            child: Center(child: Text('Remove',
+                            child: const Center(child: Text('Remove',
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,fontWeight: FontWeight.bold
@@ -191,17 +191,17 @@ class _DetalState extends State<Detal> {
                         AddNewImage(DocumantName: widget.NameDocumant),
                   ));
             },
-            child: Text(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.orange)),
+            child: const Text(
               'إضافة صورة جديدة',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
                   color: Colors.white),
             ),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.orange)),
           ),
-          imgPath1==null?Container(height: 1,width: 1,):InkWell(
+          imgPath1==null?const SizedBox(height: 1,width: 1,):InkWell(
             onTap: () async {
              await UploadImage.addNewImage(ImageName: imgName1!, ImagePath: imgPath1,DocName: widget.NameDocumant);
               imgPath1=null;
@@ -209,10 +209,10 @@ class _DetalState extends State<Detal> {
 
             },
             child: Container(
-              margin: EdgeInsets.only(left: 100,right: 100),
-              padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+              margin: const EdgeInsets.only(left: 100,right: 100),
+              padding: const EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Colors.green),
-              child: Center(
+              child: const Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

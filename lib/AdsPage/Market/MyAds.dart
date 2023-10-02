@@ -57,7 +57,7 @@ class _MyAddState extends State<MyAdd> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -68,13 +68,13 @@ class _MyAddState extends State<MyAdd> {
         ),
       ),
       body:dataComeing? SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: w,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount:Images.length,
                 itemBuilder: (context, index) =>Container(
@@ -92,7 +92,7 @@ class _MyAddState extends State<MyAdd> {
                           showDialog(context: context, builder: (context) => AlertDialog(
                               backgroundColor: Colors.black54,
                               content:
-                              Container(
+                              SizedBox(
                                 height: h/5,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -106,11 +106,11 @@ class _MyAddState extends State<MyAdd> {
                                          Navigator.pop(context);
                                          Navigator.pop(context);
                                          showSnackBar(context: context, text: 'تم حذف الصورة', colors: Colors.redAccent);
-                                        }, child: Text('نعم',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
-                                        ,style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)),),
+                                        },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)), child: Text('نعم',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
+                                        ,),
                                         ElevatedButton(onPressed: () {Navigator.pop(context);
-                                        }, child: Text('لا',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
-                                          ,style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)),)
+                                        },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)), child: Text('لا',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
+                                          ,)
                                       ],
                                     ),
                                   ],
@@ -124,7 +124,7 @@ class _MyAddState extends State<MyAdd> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text('حذف',style: TextStyle(fontSize: w/26,color: Colors.white,fontWeight: FontWeight.bold),),
-                            Icon(Icons.delete,color: Colors.white,)
+                            const Icon(Icons.delete,color: Colors.white,)
                           ],
                         ),
                       ),
@@ -137,7 +137,7 @@ class _MyAddState extends State<MyAdd> {
                             showDialog(context: context, builder: (context) => AlertDialog(
                                 backgroundColor: Colors.black54,
                                 content:
-                                Container(
+                                SizedBox(
                                   height: h*0.7,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -187,10 +187,10 @@ class _MyAddState extends State<MyAdd> {
                                            Navigator.pop(context);
                                            Navigator.pop(context);
                                            showSnackBar(context: context, text: 'تم تعديل الصورة', colors: Colors.teal);
-                                          }, child: Text('نعم',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
-                                            ,style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)),),
-                                          ElevatedButton(onPressed: () {Navigator.pop(context);}, child: Text('لا',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
-                                            ,style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)),)
+                                          },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)), child: Text('نعم',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
+                                            ,),
+                                          ElevatedButton(onPressed: () {Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal)), child: Text('لا',style: TextStyle(fontSize: w/27,color: Colors.white,fontWeight: FontWeight.bold),)
+                                            ,)
                                         ],
                                       ),
                                     ],
@@ -204,7 +204,7 @@ class _MyAddState extends State<MyAdd> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text('تعديل',style: TextStyle(fontSize: w/26,color: Colors.white,fontWeight: FontWeight.bold),),
-                                Icon(Icons.settings,color: Colors.white,)
+                                const Icon(Icons.settings,color: Colors.white,)
                               ],
                             ),
                           ),
@@ -224,7 +224,7 @@ class _MyAddState extends State<MyAdd> {
               height: h,
               child: Center(child:
               Container(height: h/7,width: h/7,color: Colors.white,
-                child: Center(child: CircularProgressIndicator(backgroundColor: Colors.black12,color: Colors.teal)),)))
+                child:const Center(child: CircularProgressIndicator(backgroundColor: Colors.black12,color: Colors.teal)),)))
       ,
     );
   }

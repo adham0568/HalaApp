@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:adminhala/Page/PrudactsPages/ProductsCollections.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -32,7 +33,7 @@ class _CollectionPageState extends State<CollectionPage> {
         setState(() {
           imgPath = File(pickedImg.path);
           imgName = basename(pickedImg.path);
-          String random = Uuid().v1();
+          String random = const Uuid().v1();
           imgName = "$random$imgName";
           setState(() {
             Imagedone = true;
@@ -47,14 +48,13 @@ class _CollectionPageState extends State<CollectionPage> {
       print(e);
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -68,18 +68,18 @@ class _CollectionPageState extends State<CollectionPage> {
         child: Column(
           children: [
             Transform.translate(
-              offset: Offset(0,50),
+              offset: const Offset(0,50),
               child: InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(
+                      AlertDialog(content: SizedBox(
                         height: 200,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                               OpenStdyo1();
-                            }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                               children: [Text('Add Image'),Icon(Icons.camera)],)),
                             TextFormField(
                               controller: NameCollection,
@@ -89,7 +89,7 @@ class _CollectionPageState extends State<CollectionPage> {
                               ),
                             ),
                             ElevatedButton(onPressed: () async {
-                              String RandomIdCollection=Uuid().v1();
+                              String RandomIdCollection=const Uuid().v1();
                               await UploadData.UploadCollection(
                                   Name: NameCollection.text,
                                   IdCollection: RandomIdCollection
@@ -98,7 +98,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                 UidMarket: FirebaseAuth.instance.currentUser!.uid
                               );
                               Navigator.pop(context);
-                            }, child: Text('Add'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),)
+                            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('Add'),)
                           ],
                         ),
                       ))
@@ -108,28 +108,28 @@ class _CollectionPageState extends State<CollectionPage> {
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.blueGrey),
-                  child: Icon(Icons.add,size: 60,color: Colors.white,),
+                  child: const Icon(Icons.add,size: 60,color: Colors.white,),
                 ),
 
               ),
             ),//add collection
-            Container(margin: EdgeInsets.only(top: 120,right: 10,left: 10),
+            Container(margin: const EdgeInsets.only(top: 120,right: 10,left: 10),
               child: SizedBox(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance.collection('Collection').where('UidAdmin',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
-                      return Text('Something went wrong');
+                      return const Text('Something went wrong');
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator(),);
+                      return const Center(child: CircularProgressIndicator(),);
                     }
                     return SizedBox(
                       child: GridView(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 1.7/3
                         ),
@@ -142,15 +142,15 @@ class _CollectionPageState extends State<CollectionPage> {
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Main_Collection(DataFromeCollectionPage:data,)));
                               },
                               child: Container(
-                                margin: EdgeInsets.all(10),
+                                margin: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3),borderRadius: BorderRadius.circular(10)),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     CachedNetworkImage(
                                       imageUrl: data['ImageUrl'],
-                                      placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                       imageBuilder: (context, imageProvider) => Container(
                                         height: 105,
                                         width: 140,
@@ -163,7 +163,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                         ),
                                       ),
                                     ),
-                                    Text(data['Name'],style: TextStyle(color: Colors.black,
+                                    Text(data['Name'],style: const TextStyle(color: Colors.black,
                                     fontWeight: FontWeight.bold,fontSize: 18
                                     ),)
                                   ],

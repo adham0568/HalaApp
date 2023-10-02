@@ -1,15 +1,18 @@
 import 'package:adminhala/Page/Ordar/PrudactOrdarDetals.dart';
+import 'package:adminhala/models/UserData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-
 import '../../Provider/OrdarProvider.dart';
 import '../../models/FireBaseStatemant.dart';
 
 class OrdarDetals extends StatefulWidget {
+  Map DataAdmin;
   int hight1;
   Map DataOrdarDetals,DataOrdar;
   String Name;
-  OrdarDetals({Key? key,required this.DataOrdar,required this.hight1,required this.Name,required this.DataOrdarDetals}) : super(key: key);
+  OrdarDetals({Key? key,required this.DataAdmin,required this.DataOrdar,required this.hight1,required this.Name,required this.DataOrdarDetals}) : super(key: key);
 
   @override
   State<OrdarDetals> createState() => _OrdarDetalsState();
@@ -65,12 +68,12 @@ List finalItems=[];
         displayedItems.add(item);
       }
     }
-    final _Provaider = Provider.of<Ordars>(context);
+    final Provaider = Provider.of<Ordars>(context);
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -132,10 +135,10 @@ List finalItems=[];
                                 Text('حالة الطلب',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20,color: Colors.white),),
                                 ElevatedButton(onPressed: () async {
                                   await FireServices.OrdarState(ordarid: widget.DataOrdar['orderID'],State:2);
-                                }, child: Text('قيد التحضير',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold),),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
+                                },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: Text('قيد التحضير',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold),),),
                                 ElevatedButton(onPressed: () async {
                                  await FireServices.OrdarState(ordarid: widget.DataOrdar['orderID'],State:3);
-                                }, child: Text('على الطريق',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigo)),),
+                                },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.indigo)), child: Text('على الطريق',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),),
                                 ElevatedButton(onPressed: () async {
                                     showDialog(
                                       context: context,
@@ -161,12 +164,21 @@ List finalItems=[];
                                                        prise:widget.DataOrdar['totalPrice'],
                                                        Prudact:widget.DataOrdar['items']);
                                                    await FireServices.OrdarState(ordarid: widget.DataOrdar['orderID'],State:4);
+                                                   SendToDelivary().sendOrdarToDelivary(
+                                                       PriseOrdar: widget.DataOrdar['totalPrice'],
+                                                       OrdarId: widget.DataOrdar['orderID'],
+                                                       NameUser: widget.DataOrdar['NameUser'],
+                                                       items:widget.DataOrdar['items'],
+                                                       MarketName: widget.DataAdmin['Name'],
+                                                       MarketLocation:GeoPoint(widget.DataAdmin['Lat'],widget.DataAdmin['Long']) as GeoPoint, //error ,
+                                                       UserLocation:GeoPoint(widget.DataOrdar['UserLat'], widget.DataOrdar['UserLng']) as GeoPoint,
+                                                       City: 12,location: LatLng(32.3230019, 35.3689003));
                                                    Navigator.pop(context);
-                                                 }, child: Text('نعم',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),
-                                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
+                                                 },
+                                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: Text('نعم',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),),
                                                  ElevatedButton(onPressed: ()  {
                                                    Navigator.pop(context);
-                                                 }, child: Text('لا',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),),
+                                                 },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)), child: Text('لا',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),),
 
                                                ],
                                              )
@@ -175,8 +187,8 @@ List finalItems=[];
                                         ),
                                       )
                                     );
-                                  }, child: Text('الطلب مكتمل',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
-                                SizedBox(height: 40,)
+                                  },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: Text('الطلب مكتمل',style: TextStyle(fontSize: w/20,fontWeight: FontWeight.bold)),),
+                                const SizedBox(height: 40,)
                               ],
                             ),
                           ),
@@ -192,7 +204,7 @@ List finalItems=[];
                         children: [
                           Text('المنتجات', style: TextStyle(fontSize: w/18, fontWeight: FontWeight.bold, color: Colors.white)),
                           ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: widget.DataOrdar['items'].length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
@@ -213,7 +225,7 @@ List finalItems=[];
                               if (isProductDisplayed) {
                                 return Container(
                                   height: h/5.2,
-                                  margin: EdgeInsets.all(5),
+                                  margin: const EdgeInsets.all(5),
                                   padding: EdgeInsets.only(left: w/30, right: w/30),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(w/20),
@@ -224,7 +236,7 @@ List finalItems=[];
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
+                                          SizedBox(
                                               width: w/3,
                                               child: Image.network(currentItem['ImageUrl'],fit: BoxFit.contain,)),
                                           Column(
@@ -239,15 +251,15 @@ List finalItems=[];
                                               widget.DataOrdar['items'].length>0 ?ElevatedButton(onPressed: (){
                                                 Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactOrdarDetals(Prudact: widget.DataOrdarDetals),));
                                               },
-                                                child:Text('تفاصيل',style: TextStyle(fontSize: w/25),),
                                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+                                                child:Text('تفاصيل',style: TextStyle(fontSize: w/25),),
                                               ):
                                              ElevatedButton(onPressed: (){
                                                setState(() {
                                                  DoneOrNot[index] = DoneOrNot[index];
                                                });
-                                             }, child:Text(DoneOrNot[index]?' جاهز':'تم'),
-                                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(DoneOrNot[index]?Colors.green:Colors.red)),
+                                             },
+                                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(DoneOrNot[index]?Colors.green:Colors.red)), child:Text(DoneOrNot[index]?' جاهز':'تم'),
                                              ),
                                               Text('الكمية: $duplicateItemsCount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.red)),
                                               Text('${CalculatedPrise().toStringAsFixed(decimalPlaces)} ₪', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.red)),

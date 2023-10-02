@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:adminhala/AdsPage/AddsDetals.dart';
-import 'package:adminhala/AdsPage/Ads.dart';
 import 'package:adminhala/AdsPage/FireBase.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:math';import 'package:path/path.dart' show basename, url;
 
-import '../Page/AuthPages/SingUp.dart';
 //page 3
 class ChangeImage extends StatefulWidget {
   String TybePrudact,PrudactName,imageurl,DocumantName;
@@ -41,12 +39,13 @@ class _ChangeImageState extends State<ChangeImage> {
     // TODO: implement initState
     super.initState();
   }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -67,13 +66,13 @@ class _ChangeImageState extends State<ChangeImage> {
                 child: Container(
                   width: 300,
                   height: 80,
-                  margin: EdgeInsets.only(top: 50),
+                  margin: const EdgeInsets.only(top: 50),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.green,
                   ),
-                  padding: EdgeInsets.only(left: 70,right: 70),
-                  child: Row(
+                  padding: const EdgeInsets.only(left: 70,right: 70),
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Change',style: TextStyle(
@@ -87,25 +86,25 @@ class _ChangeImageState extends State<ChangeImage> {
                 ),
               ),
             ),
-            SizedBox(height: 78,),
-            Container(
+            const SizedBox(height: 78,),
+            SizedBox(
               width: double.infinity,
               height: 200,
               child:imgPath1==null?
-              Container(decoration: BoxDecoration(
+              Container(decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,
               ),
-              child: Image.network(widget.imageurl),
-              height: 100,width: 100,)
+              height: 100,width: 100,
+              child: Image.network(widget.imageurl),)
                   :
               CircleAvatar(
                 backgroundImage: FileImage(imgPath1!),
               ),
             ),
-            SizedBox(height: 50,),
+            const SizedBox(height: 50,),
             Container(
-              margin: EdgeInsets.only(left: 20,right: 20),
+              margin: const EdgeInsets.only(left: 20,right: 20),
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -113,13 +112,13 @@ class _ChangeImageState extends State<ChangeImage> {
                     borderRadius: BorderRadius.circular(15),),
                   hintText: 'اسم المنتج',
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),
+                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),
                 controller: PrudactName,
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Container(
-              margin: EdgeInsets.only(left: 20,right: 20),
+              margin: const EdgeInsets.only(left: 20,right: 20),
               child: TextFormField(
                 maxLength: 1,
                 keyboardType: TextInputType.number,
@@ -129,7 +128,7 @@ class _ChangeImageState extends State<ChangeImage> {
                     hintText: 'صنف المنتج',
                     helperText: '0=HalaApp or 1=Market'
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),
+                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),
                 controller: TybeAdd,
               ),
             ),
@@ -149,11 +148,11 @@ class _ChangeImageState extends State<ChangeImage> {
                     Detal(NameDocumant:widget.DocumantName),));
               },
               child: Container(
-                margin: EdgeInsets.only(top: 25),
-                padding: EdgeInsets.all(10),
+                margin: const EdgeInsets.only(top: 25),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
@@ -162,7 +161,7 @@ class _ChangeImageState extends State<ChangeImage> {
                         ]
                     )
                 ),
-                child: Text(
+                child: const Text(
                   'UpLoad New Image',style: TextStyle(fontSize: 25,color: Colors.white
                 ,fontWeight: FontWeight.bold
                 ),
@@ -173,7 +172,7 @@ class _ChangeImageState extends State<ChangeImage> {
             ElevatedButton(onPressed: () {
               print(widget.Index);
               print(widget.Images);
-            }, child: Text('test'))
+            }, child: const Text('test'))
           ],
         ),
       ),

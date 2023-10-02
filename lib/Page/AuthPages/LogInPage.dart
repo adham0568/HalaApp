@@ -1,14 +1,7 @@
 import 'package:adminhala/Page/AuthPages/AuthFireBase.dart';
-import 'package:adminhala/Page/AuthPages/AuthFireBase.dart';
-import 'package:adminhala/Page/AuthPages/AuthFireBase.dart';
-import 'package:adminhala/Page/AuthPages/LogInPage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-import 'AuthFireBase.dart';
-import 'AuthFireBase.dart';
-import 'AuthFireBase.dart';
-import 'LogInPage.dart';
-import 'LogInPage.dart';
 import 'SingUp.dart';
 
 class LogIn extends StatefulWidget {
@@ -21,7 +14,10 @@ final emailAddress=TextEditingController();
 final password=TextEditingController();
 bool Showpass = true;
 bool waiting1 = false;
+
 class _LogInState extends State<LogIn> {
+
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -32,12 +28,12 @@ class _LogInState extends State<LogIn> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 50,bottom: 10),
+                margin: const EdgeInsets.only(top: 50,bottom: 10),
                 height: 150,
                 child: Image.asset('assets/Images/black logo.png'),
               ),
               Container(
-                margin: EdgeInsets.only(left: 35,right: 35),
+                margin: const EdgeInsets.only(left: 35,right: 35),
                 height: 200,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,7 +42,7 @@ class _LogInState extends State<LogIn> {
                       validator: (email) {return email!.contains(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))?  null: "أدخل بريد الكتروني صالح";},
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: emailAddress,
-                      style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
                       //النص الذي سيتم ادخاله
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -55,7 +51,7 @@ class _LogInState extends State<LogIn> {
                             borderRadius: BorderRadius.circular(20)),
                         hintText:'Enter Email' ,
                         hintStyle: TextStyle(color: Colors.grey.shade900),
-                        prefixIcon:  Icon(Icons.email),
+                        prefixIcon:  const Icon(Icons.email),
                         prefixIconColor: Colors.grey.shade900,
                         fillColor: Colors.grey,
                         filled: true,
@@ -65,7 +61,7 @@ class _LogInState extends State<LogIn> {
                       controller: password,
                       validator: (value) {return  value!.length<8 ? "ادخل كلمة المرور" : null;},
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black54, fontWeight: FontWeight.bold),
                       obscureText: Showpass,
                       keyboardType: TextInputType.name,
@@ -94,7 +90,7 @@ class _LogInState extends State<LogIn> {
                             color: Colors.grey.shade900,
                           ),
                         ),
-                        prefixIconColor: Color.fromRGBO(0, 175, 162, 10),
+                        prefixIconColor: const Color.fromRGBO(0, 175, 162, 10),
                         fillColor: Colors.grey,
                         filled: true,
                       ),
@@ -113,8 +109,8 @@ class _LogInState extends State<LogIn> {
                             waiting1=false;
                           });
                         },
-                        child:waiting1? CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation(Color.fromRGBO(0, 175, 162, 10)),)
-                            :Text(
+                        child:waiting1? const CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation(Color.fromRGBO(0, 175, 162, 10)),)
+                            :const Text(
                           'LogIn',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -124,13 +120,13 @@ class _LogInState extends State<LogIn> {
                   ],
                 ),
               ),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
               Container(
-                margin: EdgeInsets.only(bottom: 100),
+                margin: const EdgeInsets.only(bottom: 100),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Dont Have Account?!',
                       style: TextStyle(
                         fontSize: 15,
@@ -142,7 +138,7 @@ class _LogInState extends State<LogIn> {
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder:(context)=>SingUpPage(Lat:0.0,Long:0.0,LocationAdd: false,)));
                         },
-                        child: Text(
+                        child: const Text(
                           'SingUp Now',
                           style: TextStyle(
                             fontSize: 15,

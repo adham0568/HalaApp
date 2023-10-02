@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:adminhala/Page/PrudactsPages/AddPrudactWithDeatels.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:path/path.dart' show basename, url;
 import 'package:adminhala/Page/PrudactsPages/prudacts%20detals.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/FireBaseStatemant.dart';
-import '../../models/PrudactData.dart';
-import 'main_Collection.dart';
 import 'dart:math';
 class PrudactCollection extends StatefulWidget {
   Map data_Collection;
@@ -41,7 +41,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
         setState(() {
           imgPath = File(pickedImg.path);
           imgName = basename(pickedImg.path);
-          String random = Uuid().v1();
+          String random = const Uuid().v1();
           imgName = "$random$imgName";
           setState(() {
             Imagedone = true;
@@ -67,15 +67,15 @@ class _PrudactCollectionState extends State<PrudactCollection> {
         actions: [
           IconButton(onPressed: (){
             showDialog(context: context, builder: (context) =>
-                AlertDialog(content: Container(height: 350,
+                AlertDialog(content: SizedBox(height: 350,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('Edit Collection',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                      const Text('Edit Collection',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
 
                       ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                         OpenStdyo1();
-                      }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                      }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                         children: [Text('Add Image Prudoct'),Icon(Icons.camera)],)),
 
                       TextFormField(
@@ -103,20 +103,20 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                 Data: widget.data_Collection);
                             Navigator.pop(context);
 
-                          }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
-                          ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
+                          },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('Edit'),),
+                          ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)), child: const Text('Cancel'),),
                         ],
                       ),
 
                       ElevatedButton(onPressed: (){Navigator.pop(context);
                       showDialog(context: context, builder: (context) =>
                           AlertDialog(
-                            content: Container(
+                            content: SizedBox(
                               height: 150,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text('are you sure?'),
+                                  const Text('are you sure?'),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
@@ -129,23 +129,23 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                                   IdPrudactMainCollection: widget.Data_From_Main_Collection['IdPrudactMainCollection'],
                                                   IdCollection: widget.Data_From_Main_Collection['IdCollection']);
                                               Navigator.pop(context);
-                                      }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
-                                      ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Yes'),),
+                                      ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('No'),),
                                     ],
                                   ),
                                 ],
                               ),),
                           ),);
-                      }, child: Text('Remove Main Collectin'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),//Remove Collection
+                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Remove Main Collectin'),),//Remove Collection
 
                     ],
                   ),
                 ))
               ,);
-          }, icon: Icon(Icons.settings,color: Colors.white,))],//setti
+          }, icon: const Icon(Icons.settings,color: Colors.white,))],//setti
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -159,16 +159,16 @@ class _PrudactCollectionState extends State<PrudactCollection> {
         child: Column(
           children: [
             Transform.translate(
-              offset: Offset(0,50),
+              offset: const Offset(0,50),
               child: InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) => AlertDialog(
-                    content: Container(
+                    content: SizedBox(
                       height: 150,
                       child:Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text('اختار نوع المنتج'),
+                          const Text('اختار نوع المنتج'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -176,7 +176,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                 onTap: (){
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactWithOpitions(
-                                      Opitions: [],
+                                      Opitions: const [],
                                       data_Collection: widget.data_Collection,Data_From_Main_Collection: widget.Data_From_Main_Collection),));
                                 },
                                 child: Container(
@@ -190,14 +190,14 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                   Navigator.pop(context);
                                   showDialog(context: context, builder: (context) =>
                                       AlertDialog(content: SingleChildScrollView(
-                                        child: Container(
+                                        child: SizedBox(
                                           height: h*1.1,
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                                                 OpenStdyo1();
-                                              }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                              }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [Text('اضافة صورة للمنتح'),Icon(Icons.camera)],)),
                                               TextFormField(
                                                 controller: PrudactName,
@@ -259,7 +259,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                                   Count_requests: 0
                                                 );
                                                 Navigator.pop(context);
-                                              }, child: Text('إضافة'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),)
+                                              },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('إضافة'),)
                                             ],
                                           ),
                                         ),
@@ -283,7 +283,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.blueGrey),
-                  child: Icon(Icons.add,size: 60,color: Colors.white,),
+                  child: const Icon(Icons.add,size: 60,color: Colors.white,),
                 ),
 
               ),
@@ -301,11 +301,11 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                     (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                   if (snapshot.hasError) {
-                    return Text("Something went wrong");
+                    return const Text("Something went wrong");
                   }
 
                   if (snapshot.hasData && !snapshot.data!.exists) {
-                    return Text("Document does not exist");
+                    return const Text("Document does not exist");
                   }
 
                   if (snapshot.connectionState == ConnectionState.done) {
@@ -316,7 +316,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                           child: GridView.builder(
                             shrinkWrap: true,
                             itemCount:data['Produacts']==null?0:data['Produacts'].length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 childAspectRatio: 15/20,
                                 crossAxisCount: 3),
                             itemBuilder: (context, index) => SizedBox(
@@ -334,15 +334,15 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                                           )));
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.all(10),
+                                  margin: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(color: Colors.black12,borderRadius: BorderRadius.circular(10)),
                                   child:Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       CachedNetworkImage(
                                         imageUrl: data['Produacts'][index]['ImageUrl'],
-                                        placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                                        errorWidget: (context, url, error) => Icon(Icons.error),
+                                        placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
                                         imageBuilder: (context, imageProvider) => Container(
                                           height: h/8,
                                           decoration: BoxDecoration(
@@ -367,7 +367,7 @@ class _PrudactCollectionState extends State<PrudactCollection> {
                     );
                   }
 
-                  return Text("loading");
+                  return const Text("loading");
                 },
               )
             ),//Prudacts

@@ -38,7 +38,7 @@ class _AddNewImageState extends State<AddNewImage> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -57,12 +57,12 @@ class _AddNewImageState extends State<AddNewImage> {
               },
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                   height: 55,
                   width: 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -71,7 +71,7 @@ class _AddNewImageState extends State<AddNewImage> {
                           ]
                       )
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'إضافة صورة الاعلان',style: TextStyle(
                         fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold
@@ -82,13 +82,13 @@ class _AddNewImageState extends State<AddNewImage> {
               ),
             ),
             Center(
-              child: Container(
+              child: SizedBox(
                 height: 300,width: 300,
-                child: imgPath1==null?Text(''):
+                child: imgPath1==null?const Text(''):
               Image.file(imgPath1!),),
             ),
             Container(
-              margin: EdgeInsets.only(left: 20,right: 20),
+              margin: const EdgeInsets.only(left: 20,right: 20),
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -96,20 +96,20 @@ class _AddNewImageState extends State<AddNewImage> {
                   borderRadius: BorderRadius.circular(15),),
                   hintText:valueOfMarketOrHala==0?'اسم المنتج':'اسم المطعم',
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),
+                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black),
                 controller: PrudactName,
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 50),
+              margin: const EdgeInsets.symmetric(horizontal: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Text('Hala',style: TextStyle(fontSize: 20,color: Colors.black54,fontWeight: FontWeight.bold),),
-                      SizedBox(width: 20,),
+                      const Text('Hala',style: TextStyle(fontSize: 20,color: Colors.black54,fontWeight: FontWeight.bold),),
+                      const SizedBox(width: 20,),
                       InkWell(
                         borderRadius: BorderRadius.circular(50),
                         onTap: () {
@@ -126,8 +126,8 @@ class _AddNewImageState extends State<AddNewImage> {
                               shape: BoxShape.circle,
                           border: Border.all(color: Colors.black54,width: 1)
                           ),
-                          child: ContenerSetting?Icon(Icons.check,color: Colors.white,size: 35,)
-                          :Text('')
+                          child: ContenerSetting?const Icon(Icons.check,color: Colors.white,size: 35,)
+                          :const Text('')
                           ,
                         ),
                       ),
@@ -150,21 +150,21 @@ class _AddNewImageState extends State<AddNewImage> {
                               shape: BoxShape.circle,
                               border: Border.all(color: Colors.black54,width: 1)
                           ),
-                          child: ContenerSetting1?Icon(Icons.check,color: Colors.white,size: 35,)
-                              :Text('')
+                          child: ContenerSetting1?const Icon(Icons.check,color: Colors.white,size: 35,)
+                              :const Text('')
                           ,
                         ),
                       ),
-                      SizedBox(width: 20,),
-                      Text('Market',style: TextStyle(fontSize: 20,color: Colors.black54,fontWeight: FontWeight.bold),),
+                      const SizedBox(width: 20,),
+                      const Text('Market',style: TextStyle(fontSize: 20,color: Colors.black54,fontWeight: FontWeight.bold),),
                     ],
                   )
                 ],
               ),
             ),
             ShowFeildIdAdmin? Container(
-              margin: EdgeInsets.only(left: 20,right: 20),
-            ):Container(height: 1,width: 1,),
+              margin: const EdgeInsets.only(left: 20,right: 20),
+            ):const SizedBox(height: 1,width: 1,),
             InkWell(
               borderRadius: BorderRadius.circular(50),
               onTap: () async {
@@ -183,7 +183,7 @@ class _AddNewImageState extends State<AddNewImage> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [
@@ -192,10 +192,10 @@ class _AddNewImageState extends State<AddNewImage> {
                     ]
                   )
                 ),
-                margin: EdgeInsets.only(left: 50,right: 50,top: 20),
+                margin: const EdgeInsets.only(left: 50,right: 50,top: 20),
                 height: 50,
                 width: 150,
-                child: Center(child: Text("ارسال الاعلان",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),)),
+                child: const Center(child: Text("ارسال الاعلان",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),)),
               ),
             ),
 

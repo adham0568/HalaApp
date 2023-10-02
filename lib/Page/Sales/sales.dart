@@ -33,7 +33,7 @@ class _salesState extends State<sales> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -49,16 +49,16 @@ class _salesState extends State<sales> {
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
           if (snapshot.hasError) {
-            return Text("Something went wrong");
+            return const Text("Something went wrong");
           }
 
           if (snapshot.hasData && !snapshot.data!.exists) {
-            return Text("Document does not exist");
+            return const Text("Document does not exist");
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-            return Container(
+            return SizedBox(
               width: double.infinity,
               child: Column(
                 children: [
@@ -92,7 +92,7 @@ class _salesState extends State<sales> {
                               margin: EdgeInsets.only(left: w/35),
                               height: h/9,width: w/2.5,
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                   begin: Alignment.topRight,
                                   end: Alignment.bottomLeft,
                                   colors: [
@@ -115,7 +115,7 @@ class _salesState extends State<sales> {
                               margin: EdgeInsets.only(right: w/35),
                               height: h/9,width: w/2.5,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                       begin: Alignment.topRight,
                                       end: Alignment.bottomLeft,
                                       colors: [
@@ -140,7 +140,7 @@ class _salesState extends State<sales> {
                         child: Container(
                           height: h/9,width: w*0.95,
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                   begin: Alignment.topRight,
                                   end: Alignment.bottomLeft,
                                   colors: [
@@ -167,7 +167,7 @@ class _salesState extends State<sales> {
                               margin: EdgeInsets.only(left: w/35),
                               height: h/9,width: w/2.5,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                       begin: Alignment.topRight,
                                       end: Alignment.bottomLeft,
                                       colors: [
@@ -190,7 +190,7 @@ class _salesState extends State<sales> {
                               margin: EdgeInsets.only(right: w/35),
                               height: h/9,width: w/2.5,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                       begin: Alignment.topRight,
                                       end: Alignment.bottomLeft,
                                       colors: [
@@ -288,10 +288,10 @@ class _salesState extends State<sales> {
                   ),*/
                 ],
               ),
-            );;
+            );
           }
 
-          return Text("loading");
+          return const Text("loading");
         },
       )
 

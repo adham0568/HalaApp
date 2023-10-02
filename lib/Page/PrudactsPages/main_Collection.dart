@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:io';
-import 'package:adminhala/Page/PrudactsPages/prudacts%20detals.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -31,6 +32,7 @@ final NameMainCollection= TextEditingController();
 class _Main_CollectionState extends State<Main_Collection> {
   FireBase addMainCollection=FireBase();
 
+
   OpenStdyo1() async {
     final pickedImg = await ImagePicker().pickImage(
         source: ImageSource.gallery);
@@ -39,7 +41,7 @@ class _Main_CollectionState extends State<Main_Collection> {
         setState(() {
           imgPath = File(pickedImg.path);
           imgName = basename(pickedImg.path);
-          String random = Uuid().v1();
+          String random = const Uuid().v1();
           imgName = "$random$imgName";
           setState(() {
             Imagedone = true;
@@ -64,14 +66,14 @@ class _Main_CollectionState extends State<Main_Collection> {
         actions: [
           IconButton(onPressed: (){
             showDialog(context: context, builder: (context) =>
-                AlertDialog(content: Container(height: 350,
+                AlertDialog(content: SizedBox(height: 350,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('Edit Collection',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                      const Text('Edit Collection',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                       ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                         OpenStdyo1();
-                      }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                      }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                         children: [Text('Add New Image'),Icon(Icons.camera)],)),
 
                       TextFormField(
@@ -92,43 +94,43 @@ class _Main_CollectionState extends State<Main_Collection> {
                             );
                             Navigator.pop(context);
 
-                          }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
-                          ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
+                          },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('Edit'),),
+                          ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)), child: const Text('Cancel'),),
                         ],
                       ),
 
                       ElevatedButton(onPressed: (){Navigator.pop(context);
                       showDialog(context: context, builder: (context) =>
                           AlertDialog(
-                            content: Container(
+                            content: SizedBox(
                               height: 150,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text('are you sure?'),
+                                  const Text('are you sure?'),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       ElevatedButton(onPressed: (){
                                         FireBase().removeCollectionHala(IdCollection:widget.DataFromeCollectionPage['IdCollection']);
                                         Navigator.pop(context);
-                                      }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
-                                      ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Yes'),),
+                                      ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('No'),),
                                     ],
                                   ),
                                 ],
                               ),),
                           ),);
-                      }, child: Text('Remove Collectin'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),//Remove Collection
+                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Remove Collectin'),),//Remove Collection
 
                     ],
                   ),
                 ))
               ,);
-          }, icon: Icon(Icons.settings,color: Colors.white,))],
+          }, icon: const Icon(Icons.settings,color: Colors.white,))],
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -142,18 +144,18 @@ class _Main_CollectionState extends State<Main_Collection> {
         child: Column(
           children: [
             Transform.translate(
-              offset: Offset(0,50),
+              offset: const Offset(0,50),
               child: InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(
+                      AlertDialog(content: SizedBox(
                         height: 200,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                               OpenStdyo1();
-                            }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                               children: [Text('Add Image Prudoct'),Icon(Icons.camera)],)),
                             TextFormField(
                               controller: NameMainCollection,
@@ -163,7 +165,7 @@ class _Main_CollectionState extends State<Main_Collection> {
                               ),
                             ),
                             ElevatedButton(onPressed: () async {
-                              String RandomIdCollection=Uuid().v1();
+                              String RandomIdCollection=const Uuid().v1();
                               await addMainCollection.uploadMain_Collection(
                                   imgPath: imgPath!,
                                   imgName: imgName!,
@@ -174,7 +176,7 @@ class _Main_CollectionState extends State<Main_Collection> {
                               Navigator.pop(context);
                               imgPath=null;
                               imgName='';
-                            }, child: Text('Add'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),)
+                            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('Add'),)
                           ],
                         ),
                       ))
@@ -184,13 +186,13 @@ class _Main_CollectionState extends State<Main_Collection> {
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.blueGrey),
-                  child: Icon(Icons.add,size: 60,color: Colors.white,),
+                  child: const Icon(Icons.add,size: 60,color: Colors.white,),
                 ),
 
               ),
             ),
 
-            SizedBox(height: 150,),
+            const SizedBox(height: 150,),
 
             StreamBuilder<QuerySnapshot>(
 
@@ -199,17 +201,17 @@ class _Main_CollectionState extends State<Main_Collection> {
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Text('Something went wrong');
+                  return const Text('Something went wrong');
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator(),);
+                  return const Center(child: CircularProgressIndicator(),);
                 }
                 return SizedBox(
                   child: GridView(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio:18/30,
                       mainAxisSpacing: 10,
@@ -222,19 +224,19 @@ class _Main_CollectionState extends State<Main_Collection> {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>PrudactCollection(data_Collection: widget.DataFromeCollectionPage,Data_From_Main_Collection: data,)));
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 10,right: 10),
+                            margin: const EdgeInsets.only(left: 10,right: 10),
                             decoration: BoxDecoration(
                                 color: Colors.black12,
                                 borderRadius: BorderRadius.circular(10)
                             ),
                             child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                SizedBox(height: 15,),
+                                const SizedBox(height: 15,),
                                 CachedNetworkImage(
                                   height: h/8,
                                   imageUrl: data['Image'],
-                                  placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                  placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                   imageBuilder: (context, imageProvider) => Container(
                                     height: h/7,
                                     decoration: BoxDecoration(
@@ -246,7 +248,7 @@ class _Main_CollectionState extends State<Main_Collection> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 10,),
+                                const SizedBox(height: 10,),
                                 Align(
                                     alignment: Alignment.centerRight,
                                     child: Text(data['Name'],style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold),)),

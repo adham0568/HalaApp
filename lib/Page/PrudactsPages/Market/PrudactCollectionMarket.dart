@@ -1,19 +1,13 @@
 import 'dart:io';
-import 'package:adminhala/Page/PrudactsPages/AddPrudactWithDeatels.dart';
 import 'package:adminhala/Page/PrudactsPages/Market/PrudactDetalsMarket.dart';
 import 'package:adminhala/Page/PrudactsPages/Market/PrudactWithOpitionsMarket.dart';
-import 'package:adminhala/models/PrudactDataMarket.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart' show basename, url;
-import 'package:adminhala/Page/PrudactsPages/prudacts%20detals.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../../../models/FireBaseStatemant.dart';
-import '../../../models/PrudactData.dart';
-import '../main_Collection.dart';
 import 'dart:math';
 class PrudactCollection_Market extends StatefulWidget {
   List productMarket;
@@ -55,7 +49,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
         setState(() {
           imgPath = File(pickedImg.path);
           imgName = basename(pickedImg.path);
-          String random = Uuid().v1();
+          String random = const Uuid().v1();
           imgName = "$random$imgName";
           setState(() {
             Imagedone = true;
@@ -84,15 +78,15 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
         actions: [
           IconButton(onPressed: (){
             showDialog(context: context, builder: (context) =>
-                AlertDialog(content: Container(height: 350,
+                AlertDialog(content: SizedBox(height: 350,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('Edit Collection',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                      const Text('Edit Collection',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
 
                       ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                         OpenStdyo1();
-                      }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                      }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                         children: [Text('Add Image Prudoct'),Icon(Icons.camera)],)),
 
                       TextFormField(
@@ -116,20 +110,20 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                 widget.Data_From_Main_Collection['IdPrudactMainCollection'],);
                             Navigator.pop(context);
 
-                          }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
-                          ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
+                          },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('Edit'),),
+                          ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)), child: const Text('Cancel'),),
                         ],
                       ),
 
                       ElevatedButton(onPressed: (){Navigator.pop(context);
                       showDialog(context: context, builder: (context) =>
                           AlertDialog(
-                            content: Container(
+                            content: SizedBox(
                               height: 150,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text('are you sure?'),
+                                  const Text('are you sure?'),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
@@ -137,23 +131,23 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                         FireBase().removeMainCollection(idMainCollection: widget.Data_From_Main_Collection['IdPrudactMainCollection']);
                                         Navigator.pop(context);
 
-                                      }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
-                                      ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Yes'),),
+                                      ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('No'),),
                                     ],
                                   ),
                                 ],
                               ),),
                           ),);
-                      }, child: Text('Remove Main Collectin'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),//Remove Collection
+                      },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Remove Main Collectin'),),//Remove Collection
 
                     ],
                   ),
                 ))
               ,);
-          }, icon: Icon(Icons.settings,color: Colors.white,))],//setti
+          }, icon: const Icon(Icons.settings,color: Colors.white,))],//setti
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -166,18 +160,18 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton(onPressed: () {sortProduct();}, child: Text('Test')),
+            ElevatedButton(onPressed: () {sortProduct();}, child: const Text('Test')),
             Transform.translate(
-              offset: Offset(0,50),
+              offset: const Offset(0,50),
               child: InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) => AlertDialog(
-                    content: Container(
+                    content: SizedBox(
                       height: 150,
                       child:Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text('اختار نوع المنتج'),
+                          const Text('اختار نوع المنتج'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -186,7 +180,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactWithOpitionsMarket(
                                     productMarket: widget.productMarket,
-                                      Opitions: [],
+                                      Opitions: const [],
                                       Data_From_Main_Collection: widget.Data_From_Main_Collection),));
                                 },
                                 child: Container(
@@ -198,14 +192,14 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                     Navigator.pop(context);
                                     showDialog(context: context, builder: (context) =>
                                         AlertDialog(content: SingleChildScrollView(
-                                          child: Container(
+                                          child: SizedBox(
                                             height: h*1.1,
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                                                   OpenStdyo1();
-                                                }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                                }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [Text('اضافة صورة للمنتح'),Icon(Icons.camera)],)),
                                                 TextFormField(
                                                   controller: PrudactName,
@@ -264,7 +258,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                                                     IdMarket:FirebaseAuth.instance.currentUser!.uid,
                                                   );
                                                   Navigator.pop(context);
-                                                }, child: Text('إضافة'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),)
+                                                },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('إضافة'),)
                                               ],
                                             ),
                                           ),
@@ -287,7 +281,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.blueGrey),
-                  child: Icon(Icons.add,size: 60,color: Colors.white,),
+                  child: const Icon(Icons.add,size: 60,color: Colors.white,),
                 ),
 
               ),
@@ -297,7 +291,7 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
               child: GridView.builder(
                 shrinkWrap: true,
                 itemCount:productMarket.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 15/20,
                     crossAxisCount: 3),
                 itemBuilder: (context, index) =>
@@ -310,15 +304,15 @@ class _PrudactCollection_MarketState extends State<PrudactCollection_Market> {
                         )));
                       },
                       child: Container(
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(color: Colors.black12,borderRadius: BorderRadius.circular(10)),
                         child:Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CachedNetworkImage(
                               imageUrl:productMarket[index]['ImageUrl'],
-                              placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
                               imageBuilder: (context, imageProvider) => Container(
                                 height: w/8,
                                 decoration: BoxDecoration(

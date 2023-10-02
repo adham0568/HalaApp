@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/SnackBar.dart';
 import '../../models/UserData.dart';
@@ -29,6 +28,7 @@ class AuthMethods{
         required String ImageProfile,
         required double Lat,
         required double Long,
+        required String Token
       })
   async {
     TybeMarket==null?TybeMarket=0:null;
@@ -73,6 +73,7 @@ class AuthMethods{
 
 
       AdminData usersss = AdminData(
+        Token: Token,
         Lat: Lat,
         Long:Long ,
         ImageProfile: url1,
@@ -134,7 +135,7 @@ class AuthMethods{
           email: emailAddress.text,
           password: password.text
       );
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()));
       emailAddress.text='';
       password.text='';
     } on FirebaseAuthException catch (e) {

@@ -41,7 +41,7 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
         setState(() {
           imgPath = File(pickedImg.path);
           imgName = basename(pickedImg.path);
-          String random = Uuid().v1();
+          String random = const Uuid().v1();
           imgName = "$random$imgName";
           setState(() {
             Imagedone = true;
@@ -73,7 +73,7 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -88,22 +88,22 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Transform.translate(
-              offset: Offset(0,50),
+              offset: const Offset(0,50),
               child:widget.PrudactData['Opitions'].length >=1 ? Column(
                 children: [
-                  Text('لا يمكن تعديل هذا المنتج بامكانك ازالته واضافة منتج اخر'),
+                  const Text('لا يمكن تعديل هذا المنتج بامكانك ازالته واضافة منتج اخر'),
                   InkWell(onTap: () {
                     showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(
+                      AlertDialog(content: SizedBox(
                         height: 150,
                         child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text('هل انت متأكد من ازالة هذا المنتج؟'),
+                          const Text('هل انت متأكد من ازالة هذا المنتج؟'),
                           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ElevatedButton(onPressed: () {
                               print(widget.PrudactData['IdPrudact']);
-                            }, child: Text('sssssssssss')),
+                            }, child: const Text('sssssssssss')),
                             InkWell(
                               borderRadius: BorderRadius.circular(15),
                               splashColor: Colors.red,
@@ -116,12 +116,7 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                   Navigator.pop(context);
                                 },
                                 child: Container(
-                                  child: Center(child: Text('نعم',style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-
-                                  ),)),
-                                width:70,height: 30,
+                                  width:70,height: 30,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     gradient: LinearGradient(begin: Alignment.topRight,end: Alignment.bottomLeft,
@@ -131,6 +126,11 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                     ]
                                     )
                                   ),
+                                  child: const Center(child: Text('نعم',style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+
+                                  ),)),
                                 )),
                             InkWell(
                                 borderRadius: BorderRadius.circular(15),
@@ -141,10 +141,6 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                   Navigator.pop(context);
                                 },
                                 child: Container(
-                                  child: Center(child: Text('لا',style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),)),
                                   width:70,height: 30,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
@@ -155,6 +151,10 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                           ]
                                       )
                                   ),
+                                  child: const Center(child: Text('لا',style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),)),
                                 )),
                           ],
                           )
@@ -172,21 +172,21 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                         ]
                       )
                     ),
-                    child: Icon(Icons.delete,color: Colors.red,),
-                    height: 50,width: 50))
+                    height: 50,width: 50,
+                    child: const Icon(Icons.delete,color: Colors.red,)))
                 ],
               ):
               InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(height: 650,
+                      AlertDialog(content: SizedBox(height: 650,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text('Edit Prudact',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                            const Text('Edit Prudact',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                             ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                               OpenStdyo1();
-                            }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                               children: [Text('Add New Image'),Icon(Icons.camera)],)),
                             TextFormField(
                               controller: Prise,
@@ -249,19 +249,19 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                       IdMarket:FirebaseAuth.instance.currentUser!.uid,
                                   );
                                   Navigator.pop(context);
-                                }, child: Text('Edit'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
-                                ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
+                                },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('Edit'),),
+                                ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)), child: const Text('Cancel'),),
                               ],
                             ),
                             ElevatedButton(onPressed: (){Navigator.pop(context);
                             showDialog(context: context, builder: (context) =>
                                 AlertDialog(
-                                  content: Container(
+                                  content: SizedBox(
                                     height: 150,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Text('are you sure?'),
+                                        const Text('are you sure?'),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
@@ -273,14 +273,14 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                                                   IdProduct:widget.PrudactData['IdPrudact'],
                                                   CollectionId:widget.PrudactData['IdCollection']);
                                               Navigator.pop(context);
-                                            }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
-                                            ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Yes'),),
+                                            ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('No'),),
                                           ],
                                         ),
                                       ],
                                     ),),
                                 ),);
-                            }, child: Text('Remove Prudact'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),//Remove Collection
+                            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Remove Prudact'),),//Remove Collection
 
 
                           ],
@@ -292,7 +292,7 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.blueGrey),
-                  child: Icon(Icons.settings,size: 60,color: Colors.white,),
+                  child: const Icon(Icons.settings,size: 60,color: Colors.white,),
                 ),
 
               ),
@@ -305,12 +305,12 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                   child: Container(
                     height: 400,
                     width: 400,
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
                     child: CachedNetworkImage(
                       imageUrl:widget.PrudactData['ImageUrl'],
-                      placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                       imageBuilder: (context, imageProvider) => Container(
                         height: 120,
                         decoration: BoxDecoration(
@@ -324,7 +324,7 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
                     ),
                   ),
                 ),
-                Text(widget.PrudactData['Name'],style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                Text(widget.PrudactData['Name'],style: const TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
                 Text(widget.PrudactData['Prise'].toString()),
                 Text(widget.PrudactData['PrudactsDetals'])
               ],
@@ -332,6 +332,6 @@ class _PrudactsDetalsState extends State<PrudactsDetals> {
           ],
         ),
       ),
-    );;
+    );
   }
 }

@@ -40,7 +40,7 @@ class _salesDetalesState extends State<salesDetales> {
                (BuildContext context, AsyncSnapshot snapshot) {
 
              if (snapshot.hasError) {
-               return Text("Something went wrong");
+               return const Text("Something went wrong");
              }
 
              if (snapshot.connectionState == ConnectionState.done) {
@@ -58,10 +58,10 @@ class _salesDetalesState extends State<salesDetales> {
                                  child: Column(
                                    children: [
                                      //NameUser
-                                     Text('الاسم'+' : ${snapshot.data.docs[index]['NameUser']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
-                                     Text('رقم الطلب'+' : ${snapshot.data.docs[index]['orderID']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                     Text('الاسم'' : ${snapshot.data.docs[index]['NameUser']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                     Text('رقم الطلب'' : ${snapshot.data.docs[index]['orderID']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
                                      ListView.builder(
-                                       physics: NeverScrollableScrollPhysics(),
+                                       physics: const NeverScrollableScrollPhysics(),
                                        shrinkWrap: true,
                                        itemCount:snapshot.data.docs[index]['items'].length,
                                        itemBuilder: (context, index1) =>
@@ -76,7 +76,7 @@ class _salesDetalesState extends State<salesDetales> {
                                              ),
                                            )
                                        ,),
-                                     Text('السعر الاجمالي'+' : ${snapshot.data.docs[index]['totalPrice'].toString().replaceAll(' ₪', '')}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                     Text('السعر الاجمالي'' : ${snapshot.data.docs[index]['totalPrice'].toString().replaceAll(' ₪', '')}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
                                    ],
                                  ),
                                ),);
@@ -85,7 +85,7 @@ class _salesDetalesState extends State<salesDetales> {
                            margin: EdgeInsets.only(top: h/35,left: w/15,right: w/15),
                            padding: EdgeInsets.only(top: h/30,bottom: h/30,left: w/20,right: w/20),
                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),
-                               gradient: LinearGradient(
+                               gradient: const LinearGradient(
                                    begin: Alignment.topRight,
                                    end: Alignment.bottomLeft,
                                    colors: [
@@ -107,7 +107,7 @@ class _salesDetalesState extends State<salesDetales> {
                );
              }
 
-             return CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
+             return const CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
            },
          ),
        ),
@@ -122,7 +122,7 @@ class _salesDetalesState extends State<salesDetales> {
                (BuildContext context, AsyncSnapshot snapshot) {
 
              if (snapshot.hasError) {
-               return Text("Something went wrong");
+               return const Text("Something went wrong");
              }
 
              if (snapshot.connectionState == ConnectionState.done) {
@@ -141,10 +141,10 @@ class _salesDetalesState extends State<salesDetales> {
                                    child: Column(
                                      children: [
                                        //NameUser
-                                       Text('الاسم'+' : ${snapshot.data.docs[index]['NameUser']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
-                                       Text('رقم الطلب'+' : ${snapshot.data.docs[index]['orderID']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                       Text('الاسم'' : ${snapshot.data.docs[index]['NameUser']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                       Text('رقم الطلب'' : ${snapshot.data.docs[index]['orderID']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
                                        ListView.builder(
-                                         physics: NeverScrollableScrollPhysics(),
+                                         physics: const NeverScrollableScrollPhysics(),
                                          shrinkWrap: true,
                                          itemCount:snapshot.data.docs[index]['items'].length,
                                          itemBuilder: (context, index1) =>
@@ -160,7 +160,7 @@ class _salesDetalesState extends State<salesDetales> {
                                                ),
                                              )
                                          ,),
-                                       Text('السعر الاجمالي'+' : ${snapshot.data.docs[index]['totalPrice'].toString().replaceAll(' ₪', '')}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
+                                       Text('السعر الاجمالي'' : ${snapshot.data.docs[index]['totalPrice'].toString().replaceAll(' ₪', '')}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/18,color: Colors.white),),
                                      ],
                                    ),
                                  ),
@@ -170,7 +170,7 @@ class _salesDetalesState extends State<salesDetales> {
                            margin: EdgeInsets.only(top: h/35,left: w/15,right: w/15),
                            padding: EdgeInsets.only(top: h/30,bottom: h/30,left: w/20,right: w/20),
                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),
-                               gradient: LinearGradient(
+                               gradient: const LinearGradient(
                                    begin: Alignment.topRight,
                                    end: Alignment.bottomLeft,
                                    colors: [
@@ -192,7 +192,7 @@ class _salesDetalesState extends State<salesDetales> {
                );
              }
 
-             return CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
+             return const CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
            },
          ),
        ),
@@ -207,7 +207,7 @@ class _salesDetalesState extends State<salesDetales> {
                (BuildContext context, AsyncSnapshot snapshot) {
 
              if (snapshot.hasError) {
-               return Text("Something went wrong");
+               return const Text("Something went wrong");
              }
 
              if (snapshot.connectionState == ConnectionState.done) {
@@ -238,70 +238,70 @@ class _salesDetalesState extends State<salesDetales> {
                                 Positioned(
                                     top: h/15,
                                     right: 2,
-                                    child: Align(child: Text('اجمالي المبيعات',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                    child: Align(alignment: Alignment.topLeft,child: Text('اجمالي المبيعات',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
+                                      ,)),
                                 Positioned(
                                     top: h/15,
                                     left: w/20,
-                                    child: Align(child: Text(snapshot.data.docs[index]['TotalPrifit'].toString(),
+                                    child: Align(alignment: Alignment.topLeft,child: Text(snapshot.data.docs[index]['TotalPrifit'].toString(),
                                       style: TextStyle(fontSize: w/15,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                      ,)),
                                 Positioned(
                                     top: h/7.5,
                                     child: Container(color: Colors.black,width: w*0.8,height: 1,)),
                                 Positioned(
                                     top: h/7,
                                     right: 2,
-                                    child: Align(child: Text('اجمالي سعر الطلبات \n غير ناجحة',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.centerRight,)),
+                                    child: Align(alignment: Alignment.centerRight,child: Text('اجمالي سعر الطلبات \n غير ناجحة',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
+                                      ,)),
                                 Positioned(
                                     top: h/6.5,
                                     left: w/20,
-                                    child: Align(child: Text(snapshot.data.docs[index]['TotalCnceldPrice'].toString(),
+                                    child: Align(alignment: Alignment.topLeft,child: Text(snapshot.data.docs[index]['TotalCnceldPrice'].toString(),
                                       style: TextStyle(fontSize: w/15,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                      ,)),
                                 Positioned(
                                     top: h/4.5,
                                     child: Container(color: Colors.black,width: w*0.8,height: 1,)),
                                 Positioned(
                                     top: h/3.9,
                                     right: 2,
-                                    child: Align(child: Text('اجمالي الخصومات',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                    child: Align(alignment: Alignment.topLeft,child: Text('اجمالي الخصومات',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
+                                      ,)),
                                 Positioned(
                                     top: h/3.9,
                                     left: w/20,
-                                    child: Align(child: Text(snapshot.data.docs[index]['TotalDiscount'].toString(),
+                                    child: Align(alignment: Alignment.topLeft,child: Text(snapshot.data.docs[index]['TotalDiscount'].toString(),
                                       style: TextStyle(fontSize: w/15,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                      ,)),
                                 Positioned(
                                     top: h/3.2,
                                     child: Container(color: Colors.black,width: w*0.8,height: 1,)),
                                 Positioned(
                                     top: h/3,
                                     right: 2,
-                                    child: Align(child: Text('عدد الطلبات الناجحة',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                    child: Align(alignment: Alignment.topLeft,child: Text('عدد الطلبات الناجحة',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
+                                      ,)),
                                 Positioned(
                                     top: h/3,
                                     left: w/20,
-                                    child: Align(child: Text(snapshot.data.docs[index]['OrdarDone'].toString(),
+                                    child: Align(alignment: Alignment.topLeft,child: Text(snapshot.data.docs[index]['OrdarDone'].toString(),
                                       style: TextStyle(fontSize: w/15,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                      ,)),
                                 Positioned(
                                     top: h/2.5,
                                     child: Container(color: Colors.black,width: w*0.8,height: 1,)),
                                 Positioned(
                                     top: h/2.45,
                                     right: 2,
-                                    child: Align(child: Text('عدد الطلبات \n غير ناجحة',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                    child: Align(alignment: Alignment.topLeft,child: Text('عدد الطلبات \n غير ناجحة',style: TextStyle(fontSize: w/22,fontWeight: FontWeight.bold),)
+                                      ,)),
                                 Positioned(
                                     top: h/2.35,
                                     left: w/20,
-                                    child: Align(child: Text(snapshot.data.docs[index]['OrdarCancel'].toString(),
+                                    child: Align(alignment: Alignment.topLeft,child: Text(snapshot.data.docs[index]['OrdarCancel'].toString(),
                                       style: TextStyle(fontSize: w/15,fontWeight: FontWeight.bold),)
-                                      ,alignment: Alignment.topLeft,)),
+                                      ,)),
                               ]
                             ),
                           ),
@@ -311,7 +311,7 @@ class _salesDetalesState extends State<salesDetales> {
                );
              }
 
-             return CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
+             return const CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
            },
          ),
        ),
@@ -330,13 +330,13 @@ class _salesDetalesState extends State<salesDetales> {
                  (BuildContext context, AsyncSnapshot snapshot) {
 
                if (snapshot.hasError) {
-                 return Text("Something went wrong");
+                 return const Text("Something went wrong");
                }
 
                if (snapshot.connectionState == ConnectionState.done) {
                  return SizedBox(
                    child: ListView.builder(
-                     physics: NeverScrollableScrollPhysics(),
+                     physics: const NeverScrollableScrollPhysics(),
                      shrinkWrap: true,
                      itemCount: snapshot.data!.size,
                      itemBuilder: (context, index) =>
@@ -345,7 +345,7 @@ class _salesDetalesState extends State<salesDetales> {
                            height: h/7,
                            width: w*0.9,
                            decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 2),borderRadius: BorderRadius.circular(15)),
-                           margin: EdgeInsets.all(10),
+                           margin: const EdgeInsets.all(10),
                            child: Column(
                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                              crossAxisAlignment: CrossAxisAlignment.center,
@@ -354,14 +354,14 @@ class _salesDetalesState extends State<salesDetales> {
                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                  children: [
                                    Text('الصنف :'+snapshot.data.docs[index]['Name'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20),),
-                                   Text('عدد مرات الطلب :'+'${snapshot.data.docs[index]['Count_requests']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20),)
+                                   Text('عدد مرات الطلب :''${snapshot.data.docs[index]['Count_requests']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20),)
                                  ],
                                ),
                                Row(
                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                  children: [
-                                   Text('الخصم :'+'${snapshot.data.docs[index]['Discount']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20),),
-                                   Text('السعر :'+'${snapshot.data.docs[index]['Prise']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20),)
+                                   Text('الخصم :''${snapshot.data.docs[index]['Discount']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20),),
+                                   Text('السعر :''${snapshot.data.docs[index]['Prise']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: w/20),)
                                  ],
                                ),
                              ],
@@ -371,7 +371,7 @@ class _salesDetalesState extends State<salesDetales> {
                  );
                }
 
-               return CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
+               return const CircularProgressIndicator(color: Colors.red,backgroundColor: Colors.black,);
              },
            ),
          ),
@@ -391,11 +391,11 @@ class _salesDetalesState extends State<salesDetales> {
                  (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                if (snapshot.hasError) {
-                 return Text("Something went wrong");
+                 return const Text("Something went wrong");
                }
 
                if (snapshot.hasData && !snapshot.data!.exists) {
-                 return Text("Document does not exist");
+                 return const Text("Document does not exist");
                }
 
                if (snapshot.connectionState == ConnectionState.done) {
@@ -403,7 +403,7 @@ class _salesDetalesState extends State<salesDetales> {
                  return Column(
                    children: [
                      ListView.builder(
-                       physics: NeverScrollableScrollPhysics(),
+                       physics: const NeverScrollableScrollPhysics(),
                        shrinkWrap: true,
                        itemCount: data['Rating'].length,
                        itemBuilder: (context, index) =>
@@ -420,7 +420,7 @@ class _salesDetalesState extends State<salesDetales> {
                                      Row(
                                        mainAxisAlignment: MainAxisAlignment.start,
                                        children: List.generate(data['Rating'][index]['RateStars'], (index) {
-                                         return Icon(Icons.star,color: Colors.orange,);
+                                         return const Icon(Icons.star,color: Colors.orange,);
                                        }),
                                      ),
                                      Text(data['Rating'][index]['Name'],style: TextStyle(
@@ -440,15 +440,15 @@ class _salesDetalesState extends State<salesDetales> {
                                  ),
                                  Align(
                                    alignment: Alignment.centerRight,
-                                   child: Text('رقم الطلب :'+'${data['Rating'][index]['IdOrdar'].toString()}'),),
+                                   child: Text('رقم الطلب :' +'${data['Rating'][index]['IdOrdar'].toString()}'),),
                                ],
                              ),
                            ),),
                    ],
-                 );;
+                 );
                }
 
-               return Text("loading");
+               return const Text("loading");
              },
            ),
          ),

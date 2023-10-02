@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 /// ignore: constant_identifier_names
 const MAPBOX_ACCESS_TOKEN =
@@ -90,7 +88,7 @@ class _LocationPageState extends State<LocationPage> {
       ),
               ElevatedButton(onPressed: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
                   SingUpPage(Lat: myPosition!.latitude, Long: myPosition!.longitude,LocationAdd: true),));},
-                  child: Text('التالي'))
+                  child: const Text('التالي'))
             ],
           ),
     );

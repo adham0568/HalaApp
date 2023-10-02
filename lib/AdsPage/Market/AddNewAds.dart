@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:adminhala/models/SnackBar.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' show basename, url;
@@ -38,7 +37,7 @@ class _AddAddsMarketState extends State<AddAddsMarket> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -48,7 +47,7 @@ class _AddAddsMarketState extends State<AddAddsMarket> {
           )),
         ),
       ),
-      body: Container(
+      body: SizedBox(
         width: w,
         child: Center(
           child: Column(
@@ -63,7 +62,7 @@ class _AddAddsMarketState extends State<AddAddsMarket> {
                   width: w*0.8,
                   height: h/18,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
@@ -79,12 +78,12 @@ class _AddAddsMarketState extends State<AddAddsMarket> {
               Container(height: h/4,width: w*0.9,
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.grey),
                 child:imgPath1 ==null?
-                Text('')
+                const Text('')
                     :
                 ClipRRect(borderRadius: BorderRadius.circular(15),child: Image.file(imgPath1!,fit: BoxFit.cover,)),
               ),
               SizedBox(height: h/25,),
-              Container(
+              SizedBox(
                 width: w*0.9,
                 child: TextFormField(
                   controller: Name,
@@ -113,20 +112,19 @@ class _AddAddsMarketState extends State<AddAddsMarket> {
                   ProductName: Name.text,
                   );
                   Navigator.pop(context);
-                  ;
                 },
                 child: Container(
                   width: w*0.8,
                   height: h/18,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                      gradient:imgPath1==null?LinearGradient(
+                      gradient:imgPath1==null?const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
                             Colors.black54,
                             Colors.black
                           ]
-                      ): LinearGradient(
+                      ): const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [

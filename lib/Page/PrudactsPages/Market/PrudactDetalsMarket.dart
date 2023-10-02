@@ -1,15 +1,12 @@
 import 'dart:io';
 import 'package:adminhala/models/SnackBar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart' show basename, url;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../models/FireBaseStatemant.dart';
-import 'PrudactCollectionMarket.dart';
 
 class PrudactsDetals_Market extends StatefulWidget {
   Map Prudact;
@@ -43,7 +40,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
         setState(() {
           imgPath = File(pickedImg.path);
           imgName = basename(pickedImg.path);
-          String random = Uuid().v1();
+          String random = const Uuid().v1();
           imgName = "$random$imgName";
           setState(() {
             Imagedone = true;
@@ -76,7 +73,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -91,17 +88,17 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Transform.translate(
-              offset: Offset(0,50),
+              offset: const Offset(0,50),
               child:widget.Prudact['Opitions'].length >=1 ? Column(
                 children: [
-                  Text('لا يمكن تعديل هذا المنتج بامكانك ازالته واضافة منتج اخر'),
+                  const Text('لا يمكن تعديل هذا المنتج بامكانك ازالته واضافة منتج اخر'),
                   InkWell(onTap: () {
                     showDialog(context: context, builder: (context) =>
-                        AlertDialog(content: Container(
+                        AlertDialog(content: SizedBox(
                           height: 150,
                           child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('هل انت متأكد من ازالة هذا المنتج؟'),
+                              const Text('هل انت متأكد من ازالة هذا المنتج؟'),
                               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   InkWell(
@@ -115,11 +112,6 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                                         Navigator.pop(context);
                                       },
                                       child: Container(
-                                        child: Center(child: Text('نعم',style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-
-                                        ),)),
                                         width:70,height: 30,
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
@@ -130,6 +122,11 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                                                 ]
                                             )
                                         ),
+                                        child: const Center(child: Text('نعم',style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+
+                                        ),)),
                                       )),
                                   InkWell(
                                       borderRadius: BorderRadius.circular(15),
@@ -140,10 +137,6 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                                         Navigator.pop(context);
                                       },
                                       child: Container(
-                                        child: Center(child: Text('لا',style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),)),
                                         width:70,height: 30,
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
@@ -154,6 +147,10 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                                                 ]
                                             )
                                         ),
+                                        child: const Center(child: Text('لا',style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),)),
                                       )),
                                 ],
                               )
@@ -171,22 +168,22 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                               ]
                           )
                       ),
-                      child: Icon(Icons.delete,color: Colors.red,),
-                      height: 50,width: 50))
+                      height: 50,width: 50,
+                      child: const Icon(Icons.delete,color: Colors.red,)))
                 ],
               ):
               InkWell(
                 onTap: (){
                   showDialog(context: context, builder: (context) =>
-                      AlertDialog(content: Container(
+                      AlertDialog(content: SizedBox(
                         height: h*0.9,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text('Edit Prudact',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                            const Text('Edit Prudact',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                             ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                               OpenStdyo1();
-                            }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                               children: [Text('Add New Image'),Icon(Icons.camera)],)),
                             TextFormField(
                               controller: Prise,
@@ -249,35 +246,35 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                                       imgPath: imgPath!,
                                     );
                                     Navigator.pop(context);
-                                    },
-                                    child: Text('تعديل'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
-                                  ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('الغاء'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),),
+                                    },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)),
+                                    child: const Text('تعديل'),),
+                                  ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepOrange)), child: const Text('الغاء'),),
                                 ],
                               ),
                             ),
                             ElevatedButton(onPressed: (){Navigator.pop(context);
                             showDialog(context: context, builder: (context) =>
                                 AlertDialog(
-                                  content: Container(
+                                  content: SizedBox(
                                     height: 150,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Text('are you sure?'),
+                                        const Text('are you sure?'),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             ElevatedButton(onPressed: () async {
                                               FireBase().DeleteProduct(IdMainCollection:widget.Prudact['IdMainCollection'] ,Index: widget.Index,IdProduct: widget.Prudact['IdPrudact']);
                                               Navigator.pop(context);
-                                            }, child: Text('Yes'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),
-                                            ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Text('No'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),),
+                                            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Yes'),),
+                                            ElevatedButton(onPressed: (){Navigator.pop(context);},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child: const Text('No'),),
                                           ],
                                         ),
                                       ],
                                     ),),
                                 ),);
-                            }, child: Text('Remove Prudact'),style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),),//Remove Collection
+                            },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)), child: const Text('Remove Prudact'),),//Remove Collection
 
 
                           ],
@@ -289,7 +286,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.blueGrey),
-                  child: Icon(Icons.settings,size: 60,color: Colors.white,),
+                  child: const Icon(Icons.settings,size: 60,color: Colors.white,),
                 ),
 
               ),
@@ -302,12 +299,12 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                   child: Container(
                     height: 400,
                     width: 400,
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10)),
                     child: CachedNetworkImage(
                       imageUrl:widget.Prudact['ImageUrl'],
-                      placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                       imageBuilder: (context, imageProvider) => Container(
                         height: 120,
                         decoration: BoxDecoration(
@@ -321,7 +318,7 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
                     ),
                   ),
                 ),
-                Text(widget.Prudact['Name'],style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                Text(widget.Prudact['Name'],style: const TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
                 Text(widget.Prudact['Prise'].toString()),
                 Text(widget.Prudact['PrudactsDetals'])
               ],
@@ -329,6 +326,6 @@ class _PrudactsDetals_MarketState extends State<PrudactsDetals_Market> {
           ],
         ),
       ),
-    );;
+    );
   }
 }

@@ -1,10 +1,7 @@
 import 'package:adminhala/SupportPage/ChatePage.dart';
 import 'package:adminhala/SupportPage/FireBaseStatment.dart';
-import 'package:adminhala/models/FireBaseStatemant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class SupportChat extends StatefulWidget {
   const SupportChat({Key? key}) : super(key: key);
@@ -39,11 +36,11 @@ class _SupportChatState extends State<SupportChat> {
         stream:  FirebaseFirestore.instance.collection('SupportData').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text('Something went wrong');
+            return const Text('Something went wrong');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return const Text("Loading");
           }
            return ListView.builder(
                 itemCount: snapshot.data!.size,
@@ -56,10 +53,10 @@ class _SupportChatState extends State<SupportChat> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(DocumantName: snapshot.data!.docs[index]['Uid']),));
                       },
                       child: Container(
-                        padding: EdgeInsets.only(left: 15,right: 15),
-                        margin: EdgeInsets.only(top: 15,bottom: 15),
+                        padding: const EdgeInsets.only(left: 15,right: 15),
+                        margin: const EdgeInsets.only(top: 15,bottom: 15),
                         decoration: BoxDecoration(borderRadius:  BorderRadius.circular(15),
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
                                 colors: [

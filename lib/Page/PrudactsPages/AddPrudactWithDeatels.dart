@@ -1,18 +1,12 @@
 import 'dart:io';
 import 'package:adminhala/Page/PrudactsPages/AddOptions.dart';
-import 'package:adminhala/Page/PrudactsPages/AddPrudactWithDeatels.dart';
 import 'package:adminhala/Page/PrudactsPages/ProductsCollections.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart' show basename, url;
-import 'package:adminhala/Page/PrudactsPages/prudacts%20detals.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/FireBaseStatemant.dart';
-import '../../models/PrudactData.dart';
-import 'main_Collection.dart';
 import 'dart:math';
 
 class PrudactWithOpitions extends StatefulWidget {
@@ -44,7 +38,7 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
         setState(() {
           imgPath = File(pickedImg.path);
           imgName = basename(pickedImg.path);
-          String random = Uuid().v1();
+          String random = const Uuid().v1();
           imgName = "$random$imgName";
           setState(() {
             Imagedone = true;
@@ -66,7 +60,7 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -80,15 +74,15 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(25),
+              padding: const EdgeInsets.all(25),
               height: 900,
-              margin: EdgeInsets.only(left: 50,right: 50),
+              margin: const EdgeInsets.only(left: 50,right: 50),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.lightGreen)),onPressed: (){
                     OpenStdyo1();
-                  }, child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                  }, child: const Row(mainAxisAlignment: MainAxisAlignment.center,
                     children: [Text('اضافة صورة للمنتح'),Icon(Icons.camera)],)),
                   TextFormField(
                     controller: PrudactName,
@@ -142,10 +136,10 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
                                 ));
                           },
                          child: Container(
-                           margin: EdgeInsets.only(top: 15,bottom: 10),
+                           margin: const EdgeInsets.only(top: 15,bottom: 10),
                            height: 60,
                            width: 150,
-                           decoration: BoxDecoration(gradient: LinearGradient(
+                           decoration: BoxDecoration(gradient: const LinearGradient(
                                begin: Alignment.centerLeft,
                                end: Alignment.centerRight,
                                colors: [
@@ -153,7 +147,7 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
                                  Color.fromRGBO(1, 183, 168, 1)
                                ]
                            ),borderRadius: BorderRadius.circular(10),color: Colors.red,),
-                           child: Center(
+                           child: const Center(
                              child: Text('إضافة خيارات',style: TextStyle(fontWeight: FontWeight.bold,
                              fontSize: 25,color: Colors.white),),
                            ),
@@ -163,7 +157,7 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 25,bottom: 25),
+                    margin: const EdgeInsets.only(top: 25,bottom: 25),
                     child: ElevatedButton(onPressed: () async {
                       await EditData.UploadPrudacts(
                         Count_Quantity: int.parse(Count_Quantity.text),
@@ -184,8 +178,8 @@ class _PrudactWithOpitionsState extends State<PrudactWithOpitions> {
                         Count_requests: widget.Data_From_Main_Collection['Count_requests']
                       );
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>PrudactCollection(data_Collection: widget.data_Collection, Data_From_Main_Collection: widget.Data_From_Main_Collection) ,));
-                    }, child: Text('اضافة المنتج',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-                      style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.green),backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)),),
+                    },
+                      style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.green),backgroundColor: MaterialStateProperty.all(Colors.orangeAccent)), child: const Text('اضافة المنتج',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),),
                   ),
                 ],
               ),

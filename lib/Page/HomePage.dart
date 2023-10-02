@@ -10,7 +10,9 @@ import 'package:adminhala/models/FireBaseStatemant.dart';
 import 'package:adminhala/models/_H_W.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../AdsPage/Market/AddForAllMarket.dart';
 import 'AuthPages/AuthFireBase.dart';
 import 'Ordar/Ordars.dart';
@@ -31,11 +33,11 @@ class _HomePageState extends State<HomePage> {
   String UidUser=FirebaseAuth.instance.currentUser!.uid;
   GetDataAdmin() async {
    await FirebaseFirestore.instance.collection('AdminData')
-        .doc('$UidUser').get().then((DocumentSnapshot snapshot) {
+        .doc(UidUser).get().then((DocumentSnapshot snapshot) {
       if (snapshot.exists) {
         dataUser= snapshot.data()! as Map<String, dynamic>;
         Data=dataUser!;
-        Timer(Duration(seconds: 1), () {
+        Timer(const Duration(seconds: 1), () {
           setState(() {
             DataGet=false;
           });
@@ -50,8 +52,7 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   void initState() {
-    GetDataAdmin();
-    // TODO: implement initState
+    GetDataAdmin();//يجب حذفها وتنظيم الكود
     super.initState();
   }
   @override
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.white,
           height: 150,
           width: 150,
-          child: CircularProgressIndicator(
+          child: const CircularProgressIndicator(
             backgroundColor: Colors.yellow,
             color: Colors.tealAccent,
           )),),
@@ -75,17 +76,17 @@ class _HomePageState extends State<HomePage> {
     Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(icon: Icon(Icons.logout,color: Colors.white54,),onPressed: () {
+          IconButton(icon: const Icon(Icons.logout,color: Colors.white54,),onPressed: () {
             auth.signOut(context);
-            Timer.periodic(Duration(seconds: 3), (timer) {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogIn(),));
+            Timer.periodic(const Duration(seconds: 3), (timer) {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LogIn(),));
               timer.cancel();
             });
           },)
         ],
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
+            SizedBox(
               height:  FirebaseAuth.instance.currentUser!.uid=='C1zSXr7C9DW3MHN9tsbBiNRSu3g2'?h*1.6:h*1.2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,9 +116,9 @@ class _HomePageState extends State<HomePage> {
                   InkWell(
                     onTap: (){
                       dataUser!['Uid']=='C1zSXr7C9DW3MHN9tsbBiNRSu3g2'?
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CollectionPage(),))
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const CollectionPage(),))
                           :
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Main_Collection_Market(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Main_Collection_Market(),));
                     },
                     splashColor: Colors.teal,
                     borderRadius:BorderRadius.only(
@@ -137,17 +138,17 @@ class _HomePageState extends State<HomePage> {
                             bottomRight: Radius.circular(w/6),
                             topRight: Radius.circular(w/10),
                           ),
-                        gradient: LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
+                        gradient: const LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
                           Color.fromRGBO(78, 246, 123, 10),
                           Color.fromRGBO(80, 181, 248, 10)
                         ])
                       ),
-                      child: Center(child: Text('تعديل وإضافة',style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.bold),)),
+                      child: const Center(child: Text('تعديل وإضافة',style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.bold),)),
                     ),
                   ),
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Ordar(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Ordar(DataAdmin: Data),));
                     },
                     splashColor: Colors.teal,
                     borderRadius:BorderRadius.only(
@@ -157,9 +158,9 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(w/10),
                     ) ,
                     child: Container(
-                      padding: EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(7),
                       width: 369,
-                      margin: EdgeInsets.only(left: 33,right: 33),
+                      margin: const EdgeInsets.only(left: 33,right: 33),
                       height: h/7,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -178,22 +179,22 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('الطلبات',style: TextStyle(color: Colors.white,fontSize: w/13,fontWeight: FontWeight.bold),),
-                            Container(height: 50,width: 50,decoration: BoxDecoration(shape: BoxShape.circle,
+                            Container(height: 50,width: 50,decoration: const BoxDecoration(shape: BoxShape.circle,
                               color: Colors.white70,),
                                 child: Center(
                                   child: StreamBuilder<QuerySnapshot>(
                                     stream: FirebaseFirestore.instance.collection('Ordar').where('UidMarket',isEqualTo: FirebaseAuth.instance.currentUser!.uid).where('OrdarStates',isLessThanOrEqualTo: 2).snapshots(),
                                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot>snapshot) {if (snapshot.hasError) {
-                                      return Text('0');
+                                      return const Text('0');
                                     }
                                     if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return Center(child: CircularProgressIndicator(),);
+                                      return const Center(child: CircularProgressIndicator(),);
                                     }
                                     numOfDocs= snapshot.data!.docs.length;
                                     return numOfDocs==null?
-                                    CircularProgressIndicator()
+                                    const CircularProgressIndicator()
                                         :
-                                    Text(numOfDocs.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),);
+                                    Text(numOfDocs.toString(),style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25),);
                                     },
                                   ),
                                 ))
@@ -205,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SupportChat(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SupportChat(),));
                     },
                     splashColor: Colors.teal,
                     borderRadius:BorderRadius.only(
@@ -227,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           //78/246/123
                           //80/181/248
-                          gradient: LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
+                          gradient: const LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
                             Color.fromRGBO(78, 100, 123, 10),
                             Color.fromRGBO(80, 150, 248, 10)
                           ])
@@ -241,16 +242,16 @@ class _HomePageState extends State<HomePage> {
                             stream:  FirebaseFirestore.instance.collection('SupportData').snapshots(),
                             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                               if (snapshot.hasError) {
-                                return Text('0');
+                                return const Text('0');
                               }
 
                               if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
 
                               return Container(
                                 height: h/15,width: w/7,
-                                decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.white38),
+                                decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.white38),
                                 child: Center(child: Text(snapshot.data!.size.toString(),style: TextStyle(fontSize: w/15,fontWeight: FontWeight.bold,color: Colors.black54),)),
                               );
                             },
@@ -262,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddMarket(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const AddMarket(),));
                     },
                     splashColor: Colors.teal,
                     borderRadius:BorderRadius.only(
@@ -273,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                     ) ,
                     child: Container(
                       width: double.infinity,
-                      margin: EdgeInsets.only(left: 33,right: 33),
+                      margin: const EdgeInsets.only(left: 33,right: 33),
                       height: h/7,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -284,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           //78/246/123
                           //80/181/248
-                          gradient: LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
+                          gradient: const LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
                             Color.fromRGBO(78, 246, 123, 10),
                             Color.fromRGBO(80, 181, 248, 10)
                           ])
@@ -295,7 +296,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => sales(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const sales(),));
                     },
                     splashColor: Colors.teal,
                     borderRadius:BorderRadius.only(
@@ -306,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                     ) ,
                     child: Container(
                       width: double.infinity,
-                      margin: EdgeInsets.only(left: 33,right: 33),
+                      margin: const EdgeInsets.only(left: 33,right: 33),
                       height: h/7,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -317,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           //78/246/123
                           //80/181/248
-                          gradient: LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
+                          gradient: const LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
                             Color.fromRGBO(78, 246, 123, 10),
                             Color.fromRGBO(80, 181, 248, 10)
                           ])
@@ -328,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Discount(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Discount(),));
                     },
                     splashColor: Colors.teal,
                     borderRadius:BorderRadius.only(
@@ -350,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           //78/246/123
                           //80/181/248
-                          gradient: LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
+                          gradient: const LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
                             Color.fromRGBO(78, 246, 123, 10),
                             Color.fromRGBO(80, 181, 248, 10)
                           ])
@@ -362,7 +363,7 @@ class _HomePageState extends State<HomePage> {
                   InkWell(
                     onTap: (){
                       Navigator.
-                      push(context, MaterialPageRoute(builder: (context) => AdsPage(),));
+                      push(context, MaterialPageRoute(builder: (context) => const AdsPage(),));
                     },
                     splashColor: Colors.teal,
                     borderRadius:BorderRadius.only(
@@ -373,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                     ) ,
                     child: Container(
                       width: double.infinity,
-                      margin: EdgeInsets.only(left: 33,right: 33),
+                      margin: const EdgeInsets.only(left: 33,right: 33),
                       height: h/7,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -384,7 +385,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           //78/246/123
                           //80/181/248
-                          gradient: LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
+                          gradient: const LinearGradient(begin:Alignment.topLeft ,end:Alignment.bottomRight ,colors: [
                             Color.fromRGBO(78, 246, 123, 10),
                             Color.fromRGBO(80, 181, 248, 10)
                           ])
@@ -394,8 +395,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                       :
-                  Container(width:1,height: 1,),
-                  SizedBox(height: 50,)
+                  const SizedBox(width:1,height: 1,),
+                  const SizedBox(height: 50,)
                 ],
               ),
             ),

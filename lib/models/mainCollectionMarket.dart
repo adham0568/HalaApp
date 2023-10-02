@@ -7,9 +7,6 @@ class MainCollectionMarket{
 
 
 
-
-
-
   Map<String, dynamic> Convert2Map(){
     return {
       'Name':Name,

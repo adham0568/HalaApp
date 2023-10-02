@@ -1,5 +1,4 @@
 import 'package:adminhala/AdsPage/AddsDetals.dart';
-import 'package:adminhala/AdsPage/AddNewImage.dart';
 import 'package:adminhala/AdsPage/WelcomePage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +16,7 @@ class _AdsPageState extends State<AdsPage> {
       appBar: AppBar(
         title: Image.asset('assets/Images/logowelcome.png'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: LinearGradient(
+          decoration: const BoxDecoration(gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -28,7 +27,7 @@ class _AdsPageState extends State<AdsPage> {
         ),
       ),
       body: Container(
-        margin: EdgeInsets.only(top: 50,bottom: 50),
+        margin: const EdgeInsets.only(top: 50,bottom: 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,12 +39,12 @@ class _AdsPageState extends State<AdsPage> {
               },
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                   height: 65,
                   width: 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -54,7 +53,7 @@ class _AdsPageState extends State<AdsPage> {
                           ]
                       )
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Hala Market Add 1',style: TextStyle(
                         fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold
@@ -71,12 +70,12 @@ class _AdsPageState extends State<AdsPage> {
               },
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                   height: 65,
                   width: 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -85,7 +84,7 @@ class _AdsPageState extends State<AdsPage> {
                           ]
                       )
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Hala Market Add 2',style: TextStyle(
                         fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold
@@ -101,12 +100,12 @@ class _AdsPageState extends State<AdsPage> {
               },
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                   height: 65,
                   width: 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -115,7 +114,7 @@ class _AdsPageState extends State<AdsPage> {
                           ]
                       )
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Home Page Add 1',style: TextStyle(
                         fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold
@@ -132,12 +131,12 @@ class _AdsPageState extends State<AdsPage> {
               },
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                   height: 65,
                   width: 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -146,7 +145,7 @@ class _AdsPageState extends State<AdsPage> {
                           ]
                       )
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Home Page Add 2',style: TextStyle(
                         fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold
@@ -162,12 +161,12 @@ class _AdsPageState extends State<AdsPage> {
               },
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                   height: 65,
                   width: 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -176,7 +175,7 @@ class _AdsPageState extends State<AdsPage> {
                           ]
                       )
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Rusturant Add',style: TextStyle(
                         fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold
@@ -188,16 +187,16 @@ class _AdsPageState extends State<AdsPage> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage(),));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const WelcomePage(),));
               },
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 10,bottom: 10),
+                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                   height: 65,
                   width: 250,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -206,7 +205,7 @@ class _AdsPageState extends State<AdsPage> {
                           ]
                       )
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Welcome Page Image',style: TextStyle(
                         fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold
